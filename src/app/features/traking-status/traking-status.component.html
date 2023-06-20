@@ -1,0 +1,114 @@
+<div fxLayout="row" fxFlex>
+    <mat-card style="width:96%;margin:2%">
+        <form [formGroup]="trackingStatusForm">
+            <mat-card-content>
+                <div FxLayout="row" fxFlex>
+                    <div *ngIf="loginUserDetails?.role ==='A'">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Job ID</mat-label>
+                            <input type="text" placeholder="Select one" aria-label="Number" matInput formControlName="tonTowReport"
+                                [matAutocomplete]="auto" (paste)="preventPaste($event)">
+                            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
+                                (optionSelected)="getTonTowPoliceReportStatus()" [displayWith]="getAutoCompleteOptionText">
+                                <mat-option *ngFor="let tonTowId of filteredOptions | async" [value]="tonTowId">
+                                    {{tonTowId.jobNum}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                    </div>
+                    <div class="stepper-horizontal" id="stepper1">
+                        
+                        <div class="step editing" *ngIf="getTonTowPoliceReportDetails?.fileClaimStatus">
+                            <div class="step-circle"><span>1</span></div>
+                            <div class="step-title"> 
+                                <button  mat-raised-button (click)="openFileClaimDialog()"   *ngIf="getTonTowPoliceReportDetails?.fileClaimStatus">File Claim Details</button>
+                            </div>
+                            <div class="step-bar-left"></div>
+                            <div class="step-bar-right"></div>
+                        </div>
+                        <div class="step" *ngIf="!getTonTowPoliceReportDetails?.fileClaimStatus">
+                            <div class="step-circle"><span>1</span></div>
+                            <div class="step-title"> 
+                                File Claim
+                            </div>
+                            <div class="step-bar-left"></div>
+                            <div class="step-bar-right"></div>
+                        </div>
+
+
+                        <div class="step editing" *ngIf="getTonTowPoliceReportDetails?.adjStatus">
+                            <div class="step-circle"><span>2</span></div>
+                            <div class="step-title"> 
+                                <button mat-raised-button (click)="openAdjusterDialog()" *ngIf="getTonTowPoliceReportDetails?.adjStatus">Adjuster Details</button>
+                            </div>
+                            <div class="step-bar-left"></div>
+                            <div class="step-bar-right"></div>
+                        </div>
+                        <div class="step" *ngIf="!getTonTowPoliceReportDetails?.adjStatus">
+                            <div class="step-circle"><span>2</span></div>
+                            <div class="step-title"> 
+                               Adjuster Details
+                            </div>
+                            <div class="step-bar-left"></div>
+                            <div class="step-bar-right"></div>
+                        </div>
+
+
+                        <div class="step editing" *ngIf="getTonTowPoliceReportDetails?.appStatus">
+                            <div class="step-circle"><span>3</span></div>
+                            <div class="step-title"> 
+                                <button mat-raised-button (click)="openAppraiserDialog()"  *ngIf="getTonTowPoliceReportDetails?.appStatus">Appraiser Details</button>
+                            </div>
+                            <div class="step-bar-left"></div>
+                            <div class="step-bar-right"></div>
+                        </div>
+                        <div class="step" *ngIf="!getTonTowPoliceReportDetails?.appStatus">
+                            <div class="step-circle"><span>3</span></div>
+                            <div class="step-title"> 
+                                Appraiser Details
+                            </div>
+                            <div class="step-bar-left"></div>
+                            <div class="step-bar-right"></div>
+                        </div>
+                       
+
+                        <div class="step editing" *ngIf="getTonTowPoliceReportDetails?.ciStatus">
+                            <div class="step-circle"><span>4</span></div>
+                            <div class="step-title"> 
+                                <button  mat-raised-button (click)="openInsuranceDialog()"  *ngIf="getTonTowPoliceReportDetails?.ciStatus">Cust Insurance Details</button>
+                            </div>
+                            <div class="step-bar-left"></div>
+                            <div class="step-bar-right"></div>
+                        </div>        
+                        <div class="step" *ngIf="!getTonTowPoliceReportDetails?.ciStatus">
+                            <div class="step-circle"><span>4</span></div>
+                            <div class="step-title"> 
+                                Cust Insurance Details
+                            </div>
+                            <div class="step-bar-left"></div>
+                            <div class="step-bar-right"></div>
+                        </div>     
+
+                        <div  class="step editing" *ngIf="getTonTowPoliceReportDetails?.cpStatus">
+                            <div class="step-circle"><span>5</span></div>
+                            <div class="step-title"> 
+                                <button  mat-raised-button (click)="openPaymentDialog()"  *ngIf="getTonTowPoliceReportDetails?.cpStatus">Cust Payment Details</button>
+                            </div>
+                            <div class="step-bar-left"></div>
+                            <div class="step-bar-right"></div>
+                        </div>
+                        <div  class="step" *ngIf="!getTonTowPoliceReportDetails?.cpStatus">
+                            <div class="step-circle"><span>5</span></div>
+                            <div class="step-title"> 
+                                Cust Payment Details
+                            </div>
+                            <div class="step-bar-left"></div>
+                            <div class="step-bar-right"></div>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-content>
+        </form>
+    </mat-card>
+</div>
+

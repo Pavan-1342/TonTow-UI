@@ -1,0 +1,265 @@
+
+ @media (min-width: 1300px) {
+    /* For Large Screen: */
+    .example-full-width {
+        width: 23%;
+    }
+   }
+   @media (max-width: 1300px) {
+    /* For Small Screen: */
+    .example-full-width {
+        //  width: 100%;
+        width: 200px;
+    }
+   }
+
+::ng-deep .md-icon-button + .md-datepicker-input-container {
+    float: left;
+    margin-top:7px;
+  }
+  ::ng-deep  .mat-tab-group[mat-stretch-tabs]>.mat-tab-header .mat-tab-label {
+    flex-grow: 0;
+  }
+
+  .mat-expansion-panel-header {
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.intersection-title{
+    background-color: #e0e2e7;
+    padding:8px;
+    border-radius: 8px;
+    max-width:100%;
+    min-width:100%;
+    margin-bottom:1%
+}
+
+.step-label{
+    font-family: ' Arial, Helvetica, sans-serif';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 15px;
+    text-align: right;
+    letter-spacing: 0.02em;
+    text-transform: capitalize;
+    color: #0E0E0E;
+    
+}
+
+.route-full-width{
+    width:23%;
+    min-width: 75px;
+}
+
+.address-full-width{
+    width:20%;
+    min-width: 100px;
+}
+
+::ng-deep .mat-tab-body-content {
+    height: 100%;
+    overflow: hidden !important;
+}
+
+::ng-deep .mat-expansion-panel {
+    width: 100% !important;
+  }
+
+.example-full-width-report{
+    width:20%;
+    margin-top: 1%;
+    margin-left: 1%;
+}
+
+::ng-deep .mat-radio-button.mat-accent .mat-radio-inner-circle, .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element:not(.mat-radio-persistent-ripple), .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-persistent-ripple, .mat-radio-button.mat-accent:active .mat-radio-persistent-ripple {
+    background-color: #3f51b5;
+    border-color: #3f51b5;
+}
+
+::ng-deep .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+    border-color: #3f51b5 !important;
+}
+
+.roadway-full-width{
+    width:48%
+}
+
+.notAtRoute-full-width{
+    width:18%
+}
+
+.notAtRoadway-full-width{
+    width:38.5%
+}
+
+::ng-deep .mat-checkbox-layout {
+    -webkit-user-select: none;
+    user-select: none;
+    cursor: inherit;
+    align-items: center;
+    vertical-align: middle;
+    display: inline-flex;
+    white-space: nowrap;
+    //margin-top: 19% !important;
+}
+
+::ng-deep {
+    .mat-stepper-label-position-bottom .mat-stepper-horizontal-line {
+        top: 21px;
+    }
+
+    .mat-stepper-label-position-bottom .mat-horizontal-stepper-header::after,
+    .mat-stepper-label-position-bottom .mat-horizontal-stepper-header::before {
+        top: 21px;
+    }
+
+    .mat-stepper-label-position-bottom .mat-horizontal-stepper-header, .mat-vertical-stepper-header {
+        padding: 4px 24px;
+    } 
+
+    .mat-stepper-label-position-bottom .mat-horizontal-stepper-header::after, .mat-stepper-label-position-bottom .mat-horizontal-stepper-header::before {
+        top: 21px;
+    }
+
+    .mat-horizontal-content-container {
+        overflow: hidden;
+        padding: 8px 24px 24px 24px;
+    }
+
+    .mat-expansion-panel-body {
+        padding: 0 0px 0px;
+    }
+
+    .mat-expansion-panel-spacing {
+        margin: 16px 0;
+    }
+}
+
+.vehicle-full-width{
+    width:13%
+}
+
+.vehicleTravel-full-width{
+    width:17%
+}
+
+.company-full-width{
+    width:27%
+}
+
+.event-full-width{
+    width:8.5%
+}
+
+.operator-full-width{
+    width:13%
+}
+
+.property-full-width{
+    width:13%
+}
+
+
+.example-button-container {
+    display: flex;
+    justify-content: center;
+    width: 120px;
+  }
+
+  table {
+    width:100%;
+  }
+  
+  .mat-mdc-form-field {
+    font-size: 14px;
+    width: 100%;
+  }
+
+mat-panel-title.mat-expansion-panel-header-title.ng-tns-c210-198 {
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 2%;
+}
+
+mat-panel-title.mat-expansion-panel-header-title.ng-tns-c210-233 {
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 2%;
+}
+mat-panel-title.mat-expansion-panel-header-title.ng-tns-c210-276 {
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 2%;
+}
+
+.radio-btn{
+    margin-top:1%
+}
+::ng-deep .police-report{
+    .mat-step-header[aria-selected="true"] {
+        background-color: #ffca2c;
+    }
+}
+
+::ng-deep .police-report-stepper {
+    .mat-step-header .mat-step-icon {
+        background-color: #fff !important;
+        padding: 1px !important;
+        color: #00BA34 !important;
+        font-weight: 800;
+        border: 1px solid #ccc !important;
+        font-size: 16px;
+    }
+}
+
+
+.mat-input-element[type=time] {
+    line-height: -1;
+   // font-size: 20px;
+}
+
+.checkbox-vehicle{
+    margin-top:1%;
+}
+
+.operator-title{
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.narrative-full-width{
+    width:100%
+}
+
+button.mat-focus-indicator.update-btn.mat-raised-button.mat-button-base.mat-primary.ng-star-inserted {
+    margin-top: 0.7%;
+    width: 115px;
+    height: 40px;
+}
+
+.travel-full-width{
+    width:15.5%
+}
+
+// ::ng-deep .swal2-html-container {
+//     // font-size: 1.6rem !important;
+//     // font-family: Georgia, serif;
+//     text-align: start !important;
+//   }
+
+.fileClaim-label{
+    font-size: 14.5px !important;
+  }
+
+  .invalid{
+    color:#f44336;
+}
+
+.invalid_1{
+    color:#f44336;
+}

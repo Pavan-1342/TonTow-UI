@@ -1,0 +1,126 @@
+:host {
+    display: flex;
+    justify-content: center;
+    //margin: 9% 0px;
+  }
+
+  .mat-form-field {
+    width: 100%;
+    min-width: 350px
+  }
+
+  mat-card-title,
+  mat-card-content {
+    display: flex;
+    justify-content: center;
+  }
+
+  .error {
+    padding: 16px;
+    width: 300px;
+    color: white;
+    background-color: red;
+  }
+
+  .button {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+.companyName{
+  position: relative;
+  text-align: center;
+  margin-bottom:15%;
+  font-size:50px;
+  font-weight:700px;
+  color:#364ef3;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.login-page{
+  position: relative; 
+  height: 94vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.login-page::before {    
+  content: "";
+  background-image: url('../../../assets/login-background.jpg');
+  background-repeat: no-repeat, repeat;
+  background-size: cover;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+ // opacity: 0.75;
+}
+
+::ng-deep .username .mat-form-field-prefix .mat-icon, .mat-form-field-suffix .mat-icon {
+  font-size: 195%;
+  line-height: 1.125;
+}
+
+::ng-deep .username .mat-form-field-outline-start {
+  border-radius: 28px 0 0 28px !important;
+  min-width: 28px !important;
+}
+
+::ng-deep .username .mat-form-field-outline-end {
+  border-radius: 0 28px 28px 0 !important;
+}
+
+.login_button {
+  display: flex;
+  justify-content: center !important;
+}
+
+.login-icon{
+  margin-left: 2%;
+  margin-bottom: -1%;
+}
+
+.input-style{
+  font-family: 'Montserrat';
+font-style: normal;
+font-weight: 500;
+font-size: 12px;
+letter-spacing: 0.2px;
+color: #0E0E0E;
+
+}
+
+.login_button :disabled{    
+  cursor: not-allowed;
+  opacity: 0.3;
+  display: flex;
+  justify-content: center !important;
+}
+
+button.mat-focus-indicator.mat-raised-button.mat-button-base.mat-primary {
+  margin-bottom: 1%;
+  width: 144px;
+  height: 40px;
+}
+
+.property-full-width{
+  width:50%
+}
+
+.mat-flat-button {
+  color: rgb(25 51 239 / 87%);
+  background-color: #fff;
+}
+
+.placeholder{
+  position: absolute;
+  bottom: 12%;
+  height: 24px;
+  font-size: 20px;
+  left: 285px;
+ 
+}

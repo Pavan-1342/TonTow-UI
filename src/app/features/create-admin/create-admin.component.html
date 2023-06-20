@@ -1,0 +1,33 @@
+<div fxLayout="column" fxFlex style="margin:2% 2% 0% 2%;">
+    <mat-card style="width:94%;margin-left:2%">
+        <form [formGroup]="createAdminForm">
+            <div fxLayout="row wrap" fxLayoutGap="10px" fxLayoutAlign="start center" class="jobNum-field">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label class="fileClaim-label">User ID</mat-label>
+                    <input type="text" placeholder="" formControlName="userId" matInput>
+                  </mat-form-field>
+                <mat-form-field class="example-full-width input-placeholder" appearance="outline" required>
+                    <mat-label class="fileClaim-label">Password</mat-label>
+                    <input type="password" [type]="hide ? 'password' : 'text'" placeholder="" formControlName="password" matInput>
+                    <mat-icon class="placeholder" (click)="myFunction()">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    <mat-error  *ngIf="password?.errors?.['required']">
+                       Password is required.
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field class="example-full-width input-placeholder" appearance="outline" required>
+                    <mat-label class="fileClaim-label">Confirm Password</mat-label>
+                    <input type="password" placeholder="" [type]="hide ? 'password' : 'text'" formControlName="confirmPassword" matInput
+                    [ngClass]="{ 'is-invalid': submitted && confirmPassword?.errors}">
+                    <mat-icon class="placeholder" (click)="myFunction()">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    <mat-error  *ngIf="confirmPassword?.errors?.['mustMatch']"  >
+                        Password dosen't match.
+                    </mat-error>
+                    <mat-error  *ngIf="confirmPassword?.errors?.['required']">
+                        Confirm password is required.
+                    </mat-error>
+                    </mat-form-field>
+                <button mat-raised-button color="primary"  (click)="registeruser()">Submit</button>
+            </div>
+        </form>
+    </mat-card>
+</div>

@@ -1,0 +1,18 @@
+<mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" class="tab-menu" disableRipple #tabgroup (selectedIndexChange)="checkPoliceReportValidation(tabgroup,$event)">
+    <mat-tab label="Police Report"
+        *ngIf="loginUserDetails?.role ==='A'"><app-police-report (allowToNextTab)="changeAllowNextTab($event)" [viewReportID]="viewReportID"></app-police-report></mat-tab>
+    <mat-tab label="View Police Report"
+        *ngIf="loginUserDetails?.role ==='A'"><ng-template matTabContent><app-view-police-report (editButtonClicked)="openPoliceReportTab($event)"></app-view-police-report></ng-template></mat-tab>
+    <mat-tab label="Upload Report"
+        *ngIf="loginUserDetails?.role ==='A'"><ng-template matTabContent> <app-upload-reports [tonTowReportDropdownDetails]="tonTowReportDropdownDetails"></app-upload-reports></ng-template></mat-tab>
+    <mat-tab label="File Claim" *ngIf="loginUserDetails?.role ==='A'"><ng-template matTabContent> <app-file-claim [tonTowReportDropdownDetails]="tonTowReportDropdownDetails"></app-file-claim></ng-template></mat-tab>
+    <mat-tab label="Adjuster" *ngIf="loginUserDetails?.role ==='A'"><ng-template matTabContent> <app-adjuster [tonTowReportDropdownDetails]="tonTowReportDropdownDetails"></app-adjuster></ng-template></mat-tab>
+    <mat-tab label="Appraiser" *ngIf="loginUserDetails?.role ==='A'"><ng-template matTabContent> <app-appraiser [tonTowReportDropdownDetails]="tonTowReportDropdownDetails"></app-appraiser></ng-template></mat-tab>
+    <mat-tab label=" Customer Insurance Status"
+        *ngIf="loginUserDetails?.role ==='A'"><ng-template matTabContent> <app-customer-contact [tonTowReportDropdownDetails]="tonTowReportDropdownDetails"></app-customer-contact></ng-template></mat-tab>
+    <mat-tab label=" Customer Payment"
+        *ngIf="loginUserDetails?.role ==='A'"><ng-template matTabContent> <app-customer-payment-details [tonTowReportDropdownDetails]="tonTowReportDropdownDetails"></app-customer-payment-details></ng-template></mat-tab>
+    <mat-tab label="Tracking Status"><ng-template matTabContent> <app-traking-status [tonTowReportDropdownDetails]="tonTowReportDropdownDetails"></app-traking-status></ng-template></mat-tab>
+    <mat-tab label="View Reports"><ng-template matTabContent> <app-view-reports [tonTowReportDropdownDetails]="tonTowReportDropdownDetails"></app-view-reports></ng-template></mat-tab>
+    <mat-tab label="Create Admin" *ngIf="loginUserDetails?.role ==='A'"><ng-template matTabContent> <app-create-admin></app-create-admin></ng-template></mat-tab>
+</mat-tab-group>

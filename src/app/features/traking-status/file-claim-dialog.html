@@ -1,0 +1,13 @@
+<div fxLayout="row" fxFlex>
+    <form [formGroup]="fileClaimReportForm">
+        <div fxLayoutAlign="end end">
+            <button mat-button class="close-icon" [mat-dialog-close]="true">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    <mat-form-field class="example-full-width" appearance="outline">
+        <mat-label>File Claim Number</mat-label>
+        <input matInput placeholder="" value="" formControlName="fileClaim">
+    </mat-form-field>
+    </form>
+</div>

@@ -1,0 +1,39 @@
+<div class="login-page">
+    <mat-card style="margin-top:14%">
+        <form [formGroup]="loginForm">
+            <div fxLayout="column">
+                <mat-card-title>Login</mat-card-title>
+                <mat-card-content>
+                    <div fxLayout="column">
+                        <div fxLayout="column" fxLayoutGap="5px">
+                            <mat-form-field class="username" appearance="outline">
+                                <mat-icon matPrefix>person</mat-icon>
+                                <input type="text" matInput placeholder="Username*" formControlName="username"
+                                    class="login-icon">
+                                <mat-error *ngIf="loginForm.controls['username'].hasError('required')">Please
+                                    enter
+                                    username</mat-error>
+                            </mat-form-field>
+                            <mat-form-field class="username input-placeholder" appearance="outline" >
+                                <mat-icon matPrefix>lock</mat-icon>
+                                <input type="password"  matInput [type]="hide ? 'password' : 'text'" placeholder="Password*" formControlName="password"
+                                    class="login-icon">
+                                    <mat-icon class="placeholder" (click)="myFunction()">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                <mat-error *ngIf="loginForm.controls['password'].hasError('required')">Please enter
+                                    password</mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="login_button text-center" style="margin-top:2% !important" fxFlex>
+                            <button fxLayoutAlign="center center" type="submit" mat-raised-button color="primary"
+                                [disabled]="loginForm.invalid" (click)="submit(loginForm.value)">Login</button>
+                        </div>
+                        <div fxLayoutAlign="end end">
+                            <button mat-flat-button type="button" (keydown.enter)="$event.preventDefault()" (click)="openForgotPasswordDialog()">Forgot
+                                Password?</button>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </div>
+        </form>
+    </mat-card>
+</div>

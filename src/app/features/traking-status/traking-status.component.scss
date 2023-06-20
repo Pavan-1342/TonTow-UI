@@ -1,0 +1,32 @@
+.example-button-row {
+    display: table-cell;
+    max-width: 20%;
+  }
+
+  .mat-raised-button{
+    min-width : 115px;
+    background-color: #ffca2c;
+    color: black;
+}
+
+// .material-icons {
+//   font-size: 30px;
+//  //margin-left: 44%;
+// }
+
+.example-full-width{
+  width: 30%;
+  min-width: 150px;
+  margin-left: 2%;
+  margin-top:1%
+}
+
+.mat-mini-fab.mat-primary {
+  background-color: #3f51b5;
+}
+
+.view-details-btn {
+  margin: 10px;
+}
+
+

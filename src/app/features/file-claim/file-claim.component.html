@@ -1,0 +1,101 @@
+<div fxLayout="column">
+  <div fxLayout="row" fxLayoutAlign="start start" style="margin:1% 2% 0% 2%;" fxFlex>
+     <label class="job-label">Job Id :- {{selectedFileCliam?.tonTowReport}}</label>
+  </div>
+  <div fxFlex class="jobNum-field">
+    <form [formGroup]="fileClaimReportForm" #f="ngForm">
+      <mat-card style="width:94%;margin:2% 0% 2% 2%">
+        <div fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="start center">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label class="fileClaim-label">Job ID</mat-label>
+            <input type="text" placeholder="Select one" aria-label="Number" matInput formControlName="tonTowReport"
+              [matAutocomplete]="auto" (click)="onClickOfTonTowReport()" (paste)="preventPaste($event)">
+            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="getAutoCompleteOptionText"
+              (optionSelected)="getDuplicateFileClaim($event)">
+              <mat-option *ngFor="let tonTowId of filteredOptions | async" [value]="tonTowId">
+                {{tonTowId.jobNum}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label class="fileClaim-label">File Claim Number</mat-label>
+            <input matInput placeholder="" value="" formControlName="fileClaim" maxlength="100">
+          </mat-form-field>
+          <button mat-raised-button color="primary" [disabled]="fileClaimReportForm.invalid" (click)="addfileclaim();">Submit</button>
+        </div>
+      </mat-card>
+    </form>
+  </div>
+  <div fxLayout="row" fxLayoutAlign="center center" style="align-items: baseline;" class="jobNum-field">
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label class="fileClaim-label">Search</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="">
+      <mat-icon matSuffix><span class="material-symbols-outlined">
+        search
+        </span></mat-icon>
+    </mat-form-field>
+  </div>
+  <div class="mat-elevation-z8 example-container" tabindex="0" style="margin:2%">
+    <form [formGroup]="fileClaimTableForm">
+      <ng-container formArrayName="fileClaimRows">
+        <table mat-table [dataSource]="dataSource" class="fileClaimTable">
+
+
+
+          <!-- Position Column -->
+          <ng-container matColumnDef="tonTowRptId">
+            <th mat-header-cell *matHeaderCellDef>Job ID </th>
+            <td mat-cell *matCellDef="let element;let i = index" [formGroup]="element" class="hideUnderline">
+              <mat-form-field [appearance]="'fill'">
+                <textarea matInput type="text" formControlName="tonTowReport" readonly ></textarea>
+              </mat-form-field>
+              </td>
+             
+          </ng-container>
+
+          <!-- Name Column -->
+          <ng-container matColumnDef="fileClaimNumber">
+            <th mat-header-cell *matHeaderCellDef>File Claim Number</th>
+            <td mat-cell *matCellDef="let element;let i = index" [formGroup]="element"
+              [ngClass]="getIsEditable(i) ? 'hideUnderline' : 'showUnderline'">
+              <mat-form-field [appearance]=" getIsEditable(i) ? 'fill' : 'outline'">
+                <textarea matInput type="text" formControlName="fileClaimNumber" [readonly]="getIsEditable(i)" maxlength="100"></textarea>
+              </mat-form-field>
+            </td>
+          </ng-container>
+
+          <!-- Action Column -->
+          <ng-container matColumnDef="edit">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header style="padding-left: 1%;">Action</th>
+            <td mat-cell *matCellDef="let element; let i = index" [formGroup]="element">
+              <button mat-icon-button class="material-icons app-toolbar-menu save-button" matTooltip="Save Changes"
+                (click)="SaveVO(fileClaimTableForm,i)" color="primary" *ngIf="!getIsEditable(i)">
+                <mat-icon>check_circle</mat-icon>
+              </button>
+
+              <button mat-icon-button class="material-icons app-toolbar-menu cancel-button" matTooltip="Cancel Changes"
+                color="warn" (click)="CancelSVO(fileClaimTableForm,i)" *ngIf="!getIsEditable(i)">
+                <mat-icon>cancel</mat-icon>
+              </button>
+              <button mat-icon-button matTooltip="Click to Edit" class="iconbutton"
+                (click)="editTableInput(fileClaimTableForm,i)" color="primary" *ngIf="getIsEditable(i)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <!-- <button mat-icon-button matTooltip="Click to Delete" class="iconbutton" color="warn"
+                (click)="deleteFileClaim(i)" *ngIf="getIsEditable(i)">
+                <mat-icon>delete</mat-icon>
+              </button> -->
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row  *matRowDef="let row;  let i = index;columns: displayedColumns;"  [ngClass]="{ highlighted: !getIsEditable(i)}" ></tr>
+        </table>
+        <mat-paginator  #paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users" showFirstLastButtons></mat-paginator>
+      </ng-container>
+    </form>
+
+   
+  </div>
+
+</div>

@@ -1,0 +1,35 @@
+<mat-toolbar color="primary">
+  <div fxLayout="row" fxLayoutAlign="start center">
+    <label class="page-title">TonTow</label>
+    <img src="../../../assets/TonTowLogo.png" />
+  </div>
+
+  <div class="example-button-row">
+  </div>
+  <span class="example-spacer"></span>
+  <div>
+    <div class="example-flex-container" fxLayoutGap="15px">
+      <div>
+        <label class="welcome-label">Welcome! {{loginUserDetails.username}}</label>
+      </div>
+      <div class="example-button-container" style="overflow: hidden;">
+        <button mat-mini-fab color="primary" class="add-btn" [matMenuTriggerFor]="beforeMenu"
+          aria-label="Example icon button with a home icon">
+          <mat-icon>person</mat-icon>
+        </button>
+        <mat-menu #beforeMenu="matMenu" xPosition="before">
+          <div fxLayout="column" style="display: grid;">
+            <button mat-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon"
+              (click)="openDialog()">
+              Change Password
+            </button>
+            <button mat-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon"
+              (click)="logOut()">
+              Logout
+            </button>
+          </div>
+        </mat-menu>
+      </div>
+    </div>
+  </div>
+</mat-toolbar>

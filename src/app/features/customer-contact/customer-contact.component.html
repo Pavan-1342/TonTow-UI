@@ -1,0 +1,145 @@
+<div fxLayout="column">
+    <div fxLayout="row" fxLayoutAlign="start start" style="margin:1% 2% 0% 2%;" fxFlex>
+        <label class="job-label">Job Id :- {{selectedCustomerInsuranceJobNum}}</label>
+     </div>
+    <div fxFlex>
+        <form [formGroup]="customerContactForm" #f="ngForm">
+            <mat-card style="width:94%;margin:2% 0% 2% 2%">
+                <mat-card-content>
+                    <div fxLayout="row">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Job ID</mat-label>
+                            <input type="text"
+                                   placeholder="Select one"
+                                   aria-label="Number"
+                                   matInput
+                                   formControlName="tonTowReport"
+                                   [matAutocomplete]="auto" (paste)="preventPaste($event)">
+                            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"  [displayWith]="getOptionText" (optionSelected)="getDuplicateAppraiser($event)">
+                              <mat-option *ngFor="let tonTowId of filteredOptions | async" [value]="tonTowId">
+                                {{tonTowId.jobNum}}
+                              </mat-option>
+                            </mat-autocomplete>
+                          </mat-form-field>
+                    </div>
+                    <div fxLayout="column" fxLayoutGap="15px">
+                        <mat-radio-group class="example-radio-group"
+                            formControlName="vehicleCondition">
+                            <div fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="center center"
+                                style="margin-bottom:2%">
+                                <mat-radio-button value="Repairable" (change)="onClickOfRepairable()" class="example-full-width"
+                                    style="color:primary;margin-top: 18% !important" >Repairable</mat-radio-button>
+                                <div fxLayout="row " fxLayoutGap="15px" fxLayoutAlign="start center"
+                                    *ngIf="customerContactForm.controls['vehicleCondition'].value === 'Repairable'">
+                                    <mat-form-field class="repairable-full-width" appearance="outline">
+                                        <mat-label>Repairable notes 1</mat-label>
+                                        <input matInput placeholder="" value="" formControlName="repairableNotes_1" maxlength="50">
+                                    </mat-form-field>
+                                    <mat-form-field class="repairable-full-width" appearance="outline">
+                                        <mat-label>Repairable notes 2</mat-label>
+                                        <input matInput placeholder="" value="" formControlName="repairableNotes_2" maxlength="50">
+                                    </mat-form-field>
+                                    <button mat-raised-button class="custStatus-btn" color="primary" *ngIf="!showUpdateRecordButton" [disabled]="customerContactForm.invalid" (click)="addCustInsuranceCompUpdates()">Submit</button>
+                                    <button mat-raised-button color="primary" *ngIf="showUpdateRecordButton" (click)="updateCustInsuranceCompUpdates()">Update</button>
+                                    <button mat-raised-button color="primary" *ngIf="showUpdateRecordButton" (click)="OnClickOfCancel()">Cancel</button>
+                                </div>
+                            </div>
+                            <div fxLayout="row" fxLayoutGap="15px" style="margin-top:2%">
+                                <mat-radio-button value="Totaled" class="example-full-width" (change)="onClickOfTotaled()"
+                                    style="color:primary;margin-top: 18% !important">Totaled</mat-radio-button>
+                                <div fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="start center"
+                                    *ngIf="customerContactForm.controls['vehicleCondition'].value === 'Totaled'">
+                                    <mat-form-field class="repairable-full-width" appearance="outline">
+                                        <mat-label> Totaled notes 1</mat-label>
+                                        <input matInput placeholder="" value="" formControlName="totaledNotes" maxlength="50">
+                                    </mat-form-field>
+                                    <button mat-raised-button color="primary" *ngIf="!showUpdateRecordButton" [disabled]="customerContactForm.invalid" (click)="addCustInsuranceCompUpdates()">Submit</button>
+                                    <button mat-raised-button color="primary" *ngIf="showUpdateRecordButton"  (click)="updateCustInsuranceCompUpdates()">Update</button>
+                                     <button mat-raised-button color="primary" *ngIf="showUpdateRecordButton" (click)="OnClickOfCancel()">Cancel</button>
+                                </div>
+                            </div>
+                        </mat-radio-group>
+                    </div>
+
+                </mat-card-content>
+            </mat-card>
+        </form>
+    </div> 
+    <div fxLayout="row" fxLayoutAlign="center center" style="align-items: baseline;" class="jobNum-field">
+        <mat-form-field class="example-full-width" appearance="outline">
+          <mat-label class="fileClaim-label">Search</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="">
+          <mat-icon matSuffix><span class="material-symbols-outlined">
+            search
+            </span></mat-icon>
+        </mat-form-field>
+      </div>
+    <div class="mat-elevation-z8 example-container" tabindex="0" style="margin:2%">
+                <table mat-table [dataSource]="dataSource" class="fileClaimTable">
+
+                    <!-- Job ID Column -->
+                    <ng-container matColumnDef="jobNum">
+                        <th mat-header-cell *matHeaderCellDef>Job ID</th>
+                        <td mat-cell *matCellDef="let element;let i = index" >
+                            {{element.jobNum}} </td>
+                    </ng-container>
+
+                    <!-- Repairable Notes 1 Column -->
+                    <ng-container matColumnDef="repairableNotes1">
+                        <th mat-header-cell *matHeaderCellDef>Repairable Notes 1</th>
+                        <td mat-cell *matCellDef="let element;let i = index" 
+                            >
+                            {{element.repairableNotes1}}
+                        </td>
+                    </ng-container>
+
+                    <!-- Repairable Notes 2 Column -->
+                    <ng-container matColumnDef="repairableNotes2">
+                        <th mat-header-cell *matHeaderCellDef>Repairable Notes 2</th>
+                        <td mat-cell *matCellDef="let element;let i = index" 
+                            >
+                            {{element.repairableNotes2}}
+                        </td>
+                    </ng-container>
+
+                    <!--  Totaled Notes Column -->
+                    <ng-container matColumnDef="totaledNotes">
+                        <th mat-header-cell *matHeaderCellDef>Totaled Notes</th>
+                        <td mat-cell *matCellDef="let element;let i = index" 
+                            >
+                            {{element.totaledNotes}}
+                        </td>
+                    </ng-container>
+
+                    <!-- Vehicle Condition Column -->
+                    <ng-container matColumnDef="vehicleCondition">
+                        <th mat-header-cell *matHeaderCellDef>Vehicle Condition</th>
+                        <td mat-cell *matCellDef="let element;let i = index" 
+                        >
+                        {{element.vehicleCondition}}
+                        </td>
+                    </ng-container> 
+
+                      <!-- Action Column -->
+                    <ng-container matColumnDef="edit">
+                        <th mat-header-cell *matHeaderCellDef aria-label="row actions">Action</th>
+                        <td mat-cell *matCellDef="let element;let i = index" >
+                            <button mat-icon-button matTooltip="Click to Edit" class="iconbutton" color="primary"
+                                (click)="onEdit(element,i)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                            <!-- <button mat-icon-button matTooltip="Click to Delete" class="iconbutton" color="warn"
+                                (click)=" deleteCustInsuranceCompUpdates(element)" >
+                                <mat-icon>delete</mat-icon>
+                            </button> -->
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns; "></tr>
+                    <tr mat-row *matRowDef="let row;let i = index; columns: displayedColumns;" [ngClass]="{ highlighted: row.isEdit}"></tr>
+                </table>
+        <mat-paginator   [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+            aria-label="Select page of periodic elements">
+        </mat-paginator>
+    </div>
+</div>

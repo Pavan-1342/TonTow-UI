@@ -1,0 +1,46 @@
+<div fxFlex >
+        <form [formGroup]="adjusterForm">
+            <mat-card style="width:94%;margin-left:2%">
+                <div fxLayoutAlign="end end">
+                    <button mat-button class="close-icon" [mat-dialog-close]="true">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+                <mat-card-content>
+                    <div fxLayout="row" fxLayoutGap="15px">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Adjuster Name</mat-label>
+                            <input matInput placeholder="" formControlName="adjusterName" maxlength="50">
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Appraised Date</mat-label>
+                            <input matInput [matDatepicker]="picker" formControlName="appraisedDate">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayoutGap="15px">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Company Name</mat-label>
+                            <input matInput placeholder="" formControlName="companyName" maxlength="100">
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Claim Number</mat-label>
+                            <input matInput type="text" (keypress)="numberOnly($event)" placeholder="" formControlName="claim" maxlength="50">
+                        </mat-form-field>
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Contact Address</mat-label>
+                            <input matInput placeholder="" formControlName="contactAddress" maxlength="150">
+                        </mat-form-field>
+                    </div>
+                    <div fxLayout="row" fxLayoutGap="15px">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Contact Phone</mat-label>
+                            <input matInput type="text" placeholder="" (keypress)="numberOnly($event)" formControlName="contactPhone" maxlength="15">
+                        </mat-form-field>
+                        <!-- <button mat-raised-button color="primary" (click)="addAdjuster();">Submit</button> -->
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </form>
+    </div>

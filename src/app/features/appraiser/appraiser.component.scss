@@ -1,0 +1,63 @@
+.example-full-width {
+  width: 30%;
+  min-width: 100px;
+}
+
+.example-button-container {
+  display: flex;
+  justify-content: center;
+  width: 120px;
+}
+
+table {
+  width:100%;
+}
+
+.mat-mdc-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+
+::ng-deep .hideUnderline .mat-form-field-appearance-fill .mat-form-field-underline {
+  display: none !important;
+}
+
+
+::ng-deep .showUnderline .mat-form-field-appearance-fill .mat-form-field-underline {
+  display: flex;
+}
+
+::ng-deep .fileClaimTable {
+  .mat-form-field-appearance-fill .mat-form-field-flex {
+    background: none !important;
+  }
+}
+
+.mat-mini-fab.mat-primary {
+  background-color: #3f51b5;
+}
+
+// .example-radio-group {
+//   margin-top:1.5%;
+// }
+
+.fileClaimTable textarea {
+  resize: none;
+}
+
+.phoneNumber {
+  .mat-form-field {
+    display: inline-block;
+    position: relative;
+    text-align: right !important;
+  }
+}
+
+td.mat-cell.cdk-cell.cdk-column-edit.mat-column-edit.ng-untouched.ng-pristine.ng-valid.ng-star-inserted {
+  text-align: center;
+}
+
+.fileClaim-label{
+  font-size: 14.5px !important;
+}

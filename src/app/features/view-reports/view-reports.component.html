@@ -1,0 +1,71 @@
+<div fxLayout="column">
+    <div fxFlex class="jobNum-field">
+        <mat-card style="width:94%;margin:2% 0% 0% 2%">
+            <form [formGroup]="viewReportsForm">
+                <div fxLayout="row wrap" fxLayoutGap="15px" fxLayoutAlign="start center" *ngIf="loginUserDetails?.role ==='A'">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Job ID</mat-label>
+                        <input type="text" placeholder="Select one" aria-label="Number" matInput
+                            formControlName="tonTowReport" [matAutocomplete]="auto" (paste)="preventPaste($event)">
+                        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="getOptionText">
+                            <mat-option *ngFor="let tonTowId of filteredOptions | async" [value]="tonTowId">
+                                {{tonTowId.jobNum}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                    <button mat-raised-button color="primary" (click)="getUserFiles()">Submit</button>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="center center" style="align-items: baseline;" class="jobNum-field">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                      <mat-label class="fileClaim-label">Search</mat-label>
+                      <input matInput (keyup)="applyFilter($event)" placeholder="">
+                      <mat-icon matSuffix><span class="material-symbols-outlined">
+                        search
+                        </span></mat-icon>
+                    </mat-form-field>
+                  </div>
+                <div class="mat-elevation-z8 example-container" tabindex="0" style="margin:2%">
+                    <table mat-table [dataSource]="dataSource">
+
+                        <!-- tonTowRptId Column -->
+                        <ng-container matColumnDef="jobNum">
+                            <th mat-header-cell *matHeaderCellDef>Job ID</th>
+                            <td mat-cell *matCellDef="let element;let i = index">{{element.jobNum}}</td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="fileName">
+                            <th mat-header-cell *matHeaderCellDef>File Name</th>
+                            <td mat-cell *matCellDef="let element">{{element.tonTowFileUpload.fileName}}
+                            </td>
+                        </ng-container>
+
+                        <!-- reports Column -->
+                        <ng-container matColumnDef="fileType">
+                            <th mat-header-cell *matHeaderCellDef>File Type</th>
+                            <td mat-cell *matCellDef="let element">{{element.tonTowFileUpload.fileType}}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="edit">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
+                            <td mat-cell *matCellDef="let element">
+                                <button mat-icon-button matTooltip="Click to Edit" class="iconbutton" color="primary" >
+                                    <mat-icon><span class="material-symbols-outlined" (click)="showReport(element)">
+                                        <!-- (click)="donwloadFile(element)" -->
+                                            download
+                                        </span></mat-icon>
+                                </button>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns; "></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+                        aria-label="Select page of periodic elements">
+                    </mat-paginator>
+                </div>
+            </form>
+        </mat-card>
+    </div>
+</div>

@@ -1,0 +1,29 @@
+table {
+    width:100%;
+  }
+
+::ng-deep .action {
+    td.mat-cell{
+      text-align: center !important;
+    }
+  }
+
+  td.mat-cell.cdk-cell.cdk-column-tonTowRptId.mat-column-tonTowRptId.ng-star-inserted {
+    text-align: end !important;
+    padding-right: 1%;
+  }
+
+  .example-full-width{
+    width: 34%;
+    min-width: 150px;
+    margin-left: 2%;
+  }
+
+  td.mat-cell.cdk-cell.cdk-column-phone.mat-column-phone.ng-star-inserted {
+    text-align: right;
+    padding-right: 1%;
+}
+
+.fileClaim-label{
+  font-size: 14.5px !important;
+}

@@ -1,0 +1,39 @@
+<div fxLayout="column" fxFlex style="margin:2% 2% 0% 2%;">
+    <mat-card style="width:94%;margin-left:2%">
+        <form [formGroup]="uploadReportForm">
+            <div fxLayout="row wrap" fxLayoutGap="10px" fxLayoutAlign="start center" class="jobNum-field">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label class="fileClaim-label">Job ID</mat-label>
+                    <input type="text"
+                           placeholder="Select one"
+                           aria-label="Number"
+                           matInput
+                           formControlName="tonTowreport"
+                           [matAutocomplete]="auto" (paste)="preventPaste($event)">
+                    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"  [displayWith]="getOptionText">
+                      <mat-option *ngFor="let tonTowId of filteredOptions | async" [value]="tonTowId">
+                        {{tonTowId.jobNum}}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label class="fileClaim-label">Upload Reports</mat-label>
+                    <mat-select formControlName="uploadReports">
+                        <mat-option *ngFor="let report of uploadReports" [value]="report.value">
+                            {{report.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <mat-label class="fileClaim-label">Browse</mat-label>
+                    <button mat-icon-button matSuffix (click)="fileInput.click()">
+                        <mat-icon>attach_file</mat-icon>
+                    </button>
+                    <input type="text" readonly matInput formControlName="display" />
+                    <input type="file" multiple hidden #fileInput (change)="onFileSelect($event)" />
+                </mat-form-field>
+                <button mat-raised-button color="primary" [disabled]="uploadReportForm.invalid" (click)="uploadTonTowReports()">Submit</button>
+            </div>
+        </form>
+    </mat-card>
+</div>

@@ -1,1 +1,337 @@
 /* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+@import 'sweetalert2/src/sweetalert2.scss';
+
+body {
+    margin: 0;
+    // background-color: #fafafa
+}
+
+::ng-deep .hideUnderline .mat-form-field-appearance-fill .mat-form-field-underline {
+    display: none !important;
+}
+
+
+::ng-deep .showUnderline .mat-form-field-appearance-fill .mat-form-field-underline {
+    display: flex;
+
+}
+
+.login-container {
+    background-image: url('./assets/login-background.jpg');
+    position: relative;
+    min-height: 100vh;
+    // background-color: var(--Loginpage-Background);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+
+.mat-header-cell {
+    font-size: 14px;
+    font-weight: 700;
+    background-color: #ffca2c;
+    color: black;
+    text-align: center;
+
+}
+
+div#mat-tab-label-0-8 {
+    min-width: 200px;
+}
+
+div#mat-tab-label-1-8 {
+    min-width: 200px;
+}
+
+// .mat-form-field-appearance-outline .mat-form-field-infix {
+//     //padding: 15px 0 9px 0;
+//     word-wrap: break-word;
+// }
+
+.mat-toolbar.mat-primary {
+    background: #ffca2c;
+    color: black;
+}
+
+.mat-mini-fab.mat-primary {
+    background-color: #ffca2c;
+}
+
+// .mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar {
+//     background-color: #6b6b6d;
+// }
+
+// .mat-flat-button.mat-primary, .mat-raised-button.mat-primary, .mat-fab.mat-primary, .mat-mini-fab.mat-primary {
+//     background-color: #6b6b6d;
+// }
+
+// // step-icon-state-done, .mat-step-header .mat-step-icon-state-edit {
+// //     background-color: #6b6b6d;
+// //     color: #fff;
+// // }
+
+// .mat-step-header .mat-step-icon {
+//     background-color: rgba(0,0,0,.54);
+//     color: #fff;
+// }
+// .mat-button.mat-primary, .mat-icon-button.mat-primary, .mat-stroked-button.mat-primary {
+//     color: #6b6b6d;
+// }
+
+mat-flat-button.mat-primary,
+.mat-raised-button.mat-primary,
+.mat-fab.mat-primary,
+.mat-mini-fab.mat-primary {
+    background-color: #ffca2c;
+    color: black;
+    font-weight: bold;
+}
+
+.mat-tab-group.mat-primary .mat-ink-bar,
+.mat-tab-nav-bar.mat-primary .mat-ink-bar {
+    background-color: #ffca2c;
+}
+
+.mat-tab-label-active {
+    background-color: #ffca2c !important;
+    opacity: 1 !important;
+    color: black;
+}
+
+.mat-tab-label,
+.mat-tab-link {
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    min-width: max-content !important;
+    width: auto;
+    display: flex;
+
+    //padding: 5px !important;
+}
+
+.mat-ripple {
+    overflow: visible !important;
+}
+
+.job-label {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.example-container {
+    .mat-form-field-wrapper {
+        padding-bottom: 0.74375em !important;
+    }
+}
+
+.mat-row.highlighted {
+    background: #ffecb5;
+}
+
+.mat-tab-labels {
+    display: flex;
+    background-color: antiquewhite !important;
+}
+
+.stepper-horizontal {
+    display: table;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.stepper-horizontal .step {
+    display: table-cell;
+    position: relative;
+    padding: 1.5rem;
+    z-index: 2;
+    width: 20%;
+}
+
+.stepper-horizontal .step:last-child .step-bar-left,
+.stepper-horizontal .step:last-child .step-bar-right {
+    display: none;
+}
+
+.stepper-horizontal .step .step-circle {
+    width: 2rem;
+    //height: 2rem;
+    margin: 0 auto;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 1.75rem;
+    font-size: 1rem;
+    font-weight: 600;
+    z-index: 2;
+    border: 2px solid #93969a;
+    background-color: #93969a;
+    margin-bottom: 7%
+}
+
+.stepper-horizontal .step.done .step-circle {
+    background-color: #52bb4e;
+    border: 2px solid #52bb4e;
+    color: #FFFFFF;
+}
+
+.stepper-horizontal .step.done .step-circle:before {
+    font-family: 'FontAwesome';
+    font-weight: 100;
+    content: "\f00c";
+}
+
+.stepper-horizontal .step.done .step-circle * {
+    display: none;
+}
+
+.stepper-horizontal .step.done .step-title {
+    color: #102A43;
+}
+
+.stepper-horizontal .step.editing .step-circle {
+    background: #52bb4e;
+    border-color: #52bb4e;
+    color: #ffffff;
+}
+
+.stepper-horizontal .step.editing .step-title {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+.stepper-horizontal .step .step-title {
+    margin-top: 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.stepper-horizontal .step .step-title,
+.stepper-horizontal .step .step-optional {
+    text-align: center;
+    color: #8c9299;
+}
+
+.stepper-horizontal .step .step-optional {
+    font-size: 0.75rem;
+    font-style: italic;
+    color: #9FB3C8;
+}
+
+.stepper-horizontal .step .step-bar-left,
+.stepper-horizontal .step .step-bar-right {
+    position: absolute;
+    top: calc(2rem + 5px);
+    height: 5px;
+    background-color: #8c9299;
+    border: solid #8c9299;
+    border-width: 2px 0;
+}
+
+.stepper-horizontal .step .step-bar-left {
+    width: calc(100% - 2rem);
+    left: 50%;
+    margin-left: 1rem;
+    z-index: -1;
+}
+
+.stepper-horizontal .step .step-bar-right {
+    width: 0;
+    left: 50%;
+    margin-left: 1rem;
+    z-index: -1;
+    transition: width 500ms ease-in-out;
+}
+
+.stepper-horizontal .step.done .step-bar-right {
+    background-color: #52bb4e;
+    border-color: #52bb4e;
+    color: #ffffff;
+    z-index: 3;
+    width: calc(100% - 1rem);
+}
+
+.mat-cell {
+    font-size: 14px;
+    min-height: 48px;
+    text-align: center;
+    border-right: 1px solid #e0e0e0;
+}
+
+th.mat-header-cell {
+    padding: 0;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    text-align: center !important;
+}
+
+.example-container {
+    .mat-form-field {
+        display: inline-block;
+        position: relative;
+        text-align: left !important;
+    }
+}
+
+.mat-cell {
+    font-size: 14px;
+    min-height: 48px;
+    text-align: center;
+    border-right: 1px solid #e0e0e0;
+    text-align: left;
+    padding-left: 8px !important;
+}
+
+.mat-form-field-wrapper {
+    padding-bottom: 0 !important;
+}
+
+.mat-form-field-appearance-legacy .mat-form-field-wrapper {
+    padding-bottom: 2.25em !important;
+}
+
+td.mat-cell.cdk-cell.cdk-column-edit.mat-column-edit.ng-star-inserted {
+    text-align: center;
+}
+
+// td.mat-cell.cdk-cell.cdk-column-tonTowRptId.mat-column-tonTowRptId.ng-star-inserted {
+//     text-align: right;
+//     padding-right: 1%;
+// }
+
+::ng-deep .mat-toolbar {
+    z-index: 999;
+    position: fixed
+}
+
+::ng-deep .mat-tab-group {
+    margin-top: 55px !important;
+}
+
+.jobNum-field {
+    .mat-form-field-appearance-outline .mat-form-field-infix {
+        padding: 0.5em 0 1em 0 !important;
+    }
+}
+
+.forgot-link {
+    float: right;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 12px;
+    /* padding-right: 10%; */
+}
+
+.disable {
+    pointer-events: none !important;
+    cursor: not-allowed !important;
+}
+
+.login-page {
+    .mat-form-field-subscript-wrapper {
+        font-size: 75%;
+        margin-left: 9%;
+    }
+}

@@ -1,0 +1,323 @@
+<div fxLayout="column">
+    <div fxLayout="row" fxLayoutAlign="start start" style="margin:1% 2% 0% 2%;" fxFlex>
+        <label class="job-label">Job Id :- {{selectedCustomerPaymentJobNum}}</label>
+     </div>
+    <div fxFlex>
+        <form [formGroup]="customerDetailsForm" #f="ngForm">
+            <mat-card style="width:94%;margin:2% 0% 2% 2%">
+                <mat-card-content>
+                    <div fxLayout="row wrap" fxLayoutGap="15px">
+                        <mat-form-field class="example-full-width" appearance="outline">
+                            <mat-label>Job ID</mat-label>
+                            <input type="text" placeholder="Select one" aria-label="Number" matInput
+                                formControlName="tonTowReport" [matAutocomplete]="auto" (paste)="preventPaste($event)">
+                            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"
+                                [displayWith]="getOptionText"
+                                (optionSelected)="getDuplicateCustInsuranceCompUpdates($event)">
+                                <mat-option *ngFor="let tonTowId of filteredOptions | async" [value]="tonTowId">
+                                    {{tonTowId.jobNum}}
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                        <mat-radio-group fxLayoutGap="15px" class="example-radio-group" (click)="onClickOfFullPayment()"
+                            formControlName="PaymentMethodType">
+                            <mat-radio-button value="Full" class="example-full-width" style="color:primary;">Full
+                                Payment</mat-radio-button>
+                            <mat-radio-button value="Partial" class="example-full-width"
+                                (click)="onClickOfPartialPayment()" style="color:primary;">Partial
+                                Payment</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                    <div fxLayout="row wrap" fxLayoutGap="15px" fxLayoutAlign="start center"
+                        *ngIf="customerDetailsForm.controls['PaymentMethodType'].value === 'Full'">
+                        <mat-form-field class="customer-full-width" appearance="outline">
+                            <mat-label>Full Payment Date </mat-label>
+                            <input matInput [matDatepicker]="picker" formControlName="fullPaymentDate">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker-toggle matSuffix (click)="clearFullDate()">
+                                <mat-icon matDatepickerToggleIcon>clear</mat-icon>
+                            </mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                        <mat-form-field class="customer-full-width" appearance="outline">
+                            <mat-label>Full Payment Amount</mat-label>
+                            <input matInput type="text" value=""  (paste)="preventPaste($event)" formControlName="fullPaymentAmount" (keypress)="numberOnly($event)">
+                        </mat-form-field>
+                        <mat-form-field class="customer-full-width" appearance="outline">
+                            <mat-label>Full Payment Type</mat-label>
+                            <input matInput value="" formControlName="fullPaymentType" maxlength="50">
+                        </mat-form-field>
+                        <mat-form-field class="customer-full-width" appearance="outline">
+                            <mat-label>Full Payment Card Details</mat-label>
+                            <input matInput value="" formControlName="fullPaymentCardDetails" maxlength="50">
+                        </mat-form-field>
+                        <mat-form-field class="customer-full-width" appearance="outline">
+                            <mat-label>Full Payment Invoice No</mat-label>
+                            <input matInput value="" formControlName="fullPaymentInvoice">
+                        </mat-form-field>
+                        <button mat-raised-button color="primary" *ngIf="!showUpdateRecordButton" [disabled]="customerDetailsForm.invalid" (click)="addCustomerPaymentDtls()">Submit</button>
+                        <button mat-raised-button color="primary" *ngIf="showUpdateRecordButton"
+                            (click)="updateCustomerPaymentDtls()">Update</button>
+                        <button mat-raised-button color="primary" *ngIf="showUpdateRecordButton"
+                            (click)="OnClickOfCancel()">Cancel</button>
+
+                    </div>
+                    <div fxLayout="column" fxLayoutGap="15px"
+                        *ngIf="customerDetailsForm.controls['PaymentMethodType'].value === 'Partial'">
+                        <div fxLayout="row wrap" fxLayoutGap="15px">
+                            <mat-form-field class="customer-full-width" appearance="outline">
+                                <mat-label>Partial Payment 1 Amount</mat-label>
+                                <input matInput type="text" (paste)="preventPaste($event)" value="" formControlName="partialPayment_1Amount" (keypress)="numberOnly($event)">
+                            </mat-form-field>
+                            <mat-form-field class="customer-full-width" appearance="outline">
+                                <mat-label>Partial Payment 1 Date</mat-label>
+                                <input matInput [matDatepicker]="picker1" formControlName="partialPayment_1Date">
+                                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                <mat-datepicker-toggle matSuffix (click)="clearPartial_1Date()">
+                                    <mat-icon matDatepickerToggleIcon>clear</mat-icon>
+                                </mat-datepicker-toggle>
+                                <mat-datepicker #picker1></mat-datepicker>
+                            </mat-form-field>
+                            <mat-form-field class="customer-full-width" appearance="outline">
+                                <mat-label>Partial Payment 1 Type</mat-label>
+                                <input matInput value="" formControlName="partialPayment_1Type" maxlength="50">
+                            </mat-form-field>
+                            <mat-form-field class="customer-full-width" appearance="outline">
+                                <mat-label>Parital Payment 1 Card Details</mat-label>
+                                <input matInput value="" formControlName="partialPayment_1CardDetails" maxlength="50">
+                            </mat-form-field>
+                            <mat-form-field class="customer-full-width" appearance="outline">
+                                <mat-label>Parital Payment 1 Invoice No</mat-label>
+                                <input matInput value="" formControlName="partialPayment_1Invoice">
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row wrap" fxLayoutGap="15px">
+                            <mat-form-field class="customer-full-width" appearance="outline">
+                                <mat-label>Partial Payment 2 Amount</mat-label>
+                                <input matInput type="text" (paste)="preventPaste($event)" value="" formControlName="partialPayment_2Amount" (keypress)="numberOnly($event)">
+                            </mat-form-field>
+                            <mat-form-field class="customer-full-width" appearance="outline">
+                                <mat-label>Partial Payment 2 Date</mat-label>
+                                <input matInput [matDatepicker]="picker2" formControlName="partialPayment_2Date">
+                                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                <mat-datepicker-toggle matSuffix (click)="clearPartial_2Date()">
+                                    <mat-icon matDatepickerToggleIcon>clear</mat-icon>
+                                </mat-datepicker-toggle>
+                                <mat-datepicker #picker2></mat-datepicker>
+                            </mat-form-field>
+                            <mat-form-field class="customer-full-width" appearance="outline">
+                                <mat-label>Partial Payment 2 Type</mat-label>
+                                <input matInput value="" formControlName="partialPayment_2Type" maxlength="50">
+                            </mat-form-field>
+                            <mat-form-field class="customer-full-width" appearance="outline">
+                                <mat-label>Parital Payment 2 Card Details</mat-label>
+                                <input matInput value="" formControlName="partialPayment_2CardDetails" maxlength="50">
+                            </mat-form-field>
+                            <mat-form-field class="customer-full-width" appearance="outline">
+                                <mat-label>Parital Payment 2 Invoice No</mat-label>
+                                <input matInput value="" formControlName="partialPayment_2Invoice">
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row wrap" fxLayoutGap="15px">
+                            <mat-form-field class="customer-full-width" appearance="outline">
+                                <mat-label>Partial Payment 3 Amount</mat-label>
+                                <input matInput type="text" (paste)="preventPaste($event)" value="" formControlName="partialPayment_3Amount" (keypress)="numberOnly($event)">
+                            </mat-form-field>
+                            <mat-form-field class="customer-full-width" appearance="outline">
+                                <mat-label>Partial Payment 3 Date</mat-label>
+                                <input matInput [matDatepicker]="picker3" formControlName="partialPayment_3Date">
+                                <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                                <mat-datepicker-toggle matSuffix (click)="clearPartial_3Date()">
+                                    <mat-icon matDatepickerToggleIcon>clear</mat-icon>
+                                </mat-datepicker-toggle>
+                                <mat-datepicker #picker3></mat-datepicker>
+                            </mat-form-field>
+                            <mat-form-field class="customer-full-width" appearance="outline">
+                                <mat-label>Partial Payment 3 Type</mat-label>
+                                <input matInput value="" formControlName="partialPayment_3Type" maxlength="50">
+                            </mat-form-field>
+                            <mat-form-field class="customer-full-width" appearance="outline">
+                                <mat-label>Parital Payment 3 Card Details</mat-label>
+                                <input matInput value="" formControlName="partialPayment_3CardDetails" maxlength="50">
+                            </mat-form-field>
+                            <mat-form-field class="customer-full-width" appearance="outline">
+                                <mat-label>Parital Payment 3 Invoice No</mat-label>
+                                <input matInput value="" formControlName="partialPayment_3Invoice">
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row wrap" fxLayoutGap="15px">
+                            <mat-form-field class="customer-full-width" appearance="outline">
+                                <mat-label>Partial Payment 4 Amount</mat-label>
+                                <input matInput type="text" value="" (paste)="preventPaste($event)" formControlName="partialPayment_4Amount" (keypress)="numberOnly($event)">
+                            </mat-form-field>
+                            <mat-form-field class="customer-full-width" appearance="outline">
+                                <mat-label>Partial Payment 4 Date</mat-label>
+                                <input matInput [matDatepicker]="picker4" formControlName="partialPayment_4Date">
+                                <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                                <mat-datepicker-toggle matSuffix (click)="clearPartial_4Date()">
+                                    <mat-icon matDatepickerToggleIcon>clear</mat-icon>
+                                </mat-datepicker-toggle>
+                                <mat-datepicker #picker4></mat-datepicker>
+                            </mat-form-field>
+                            <mat-form-field class="customer-full-width" appearance="outline">
+                                <mat-label>Partial Payment 4 Type</mat-label>
+                                <input matInput value="" formControlName="partialPayment_4Type" maxlength="50">
+                            </mat-form-field>
+                            <mat-form-field class="customer-full-width" appearance="outline">
+                                <mat-label>Parital Payment 4 Card Details</mat-label>
+                                <input matInput value="" formControlName="partialPayment_4CardDetails" maxlength="50">
+                            </mat-form-field>
+                            <mat-form-field class="customer-full-width" appearance="outline">
+                                <mat-label>Parital Payment 4 Invoice No</mat-label>
+                                <input matInput value="" formControlName="partialPayment_4Invoice">
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row wrap" fxLayoutGap="15px">
+                            <mat-form-field class="customer-full-width" appearance="outline">
+                                <mat-label>Partial Payment 5 Amount</mat-label>
+                                <input matInput type="text" value="" (paste)="preventPaste($event)" formControlName="partialPayment_5Amount" (keypress)="numberOnly($event)">
+                            </mat-form-field>
+                            <mat-form-field class="customer-full-width" appearance="outline">
+                                <mat-label>Partial Payment 5 Date</mat-label>
+                                <input matInput [matDatepicker]="picker5" formControlName="partialPayment_5Date">
+                                <mat-datepicker-toggle matSuffix [for]="picker5"></mat-datepicker-toggle>
+                                <mat-datepicker-toggle matSuffix (click)="clearPartial_5Date()">
+                                    <mat-icon matDatepickerToggleIcon>clear</mat-icon>
+                                </mat-datepicker-toggle>
+                                <mat-datepicker #picker5></mat-datepicker>
+                            </mat-form-field>
+                            <mat-form-field class="customer-full-width" appearance="outline">
+                                <mat-label>Partial Payment 5 Type</mat-label>
+                                <input matInput value="" formControlName="partialPayment_5Type" maxlength="50">
+                            </mat-form-field>
+                            <mat-form-field class="customer-full-width" appearance="outline">
+                                <mat-label>Parital Payment 5 Card Details</mat-label>
+                                <input matInput value="" formControlName="partialPayment_5CardDetails" maxlength="50">
+                            </mat-form-field>
+                            <mat-form-field class="customer-full-width" appearance="outline">
+                                <mat-label>Parital Payment 5 Invoice No</mat-label>
+                                <input matInput value="" formControlName="partialPayment_5Invoice">
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row wrap" fxLayoutGap="15px">
+                            <mat-form-field class="customer-full-width" appearance="outline">
+                                <mat-label>Partial Payment 6 Amount</mat-label>
+                                <input matInput type="text" value="" (paste)="preventPaste($event)" formControlName="partialPayment_6Amount" (keypress)="numberOnly($event)">
+                            </mat-form-field>
+                            <mat-form-field class="customer-full-width" appearance="outline">
+                                <mat-label>Partial Payment 6 Date</mat-label>
+                                <input matInput [matDatepicker]="picker6" formControlName="partialPayment_6Date">
+                                <mat-datepicker-toggle matSuffix [for]="picker6"></mat-datepicker-toggle>
+                                <mat-datepicker-toggle matSuffix (click)="clearPartial_6Date()">
+                                    <mat-icon matDatepickerToggleIcon>clear</mat-icon>
+                                </mat-datepicker-toggle>
+                                <mat-datepicker #picker6></mat-datepicker>
+                            </mat-form-field>
+                            <mat-form-field class="customer-full-width" appearance="outline">
+                                <mat-label>Partial Payment 6 Type</mat-label>
+                                <input matInput value="" formControlName="partialPayment_6Type" maxlength="50">
+                            </mat-form-field>
+                            <mat-form-field class="customer-full-width" appearance="outline">
+                                <mat-label>Parital Payment 6 Card Details</mat-label>
+                                <input matInput value="" formControlName="partialPayment_6CardDetails" maxlength="50">
+                            </mat-form-field>
+                            <mat-form-field class="customer-full-width" appearance="outline">
+                                <mat-label>Parital Payment 6 Invoice No</mat-label>
+                                <input matInput value="" formControlName="partialPayment_6Invoice">
+                            </mat-form-field>
+                        </div>
+                        <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="end center" class="submit-btn">
+                            <button mat-raised-button color="primary" *ngIf="!showUpdateRecordButton"
+                            [disabled]="customerDetailsForm.invalid" (click)="addCustomerPaymentDtls()">Submit</button>
+                            <button mat-raised-button color="primary" *ngIf="showUpdateRecordButton"
+                                (click)="updateCustomerPaymentDtls()">Update</button>
+                            <button mat-raised-button color="primary" *ngIf="showUpdateRecordButton"
+                                (click)="OnClickOfCancel()">Cancel</button>
+                        </div>
+                    </div>
+                    <!-- <div fxLayout="column "
+                        *ngIf="customerDetailsForm.controls['PaymentMethodType'].value === 'Partial'"
+                        formArrayName="partialPaymentArray">
+                        <div fxLayout="row" fxFlex *ngFor="let item of getControls(); let i = index;" fxLayoutGap="15px">
+                            <ng-container [formGroupName]="i">
+                                <mat-form-field class="customer-full-width" appearance="outline">
+                                    <mat-label>Partial Payment {{i+1}} Amount</mat-label>
+                                    <input matInput type="text" value="" formControlName="partialPayment_1Amount">
+                                </mat-form-field>
+                                <mat-form-field class="customer-full-width" appearance="outline">
+                                    <mat-label>Partial Payment {{i+1}} Date</mat-label>
+                                    <input matInput [matDatepicker]="picker1" formControlName="partialPayment_1Date">
+                                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker1></mat-datepicker>
+                                </mat-form-field>
+                                <mat-form-field class="customer-full-width" appearance="outline">
+                                    <mat-label>Partial Payment {{i+1}} Type</mat-label>
+                                    <input matInput value="" formControlName="partialPayment_1Type">
+                                </mat-form-field>
+                                <mat-form-field class="customer-full-width" appearance="outline">
+                                    <mat-label>Parital Payment {{i+1}} Card Details</mat-label>
+                                    <input matInput value="" formControlName="partialPayment_1CardDetails">
+                                </mat-form-field>
+                                <button mat-mini-fab color="primary" (click)="addPartialPayment()" style="margin-top: 0.5%;">
+                                    <mat-icon>add</mat-icon>
+                                </button>
+                               
+                            </ng-container>
+                        </div>
+                        <div>
+                        <button mat-raised-button color="primary">Submit</button>
+                    </div>
+                    </div> -->
+                </mat-card-content>
+            </mat-card>
+        </form>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="center center" style="align-items: baseline;" class="jobNum-field">
+        <mat-form-field class="example-full-width" appearance="outline">
+          <mat-label class="fileClaim-label">Search</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="">
+          <mat-icon matSuffix><span class="material-symbols-outlined">
+            search
+            </span></mat-icon>
+        </mat-form-field>
+      </div>
+    <div class="mat-elevation-z8 example-container" tabindex="0" style="margin:2%">
+
+        <table mat-table [dataSource]="dataSource">
+
+            <ng-container matColumnDef="tonTowRptId">
+                <th mat-header-cell *matHeaderCellDef>Job ID</th>
+                <td mat-cell *matCellDef="let element;let i = index"> {{element.jobNum}}</td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="paymentType">
+                <th mat-header-cell *matHeaderCellDef>Payment Type</th>
+                <td mat-cell *matCellDef="let element;let i = index">{{element.paymenttype}}</td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="edit">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header style="padding-left: 1%;">Action</th>
+                <td mat-cell *matCellDef="let element;let i = index">
+                    <button mat-icon-button matTooltip="Click to Edit" class="iconbutton" color="primary"
+                        (click)="onEdit(element,i)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <!-- <button mat-icon-button matTooltip="Click to Delete" class="iconbutton" color="warn"
+                        (click)="deleteCustomerPaymentDtls(element)">
+                        <mat-icon>delete</mat-icon>
+                    </button> -->
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; "></tr>
+            <tr mat-row *matRowDef="let row;let i = index;columns: displayedColumns;" [ngClass]="{ highlighted: row.isEdit}"></tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+            aria-label="Select page of periodic elements">
+        </mat-paginator>
+    </div>
+
+</div>

@@ -1,0 +1,40 @@
+<div fxFlex>
+    <form [formGroup]="customerContactForm">
+            <div fxLayoutAlign="end end">
+                <button mat-button class="close-icon" [mat-dialog-close]="true">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+
+                <div fxLayout="column" fxLayoutGap="15px">
+                    <mat-radio-group fxLayout="column"  class="example-radio-group" formControlName="vehicleCondition">
+                            <mat-radio-button value="Repairable" class="example-full-width"
+                                style="color:primary;margin: 1% !important">Repairable</mat-radio-button>
+                            <mat-radio-button value="Totaled" class="example-full-width"
+                                style="color:primary;margin: 1% !important">Totaled</mat-radio-button>
+                    </mat-radio-group>
+                    <div fxLayout="row " fxLayoutGap="15px"
+                        *ngIf="customerContactForm.controls['vehicleCondition'].value === 'Repairable'">
+                        <mat-form-field class="repairable-full-width" appearance="outline">
+                            <mat-label>Repairable notes 1</mat-label>
+                            <input matInput placeholder="" value="" formControlName="repairableNotes_1" maxlength="50">
+                        </mat-form-field>
+                        <mat-form-field class="repairable-full-width" appearance="outline">
+                            <mat-label>Repairable notes 2</mat-label>
+                            <input matInput placeholder="" value="" formControlName="repairableNotes_2" maxlength="50">
+                        </mat-form-field>
+
+                    </div>
+                    <div fxLayout="row" fxLayoutGap="15px"
+                        *ngIf="customerContactForm.controls['vehicleCondition'].value === 'Totaled'">
+                        <mat-form-field class="repairable-full-width" appearance="outline">
+                            <mat-label> Totaled notes 1</mat-label>
+                            <input matInput placeholder="" value="" formControlName="totaledNotes" maxlength="50">
+                        </mat-form-field>
+
+                    </div>
+                </div>
+
+           
+    </form>
+</div>
