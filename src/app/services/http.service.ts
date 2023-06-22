@@ -274,5 +274,13 @@ export class HttpService {
         return this.http.post<any>(this.API + 'PoliceReport/registeruser', request , httpOptions)
 
     }
+
+    getAdminUsers():Observable<any>{
+        return this.http.get<any>(this.API + 'PoliceReport/GetAdminUsers', httpOptions)
+    }
+
+    deactivateAdminUser(userId:any):Observable<any>{
+        return this.http.post<any>(this.API + 'PoliceReport/DeactivateAdminUser?UserId=' + userId, httpOptions)
+    }
     
 }

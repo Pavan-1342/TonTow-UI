@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpService } from 'src/app/services/http.service';
 import Swal from 'sweetalert2'
 import { mustMatch } from './must-watch.validators';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-create-admin',
@@ -10,10 +12,18 @@ import { mustMatch } from './must-watch.validators';
   styleUrls: ['./create-admin.component.scss'],
 })
 export class CreateAdminComponent implements OnInit {
+  @ViewChild(MatPaginator) paginator: MatPaginator;
   createAdminForm: FormGroup;
   submitted = false;
   hide: boolean = true;
   hideConfirm: boolean = true;
+  allAdminUsersData: any;
+  displayedColumns: string[] = ['userId', 'username', 'edit'];
+  dataSource = new MatTableDataSource<any>();
+  initialDataSource: any;
+  deactivateSelectedAdminUser: any;
+  isdisabled:boolean = false
+  
   constructor(private fb: FormBuilder, private httpService: HttpService) {
     this.createAdminForm = this.fb.group({
       userId: ['', [Validators.required]],
@@ -25,6 +35,7 @@ export class CreateAdminComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getAdminUsers();
     
   }
  
@@ -46,6 +57,7 @@ export class CreateAdminComponent implements OnInit {
               text: 'Admin user added  succcessfully!',
             });
             this.createAdminForm.reset();
+            this.getAdminUsers();
           } else {
             Swal.fire({
               icon: 'error',
@@ -67,5 +79,57 @@ export class CreateAdminComponent implements OnInit {
 
   myFunction() {
     this.hide = !this.hide;
+  }
+
+  getAdminUsers(){
+    this.httpService.getAdminUsers().subscribe((res)=>{
+      let data:any = []
+      res.forEach((Object:any)=>{
+        data.push({
+        "Id": Object.userId,
+        "adminUser" : Object.username,
+        "status":Object.status,
+        "isEdit":false
+        })
+      });
+      this.initialDataSource = data
+      this.dataSource = new MatTableDataSource(data);
+      this.dataSource.paginator = this.paginator;
+    });
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+    //this.cdr.detectChanges();
+  }
+
+  highlight(element: any) {
+    element.highlighted = !element.highlighted;
+  }
+
+  deactivateAdminUser(){
+    this.httpService.deactivateAdminUser( this.deactivateSelectedAdminUser).subscribe((res)=>{
+      if (res) {
+        Swal.fire({
+          icon: 'success',
+          text: 'Admin User deactivated  succcessfully!',
+        });
+        this.getAdminUsers();
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Admin User deactivated failed! ',
+        })
+      }
+    },(error)=>{
+
+    })
+  }
+
+  onClickOfDeactivate(record:any, i:number){
+    this.deactivateSelectedAdminUser = record.Id;
+    this.deactivateAdminUser();
   }
 }
