@@ -1,6 +1,6 @@
 <div fxLayout="column" fxFlex style="margin:2% 2% 0% 2%;">
     <mat-card style="width:94%;margin-left:2%">
-        <form [formGroup]="createAdminForm">
+        <form [formGroup]="createAdminForm" #f="ngForm">
             <div fxLayout="row wrap" fxLayoutGap="10px" fxLayoutAlign="start center" class="jobNum-field">
                 <mat-form-field class="example-full-width" appearance="outline">
                     <mat-label class="fileClaim-label">User ID</mat-label>
