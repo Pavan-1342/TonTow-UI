@@ -606,9 +606,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
     }
   }
   addGeneralOperator(count: number) {
-    let formArray = this.generalOperatorForm.get(
-      'generalOperatorArray'
-    ) as FormArray;
+    let formArray = this.generalOperatorForm.get('generalOperatorArray') as FormArray;
     let formGroup = this.fb.group({
       operatorLastName: ['',Validators.pattern('^.*\\S.*[a-zA-Z ]')],
       operatorFirstName: ['',Validators.pattern('^.*\\S.*[a-zA-Z ]')],
@@ -617,14 +615,14 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       operatorVeh: ['', [Validators.required]],
       operatorInjured: false,
       operatorFatality: false,
-      operatorNumber: ['', [Validators.required]],
+      operatorNumber: ['',[Validators.required]],
       operatorStreet: ['',Validators.pattern('^.*\\S.*[a-zA-Z ]')],
       operatorStreetSuffix: ['',Validators.pattern('^.*\\S.*[a-zA-Z ]')],
       operatorStreetApt: '',
       operatorCity: ['',Validators.pattern('^.*\\S.*[a-zA-Z ]')],
       operatorState: ['',Validators.pattern('^.*\\S.*[a-zA-Z ]')],
       operatorZip: '',
-      operatorDOB: ['', [Validators.required]],
+      operatorDOB: ['',[Validators.required]],
       operatorHomePhone: '',
       operatorWorkPhone: '',
       operatorLic: '',
@@ -637,7 +635,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       ownerSuffixName: ['',Validators.pattern('^.*\\S.*[a-zA-Z ]')],
       ownerHomePhone: '',
       ownerWorkPhone: '',
-      ownerNumber: ['', [Validators.required]],
+      ownerNumber: ['',[Validators.required]],
       ownerStreet: ['',Validators.pattern('^.*\\S.*[a-zA-Z ]')],
       ownerStreetSuffix: ['',Validators.pattern('^.*\\S.*[a-zA-Z ]')],
       ownerStreetApt: '',
