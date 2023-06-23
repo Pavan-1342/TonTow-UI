@@ -13,6 +13,7 @@ import { MatPaginator } from '@angular/material/paginator';
 })
 export class CreateAdminComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild('f') myNgForm: any;
   createAdminForm: FormGroup;
   submitted = false;
   hide: boolean = true;
@@ -22,25 +23,30 @@ export class CreateAdminComponent implements OnInit {
   dataSource = new MatTableDataSource<any>();
   initialDataSource: any;
   deactivateSelectedAdminUser: any;
-  isdisabled:boolean = false
-  
+
   constructor(private fb: FormBuilder, private httpService: HttpService) {
-    this.createAdminForm = this.fb.group({
-      userId: ['', [Validators.required]],
-      password: ['', [Validators.required]],
-      confirmPassword: ['', [Validators.required]],
-    },{
-      validator:mustMatch('password', 'confirmPassword')
-  });
+    this.createAdminForm = this.fb.group(
+      {
+        userId: ['', [Validators.required]],
+        password: ['', [Validators.required]],
+        confirmPassword: ['', [Validators.required]],
+      },
+      {
+        validator: mustMatch('password', 'confirmPassword'),
+      }
+    );
   }
 
   ngOnInit(): void {
     this.getAdminUsers();
-    
   }
- 
-  get confirmPassword() { return this.createAdminForm.get('confirmPassword'); }
-  get password() { return this.createAdminForm.get('password'); }
+
+  get confirmPassword() {
+    return this.createAdminForm.get('confirmPassword');
+  }
+  get password() {
+    return this.createAdminForm.get('password');
+  }
 
   registeruser() {
     this.submitted = true;
@@ -56,8 +62,8 @@ export class CreateAdminComponent implements OnInit {
               icon: 'success',
               text: 'Admin user added  succcessfully!',
             });
-            this.createAdminForm.reset();
             this.getAdminUsers();
+            this.myNgForm.resetForm();
           } else {
             Swal.fire({
               icon: 'error',
@@ -81,18 +87,18 @@ export class CreateAdminComponent implements OnInit {
     this.hide = !this.hide;
   }
 
-  getAdminUsers(){
-    this.httpService.getAdminUsers().subscribe((res)=>{
-      let data:any = []
-      res.forEach((Object:any)=>{
+  getAdminUsers() {
+    this.httpService.getAdminUsers().subscribe((res) => {
+      let data: any = [];
+      res.forEach((Object: any) => {
         data.push({
-        "Id": Object.userId,
-        "adminUser" : Object.username,
-        "status":Object.status,
-        "isEdit":false
-        })
+          Id: Object.userId,
+          adminUser: Object.username,
+          status: Object.status,
+          isEdit: false,
+        });
       });
-      this.initialDataSource = data
+      this.initialDataSource = data;
       this.dataSource = new MatTableDataSource(data);
       this.dataSource.paginator = this.paginator;
     });
@@ -108,27 +114,42 @@ export class CreateAdminComponent implements OnInit {
     element.highlighted = !element.highlighted;
   }
 
-  deactivateAdminUser(){
-    this.httpService.deactivateAdminUser( this.deactivateSelectedAdminUser).subscribe((res)=>{
-      if (res) {
-        Swal.fire({
-          icon: 'success',
-          text: 'Admin User deactivated  succcessfully!',
-        });
-        this.getAdminUsers();
-      } else {
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'Admin User deactivated failed! ',
-        })
+  deactivateAdminUser() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You want to deactivate!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, deactivate it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.httpService
+          .deactivateAdminUser(this.deactivateSelectedAdminUser)
+          .subscribe(
+            (res) => {
+              if (res) {
+                Swal.fire({
+                  icon: 'success',
+                  text: 'Admin User deactivated  succcessfully!',
+                });
+                this.getAdminUsers();
+              } else {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Oops...',
+                  text: 'Admin User deactivated failed! ',
+                });
+              }
+            },
+            (error) => {}
+          );
       }
-    },(error)=>{
-
-    })
+    });
   }
 
-  onClickOfDeactivate(record:any, i:number){
+  onClickOfDeactivate(record: any, i: number) {
     this.deactivateSelectedAdminUser = record.Id;
     this.deactivateAdminUser();
   }
