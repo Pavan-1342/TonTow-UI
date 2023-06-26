@@ -394,11 +394,8 @@
                                     <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="veh1RespondingToEmergency"
                                         (keypress)="numberOnly($event)">
                                 </mat-form-field>
-                                <mat-radio-group aria-label="Select an option" formControlName="veh1CitationIssued">
-                                    <mat-radio-button value="true" class="vehicle-full-width"
-                                        style="color:primary;margin-top: 2% !important">Citation
-                                        Issued</mat-radio-button>
-                                </mat-radio-group>
+                                <mat-checkbox color="primary" formControlName="veh1CitationIssued"
+                                    class="checkbox-vehicle">Citation Issued</mat-checkbox>
                                 <mat-form-field class="vehicle-full-width" appearance="outline">
                                     <mat-label>Viol.1</mat-label>
                                     <input matInput placeholder="" formControlName="veh1Viol1" maxlength="20">
@@ -1499,10 +1496,14 @@
                                             <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="operatorVeh"
                                                 (keypress)="numberOnly($event)">
                                         </mat-form-field>
+                                        <!-- <mat-radio-group aria-label="Select an option">
+                                            <mat-radio-button value="1">Option 1</mat-radio-button>
+                                            <mat-radio-button value="2">Option 2</mat-radio-button>
+                                          </mat-radio-group> -->
                                         <mat-checkbox class="event-full-width" color="primary"
-                                            formControlName="operatorInjured">Injured</mat-checkbox>
+                                            formControlName="operatorInjured" (change)="onChangeInjured($event,k)">Injured</mat-checkbox>
                                         <mat-checkbox class="event-full-width" color="primary"
-                                            formControlName="operatorFatality">Fatality</mat-checkbox>
+                                            formControlName="operatorFatality" (change)="onChangeFatality($event,k)">Fatality</mat-checkbox>
                                         <mat-form-field class="property-full-width" appearance="outline">
                                             <mat-label>Number</mat-label>
                                             <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="operatorNumber"
