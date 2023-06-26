@@ -61,7 +61,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
   generalInfoForm: FormGroup;
   stepperIndex: Number;
   tonTowReport: FormControl = new FormControl('', [Validators.required]);
-  email: FormControl = new FormControl('', [Validators.required,Validators.pattern('[a-zA-Z0-9.-]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{3,}'),]);
+  email: FormControl = new FormControl('', [Validators.required,Validators.pattern('[a-zA-Z0-9._%"+-]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}'),]);
   phone: FormControl = new FormControl('', [Validators.required]);
   loginUserDetails: any;
   displayedColumns: string[] = [
@@ -2669,6 +2669,22 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       this.showTravelDirectionError = true;
     } else {
       this.showTravelDirectionError = false;
+    }
+  }
+  onChangeInjured(event:any,index:number){
+    let control = (this.generalOperatorForm.get('generalOperatorArray') as FormArray).controls[index] as FormGroup;
+    if(event.checked){
+      control.controls['operatorFatality'].disable()
+    }else{
+      control.controls['operatorFatality'].enable()
+    }
+  }
+  onChangeFatality(event:any,index:number){
+   let control = (this.generalOperatorForm.get('generalOperatorArray') as FormArray).controls[index] as FormGroup;
+    if(event.checked){
+      control.controls['operatorInjured'].disable()
+    }else{
+      control.controls['operatorInjured'].enable()
     }
   }
 }
