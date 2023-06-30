@@ -14,5 +14,5 @@
         *ngIf="loginUserDetails?.role ==='A'"><ng-template matTabContent> <app-customer-payment-details [tonTowReportDropdownDetails]="tonTowReportDropdownDetails"></app-customer-payment-details></ng-template></mat-tab>
     <mat-tab label="Tracking Status"><ng-template matTabContent> <app-traking-status [tonTowReportDropdownDetails]="tonTowReportDropdownDetails"></app-traking-status></ng-template></mat-tab>
     <mat-tab label="View Reports"><ng-template matTabContent> <app-view-reports [tonTowReportDropdownDetails]="tonTowReportDropdownDetails"></app-view-reports></ng-template></mat-tab>
-    <mat-tab label="Create Admin" *ngIf="loginUserDetails?.role ==='A'"><ng-template matTabContent> <app-create-admin></app-create-admin></ng-template></mat-tab>
+    <mat-tab label="Create Admin" *ngIf="loginUserDetails?.role ==='A' && loginUserDetails.username === 'admin'"><ng-template matTabContent> <app-create-admin></app-create-admin></ng-template></mat-tab>
 </mat-tab-group>

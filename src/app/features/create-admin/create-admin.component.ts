@@ -23,6 +23,7 @@ export class CreateAdminComponent implements OnInit {
   dataSource = new MatTableDataSource<any>();
   initialDataSource: any;
   deactivateSelectedAdminUser: any;
+  loginUserDetails: any;
 
   constructor(private fb: FormBuilder, private httpService: HttpService) {
     this.createAdminForm = this.fb.group(
@@ -38,6 +39,7 @@ export class CreateAdminComponent implements OnInit {
   }
 
   ngOnInit(): void {
+   // this.loginUserDetails = JSON.parse(sessionStorage.getItem('user') as string);
     this.getAdminUsers();
   }
 
