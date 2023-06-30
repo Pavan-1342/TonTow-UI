@@ -828,10 +828,8 @@
                                 <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="veh2RespondingToEmergency"
                                     (keypress)="numberOnly($event)">
                             </mat-form-field>
-                            <mat-radio-group aria-label="Select an option" formControlName="veh2CitationIssued">
-                                <mat-radio-button value="2" class="vehicle-full-width"
-                                    style="color:primary;margin-top: 2% !important">Citation Issued</mat-radio-button>
-                            </mat-radio-group>
+                            <mat-checkbox color="primary" formControlName="veh2CitationIssued"
+                                    class="checkbox-vehicle">Citation Issued</mat-checkbox>
                             <mat-form-field class="vehicle-full-width" appearance="outline">
                                 <mat-label>Viol.1</mat-label>
                                 <input matInput placeholder="" formControlName="veh2Viol1" maxlength="20">
