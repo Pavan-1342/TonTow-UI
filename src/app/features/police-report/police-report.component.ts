@@ -227,7 +227,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       veh1Viol4: [''],
       veh1Reg: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
       veh1RegType: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
-      veh1RegState: ['', [Validators.required,Validators.pattern('^.*\\S.*[a-zA-Z ]')]],
+      veh1RegState: ['', [Validators.required,Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')]],
       veh1VehicleYear: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
       veh1VehicleMake: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
       veh1VehicleConfig: [''],
