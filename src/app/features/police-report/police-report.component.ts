@@ -1263,16 +1263,12 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
     this.policeReportForm_3.markAllAsTouched();
     this.witnessForm.markAllAsTouched();
     this.generalOperatorForm.markAllAsTouched();
-    // if (
-    //   this.tonTowReport.valid &&
-    //   this.email.valid &&
-    //   this.phone.valid &&
-    //   this.policeReportForm_1.valid &&
-    //   this.policeReportForm_2.valid &&
-    //   this.policeReportForm_3.valid &&
-    //   this.witnessForm.valid &&
-    //   this.generalOperatorForm.valid
-    // ) {
+     if (
+      this.tonTowReport.valid &&
+       this.email.valid &&
+       this.phone.valid 
+     
+     ) {
       this.httpService
         .checkDuplicatePoliceReport(this.tonTowReport.value)
         .subscribe((res) => {
@@ -1290,13 +1286,13 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
            this.checkDuplicateEmail();
           }
         });
-    // } else {
-    //   Swal.fire({
-    //     icon: 'error',
-    //     width: 600,
-    //     title: 'Please Fill all mandatory fields!',
-    //   });
-    // }
+    } else {
+      Swal.fire({
+        icon: 'error',
+        width: 600,
+        title: 'Please Fill JobId, Email & Phone  to proceed!',
+      });
+    }
   }
 
   checkDuplicateEmail() {
