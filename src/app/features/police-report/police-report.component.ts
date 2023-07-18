@@ -780,6 +780,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
     this.policeReportForm_2.markAllAsTouched();
     this.policeReportForm_3.markAllAsTouched();
     this.witnessForm.markAllAsTouched();
+    this.generalInfoForm.markAllAsTouched();
     this.generalOperatorForm.markAllAsTouched();
     //this.inputformControl.markAsUntouched();
     let policeReportForm1Errors = this.getFormValidationErrors(
@@ -798,6 +799,9 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
     witnessformArray.controls.forEach((element: any) => {
       witnessFormErrors.push(this.getFormValidationErrors(element));
     });
+    let generalInfoFormErrors = this.getFormValidationErrors(
+      this.generalInfoForm
+    );
     let generalOperatorformArray: any = this.generalOperatorForm.get(
       'generalOperatorArray'
     ) as FormArray;
@@ -828,6 +832,12 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
         errorsString +
         '<b><br>Witness/Property Damage</b><br>' +
         witnessFormErrors.join(',\n');
+    }
+    if (generalInfoFormErrors.length !== 0) {
+      errorsString =
+        errorsString +
+        '<b><br>Operator Information Sheet</b><br>' +
+        generalInfoFormErrors.join(',\n');
     }
     if (generalOperatorFormErrors.length !== 0) {
       errorsString =
