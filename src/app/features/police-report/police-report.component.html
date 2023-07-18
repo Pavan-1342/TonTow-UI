@@ -2,16 +2,16 @@
     <div fxLayout="row" fxLayoutGap="15px" fxLayoutAlign="start center" style="margin:1% 0;" class="jobNum-field">
         <mat-form-field class="example-full-width" appearance="outline">
             <mat-label class="fileClaim-label">Job ID</mat-label>
-            <input type="text" placeholder="" matInput [formControl]="tonTowReport"
+            <input type="text" placeholder="Please enter JobId" matInput [formControl]="tonTowReport"
                 (keypress)="omit_special_char($event)" maxlength="50" (paste)="preventPaste($event)">
         </mat-form-field>
         <mat-form-field class="example-full-width" appearance="outline">
             <mat-label class="fileClaim-label">Email</mat-label>
-            <input matInput type="email" placeholder="" [formControl]="email">
+            <input matInput type="email" placeholder="Please enter email" [formControl]="email">
         </mat-form-field>
         <mat-form-field class="example-full-width" appearance="outline">
             <mat-label class="fileClaim-label">Phone</mat-label>
-            <input matInput placeholder="" [formControl]="phone" (keypress)="numberOnly($event)">
+            <input matInput placeholder="Please enter phone number" [formControl]="phone" (keypress)="numberOnly($event)">
         </mat-form-field>
         <button mat-raised-button color="primary" style="margin-top: 0.7%;" (click)="checkDuplicatePoliceReport()"
             *ngIf="!showUpdateRecordButton">Submit</button>
