@@ -809,30 +809,30 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
     let errorsString = '';
     if (policeReportForm1Errors.length !== 0) {
       errorsString =
-        '<b>Police Report: </b>' + policeReportForm1Errors.join(',\n');
+        '<b>Police Report: </b><br>' + policeReportForm1Errors.join(',\n');
     }
     if (policeReportForm2Errors.length !== 0) {
       errorsString =
         errorsString +
-        '<br><b>Vehicle 1: </b>' +
+        '<br><b>Vehicle 1: </b><br>' +
         policeReportForm2Errors.join(',\n');
     }
     if (policeReportForm3Errors.length !== 0) {
       errorsString =
         errorsString +
-        '<b><br>Vehicle 2: </b>' +
+        '<b><br>Vehicle 2: </b><br>' +
         policeReportForm3Errors.join(',\n');
     }
     if (witnessFormErrors.length !== 0) {
       errorsString =
         errorsString +
-        '<b><br>Witness/Property Damage</b>' +
+        '<b><br>Witness/Property Damage</b><br>' +
         witnessFormErrors.join(',\n');
     }
     if (generalOperatorFormErrors.length !== 0) {
       errorsString =
         errorsString +
-        '<b><br>Operator Information Sheet</b>' +
+        '<b><br>Operator Information Sheet</b><br>' +
         generalOperatorFormErrors.join(',\n');
     }
     if (
@@ -1253,16 +1253,16 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
     this.policeReportForm_3.markAllAsTouched();
     this.witnessForm.markAllAsTouched();
     this.generalOperatorForm.markAllAsTouched();
-    if (
-      this.tonTowReport.valid &&
-      this.email.valid &&
-      this.phone.valid &&
-      this.policeReportForm_1.valid &&
-      this.policeReportForm_2.valid &&
-      this.policeReportForm_3.valid &&
-      this.witnessForm.valid &&
-      this.generalOperatorForm.valid
-    ) {
+    // if (
+    //   this.tonTowReport.valid &&
+    //   this.email.valid &&
+    //   this.phone.valid &&
+    //   this.policeReportForm_1.valid &&
+    //   this.policeReportForm_2.valid &&
+    //   this.policeReportForm_3.valid &&
+    //   this.witnessForm.valid &&
+    //   this.generalOperatorForm.valid
+    // ) {
       this.httpService
         .checkDuplicatePoliceReport(this.tonTowReport.value)
         .subscribe((res) => {
@@ -1280,13 +1280,13 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
            this.checkDuplicateEmail();
           }
         });
-    } else {
-      Swal.fire({
-        icon: 'error',
-        width: 600,
-        title: 'Please Fill all mandatory fields!',
-      });
-    }
+    // } else {
+    //   Swal.fire({
+    //     icon: 'error',
+    //     width: 600,
+    //     title: 'Please Fill all mandatory fields!',
+    //   });
+    // }
   }
 
   checkDuplicateEmail() {
