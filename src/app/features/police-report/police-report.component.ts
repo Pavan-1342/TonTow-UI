@@ -779,7 +779,6 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
     this.policeReportForm_1.markAllAsTouched();
     this.policeReportForm_2.markAllAsTouched();
     this.policeReportForm_3.markAllAsTouched();
-    this.witnessForm.markAllAsTouched();
     this.generalInfoForm.markAllAsTouched();
     this.generalOperatorForm.markAllAsTouched();
     //this.inputformControl.markAsUntouched();
@@ -852,7 +851,6 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       this.policeReportForm_1.valid &&
       this.policeReportForm_2.valid &&
       this.policeReportForm_3.valid &&
-      this.witnessForm.valid &&
       this.generalOperatorForm.valid
     ) {
       let request: any = {
@@ -1645,7 +1643,6 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
     this.policeReportForm_1.markAllAsTouched();
     this.policeReportForm_2.markAllAsTouched();
     this.policeReportForm_3.markAllAsTouched();
-    this.witnessForm.markAllAsTouched();
     this.generalOperatorForm.markAllAsTouched();
     //this.inputformControl.markAsUntouched();
     let policeReportForm1Errors = this.getFormValidationErrors(
@@ -1707,7 +1704,6 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       this.policeReportForm_1.valid &&
       this.policeReportForm_2.valid &&
       this.policeReportForm_3.valid &&
-      this.witnessForm.valid &&
       this.generalOperatorForm.valid
     ) {
     let request: any = {
@@ -2058,7 +2054,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!',
+      confirmButtonText: 'Yes, cancel it!',
     }).then((result) => {
       if (result.isConfirmed) {
         this.tonTowReport.enable();
