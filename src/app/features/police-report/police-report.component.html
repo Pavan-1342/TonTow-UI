@@ -32,7 +32,7 @@
                     d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
             </svg>
         </ng-template>
-        <mat-step>
+        <mat-step >
             <form [formGroup]="policeReportForm_1">
                 <ng-template matStepLabel>Police Report</ng-template>
                 <div fxLayout="row" fxLayout.md="column" fxLayout.lg="column" class="example-form" style="margin-top:1%"
@@ -261,7 +261,7 @@
             </form>
             <!-- </mat-card> -->
         </mat-step>
-        <mat-step>
+        <mat-step >
             <form [formGroup]="policeReportForm_2">
                 <ng-template matStepLabel>Vehicle 1</ng-template>
                 <div fxLayout="row" fxLayout.md="column" fxLayout.lg="column" class="example-form" style="margin-top:1%"
@@ -305,8 +305,8 @@
                                         maxlength="20">
                                 </mat-form-field>
                                 <mat-form-field class="vehicle-full-width" appearance="outline">
-                                    <mat-label>Street</mat-label>
-                                    <input matInput placeholder="" formControlName="veh1Street" maxlength="20">
+                                    <mat-label>State</mat-label>
+                                    <input matInput placeholder="" formControlName="veh1State" maxlength="20">
                                 </mat-form-field>
                                 <mat-form-field class="vehicle-full-width" appearance="outline">
                                     <mat-label>DOB/Age</mat-label>
@@ -746,8 +746,8 @@
                                 <input matInput placeholder="" formControlName="veh2License" maxlength="20">
                             </mat-form-field>
                             <mat-form-field class="vehicle-full-width" appearance="outline">
-                                <mat-label>Street</mat-label>
-                                <input matInput placeholder="" formControlName="veh2Street" maxlength="20">
+                                <mat-label>State</mat-label>
+                                <input matInput placeholder="" formControlName="veh2State" maxlength="20">
                             </mat-form-field>
                             <mat-form-field class="vehicle-full-width" appearance="outline">
                                 <mat-label>DOB/Age</mat-label>
@@ -1111,7 +1111,7 @@
                 </mat-accordion>
             </form>
         </mat-step>
-        <mat-step>
+        <mat-step >
             <ng-template matStepLabel>Witness/Property Damage</ng-template>
             <div fxLayout="row" fxLayout.md="column" fxLayout.lg="column" class="example-form" style="margin-top:1%"
                 fxFlex>
@@ -1408,7 +1408,7 @@
                 </mat-accordion>
             </div>
         </mat-step>
-        <mat-step>
+        <mat-step >
             <ng-template matStepLabel>Operator Information Sheet</ng-template>
             <mat-accordion class="example-headers-align" multi>
                 <mat-expansion-panel>

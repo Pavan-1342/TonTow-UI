@@ -204,7 +204,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       moped: [false],
       crashreportId: ['', [Validators.required]],
       veh1License: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
-      veh1Street: ['',Validators.pattern('^.*\\S.*[a-zA-Z ]')],
+      veh1State: ['',Validators.pattern('^.*\\S.*[a-zA-Z ]')],
       veh1DOB: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
       veh1Sex: ['', [Validators.required]],
       veh1LicClass: [''],
@@ -270,7 +270,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       hitAndRun2: [''],
       moped2: [''],
       veh2License: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
-      veh2Street: ['',Validators.pattern('^.*\\S.*[a-zA-Z ]')],
+      veh2State: ['',Validators.pattern('^.*\\S.*[a-zA-Z ]')],
       veh2DOB: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
       veh2Sex: ['', [Validators.required]],
       veh2LicClass: [''],
@@ -580,7 +580,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
   addWitness(checkValidation: boolean = false) {
     let formArray = this.witnessForm.get('witnessFormArray') as FormArray;
     if (
-      checkValidation &&
+      checkValidation && formArray.value.length !== 0 &&
       Object.values(formArray.value[formArray.value.length - 1]).every(
         (x) => x === null || x === ''
       )
@@ -592,12 +592,12 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       });
     } else {
       let formGroup = this.fb.group({
-        lastName: ['', [Validators.required,Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')]],
-        firstName: ['', [Validators.required,Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')]],
+        lastName: ['', [Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')]],
+        firstName: ['', [Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')]],
         middleName: ['',Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')],
-        address: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
-        phone: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
-        statement: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
+        address: ['', [Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
+        phone: ['', [Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
+        statement: ['', [Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
         city: ['',Validators.pattern('^.*\\S.*[a-zA-Z ]')],
         state: ['',Validators.pattern('^.*\\S.*[a-zA-Z ]')],
         zip: [''],
@@ -779,7 +779,6 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
     this.policeReportForm_1.markAllAsTouched();
     this.policeReportForm_2.markAllAsTouched();
     this.policeReportForm_3.markAllAsTouched();
-    this.witnessForm.markAllAsTouched();
     this.generalInfoForm.markAllAsTouched();
     this.generalOperatorForm.markAllAsTouched();
     //this.inputformControl.markAsUntouched();
@@ -852,7 +851,6 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       this.policeReportForm_1.valid &&
       this.policeReportForm_2.valid &&
       this.policeReportForm_3.valid &&
-      this.witnessForm.valid &&
       this.generalOperatorForm.valid
     ) {
       let request: any = {
@@ -1037,7 +1035,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
         condition: '',
         occupants: Number(this.policeReportForm_2.value.veh1Occupants),
         license: this.policeReportForm_2.value.veh1License,
-        street: this.policeReportForm_2.value.veh1Street,
+        street: this.policeReportForm_2.value.veh1State,
         dobAge: this.policeReportForm_2.value.veh1DOB,
         sex: this.policeReportForm_2.value.veh1Sex,
         licClass: this.policeReportForm_2.value.veh1LicClass,
@@ -1124,7 +1122,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
         condition: this.policeReportForm_3.value.veh2Condition,
         occupants: Number(this.policeReportForm_3.value.veh2Occupants),
         license: this.policeReportForm_3.value.veh2License,
-        street: this.policeReportForm_3.value.veh2Street,
+        street: this.policeReportForm_3.value.veh2State,
         dobAge: this.policeReportForm_3.value.veh2DOB,
         sex: this.policeReportForm_3.value.veh2Sex,
         licClass: this.policeReportForm_3.value.veh2LicClass,
@@ -1401,7 +1399,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
                   hitAndRun: object.type,
                   moped: '',
                   veh1License: object.license,
-                  veh1Street: object.street,
+                  veh1State: object.street,
                   veh1DOB: object.dobAge,
                   veh1Sex: object.sex,
                   veh1LicClass: object.licClass,
@@ -1466,7 +1464,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
                   hitAndRun2: object.condition,
                   moped2: object.condition,
                   veh2License: object.license,
-                  veh2Street: object.street,
+                  veh2State: object.street,
                   veh2DOB: object.dobAge,
                   veh2Sex: object.sex,
                   veh2LicClass: object.licClass,
@@ -1645,7 +1643,6 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
     this.policeReportForm_1.markAllAsTouched();
     this.policeReportForm_2.markAllAsTouched();
     this.policeReportForm_3.markAllAsTouched();
-    this.witnessForm.markAllAsTouched();
     this.generalOperatorForm.markAllAsTouched();
     //this.inputformControl.markAsUntouched();
     let policeReportForm1Errors = this.getFormValidationErrors(
@@ -1707,7 +1704,6 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       this.policeReportForm_1.valid &&
       this.policeReportForm_2.valid &&
       this.policeReportForm_3.valid &&
-      this.witnessForm.valid &&
       this.generalOperatorForm.valid
     ) {
     let request: any = {
@@ -1793,7 +1789,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       condition: '',
       occupants: Number(this.policeReportForm_2.value.veh1Occupants),
       license: this.policeReportForm_2.value.veh1License,
-      street: this.policeReportForm_2.value.veh1Street,
+      street: this.policeReportForm_2.value.veh1State,
       dobAge: this.policeReportForm_2.value.veh1DOB,
       sex: this.policeReportForm_2.value.veh1Sex,
       licClass: this.policeReportForm_2.value.veh1LicClass,
@@ -1876,7 +1872,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       condition: this.policeReportForm_3.value.veh2Condition,
       occupants: Number(this.policeReportForm_3.value.veh2Occupants),
       license: this.policeReportForm_3.value.veh2License,
-      street: this.policeReportForm_3.value.veh2Street,
+      street: this.policeReportForm_3.value.veh2State,
       dobAge: this.policeReportForm_3.value.veh2DOB,
       sex: this.policeReportForm_3.value.veh2Sex,
       licClass: this.policeReportForm_3.value.veh2LicClass,
@@ -1955,7 +1951,10 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
             icon: 'success',
             text: 'Police Report details updated  succcessfully!',
           });
+          setTimeout(() => {
           this.onClickOfAddAndUpdateClearFields();
+          window.location.reload();
+            }, 3000);
         } else if (res.result === 'Failed') {
           Swal.fire({
             icon: 'error',
@@ -2055,7 +2054,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!',
+      confirmButtonText: 'Yes, cancel it!',
     }).then((result) => {
       if (result.isConfirmed) {
         this.tonTowReport.enable();
@@ -2189,14 +2188,14 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
   onIntersectionChange(event: any) {
     if (event.value) {
       this.policeReportForm_1.controls['route_1'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
-      this.policeReportForm_1.controls['direction_1'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
-      this.policeReportForm_1.controls['roadway_1'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
+      this.policeReportForm_1.controls['direction_1'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
+      this.policeReportForm_1.controls['roadway_1'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
       this.policeReportForm_1.controls['route_2'].setValidators([ Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
-      this.policeReportForm_1.controls['direction_2'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
-      this.policeReportForm_1.controls['roadway_2'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
+      this.policeReportForm_1.controls['direction_2'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
+      this.policeReportForm_1.controls['roadway_2'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
       this.policeReportForm_1.controls['route_3'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
-      this.policeReportForm_1.controls['direction_3'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
-      this.policeReportForm_1.controls['roadway_3'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
+      this.policeReportForm_1.controls['direction_3'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
+      this.policeReportForm_1.controls['roadway_3'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
       this.policeReportForm_1.controls['naiRoute'].clearValidators();
       this.policeReportForm_1.controls['naiRoute'].updateValueAndValidity();
       this.policeReportForm_1.controls['naiDirection'].clearValidators();
