@@ -113,6 +113,8 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
   submitted: boolean;
   showTravelDirectionError: boolean;
   today = new Date(); 
+  fileInfo: File;
+  localUrl: string;
 
   constructor(
     private fb: FormBuilder,
@@ -164,7 +166,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       localPolice: [''],
       mbtaPolice: [''],
       campusPolice: [''],
-      //policeType: [''],
+      display: [''],
       others: [''],
       speedLimit: [''],
       latitude: [''],
@@ -211,7 +213,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       veh1LicRestriction: [''],
       veh1CDLEndorsement: [''],
       veh1OperatorAddress: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
-      veh1OperatorLastName: ['', [Validators.required,Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')]],
+      veh1OperatorLastName: ['', [Validators.required,Validators.pattern('^[^-\\s][a-zA-Z_\\s-]+$')]],
       veh1OperatorFirstName: ['', [Validators.required,Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')]],
       veh1OperatorMiddleName: ['',Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')],
       veh1OperatorCity: ['', [Validators.required,Validators.pattern('^.*\\S.*[a-zA-Z ]')]],
@@ -231,7 +233,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       veh1VehicleYear: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
       veh1VehicleMake: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
       veh1VehicleConfig: [''],
-      veh1OwnerLastName: ['', [Validators.required,Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')]],
+      veh1OwnerLastName: ['', [Validators.required,Validators.pattern('^[^-\\s][a-zA-Z_\\s-]+$')]],
       veh1OwnerFirstName: ['', [Validators.required,Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')]],
       veh1OwnerMiddleName: ['',Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')],
       veh1OwnerAddress: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
@@ -277,7 +279,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       veh2LicRestriction: [''],
       veh2CDLEndorsement: [''],
       veh2OperatorAddress: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
-      veh2OperatorLastName: ['', [Validators.required,Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')]],
+      veh2OperatorLastName: ['', [Validators.required,Validators.pattern('^[^-\\s][a-zA-Z_\\s-]+$')]],
       veh2OperatorFirstName: ['', [Validators.required,Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')]],
       veh2OperatorMiddleName: ['',Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')],
       veh2OperatorCity: ['', [Validators.required,Validators.pattern('^.*\\S.*[a-zA-Z ]')]],
@@ -297,7 +299,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       veh2VehicleYear: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
       veh2VehicleMake: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
       veh2VehicleConfig: [''],
-      veh2OwnerLastName: ['', [Validators.required,Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')]],
+      veh2OwnerLastName: ['', [Validators.required,Validators.pattern('^[^-\\s][a-zA-Z_\\s-]+$')]],
       veh2OwnerFirstName: ['', [Validators.required,Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')]],
       veh2OwnerMiddleName: ['',Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')],
       veh2OwnerAddress: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
@@ -556,7 +558,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
     } else {
       let formGroup = this.fb.group({
         vehicleNo: from,
-        operatorLastName: ['',Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')],
+        operatorLastName: ['',Validators.pattern('^[^-\\s][a-zA-Z_\\s-]+$')],
         operatorFirstName: ['',Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')],
         operatorMiddleName:  ['',Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')],
         address: '',
@@ -592,7 +594,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       });
     } else {
       let formGroup = this.fb.group({
-        lastName: ['', [Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')]],
+        lastName: ['', [Validators.pattern('^[^-\\s][a-zA-Z_\\s-]+$')]],
         firstName: ['', [Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')]],
         middleName: ['',Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')],
         address: ['', [Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
@@ -608,7 +610,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
   addGeneralOperator(count: number) {
     let formArray = this.generalOperatorForm.get('generalOperatorArray') as FormArray;
     let formGroup = this.fb.group({
-      operatorLastName: ['',Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')],
+      operatorLastName: ['',Validators.pattern('^[^-\\s][a-zA-Z_\\s-]+$')],
       operatorFirstName: ['',Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')],
       operatorMiddleName: ['',Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')],
       operatorSuffixName: '',
@@ -629,7 +631,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       operatorStateNumber: '',
       operatorInsuranceComp: '',
       operatorPolicyNumber: '',
-      ownerLastName: ['',Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')],
+      ownerLastName: ['',Validators.pattern('^[^-\\s][a-zA-Z_\\s-]+$')],
       ownerFirstName: ['',Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')],
       ownerMiddleName: ['',Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')],
       ownerSuffixName: ['',Validators.pattern('^.*\\S.*[a-zA-Z ]')],
@@ -647,7 +649,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       vehYear: '',
       vehMake: '',
       vehModel: '',
-      vehVin: '',
+      vehVin: ['',[Validators.required]],
       vehReg: '',
       vehStateNumber: '',
       vehTowedBy: '',
@@ -673,7 +675,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       });
     } else {
       let formGroup = this.fb.group({
-        ownerLastName: ['',Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')],
+        ownerLastName: ['',Validators.pattern('^[^-\\s][a-zA-Z_\\s-]+$')],
         ownerFirstName: ['',Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')],
         ownerMiddleName: ['',Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')],
         address: [''],
@@ -851,6 +853,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       this.policeReportForm_1.valid &&
       this.policeReportForm_2.valid &&
       this.policeReportForm_3.valid &&
+      this.generalInfoForm.valid &&
       this.generalOperatorForm.valid
     ) {
       let request: any = {
@@ -1704,6 +1707,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       this.policeReportForm_1.valid &&
       this.policeReportForm_2.valid &&
       this.policeReportForm_3.valid &&
+      this.generalInfoForm.valid &&
       this.generalOperatorForm.valid
     ) {
     let request: any = {
@@ -2693,6 +2697,60 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       control.controls['operatorInjured'].disable()
     }else{
       control.controls['operatorInjured'].enable()
+    }
+  }
+  isFileAllowed(fileName: string) {
+    let isFileAllowed = false;
+    const allowedFiles = ['.pdf', '.jpg', '.jpeg', '.png'];
+    const regex = /(?:\.([^.]+))?$/;
+    const extension = regex.exec(fileName);
+    if (undefined !== extension && null !== extension) {
+      for (const ext of allowedFiles) {
+        if (ext === extension[0].toLocaleLowerCase()) {
+          isFileAllowed = true;
+        }
+      }
+    }
+    return isFileAllowed;
+  }
+
+  isFileSizeAllowed(size: any) {
+    let isFileSizeAllowed = false;
+    if (size < 4000000) {
+      isFileSizeAllowed = true;
+    }
+    return isFileSizeAllowed;
+  }
+
+  onFileSelect(event: any) {
+    const fileExt = this.isFileAllowed(event.target.files[0].name);
+    const fileSize = this.isFileSizeAllowed(event.target.files[0].size);
+    if (fileExt && fileSize) {
+      const file: File = event.target.files[0];
+      this.fileInfo = file;
+      this.policeReportForm_1.patchValue({
+        display: file.name,
+      });
+      if (event.target.files && event.target.files[0]) {
+        var reader = new FileReader();
+        reader.onload = (event: any) => {
+          this.localUrl = file.webkitRelativePath;
+        };
+        reader.readAsText(file);
+      }
+    } else {
+      if (fileExt === false)
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Please Upload valid file format PNG, JPEG, JPG, PDF',
+        });
+      if (fileSize === false)
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Please Upload file size less than 4 MB',
+        });
     }
   }
 }

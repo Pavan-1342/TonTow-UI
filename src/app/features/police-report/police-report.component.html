@@ -38,9 +38,9 @@
                 <div fxLayout="row" fxLayout.md="column" fxLayout.lg="column" class="example-form" style="margin-top:1%"
                     fxFlex>
                     <mat-accordion class="example-headers-align" multi>
-                        <mat-expansion-panel>
+                        <mat-expansion-panel [expanded]="true">
                             <mat-expansion-panel-header>
-                                <mat-panel-title>
+                                <mat-panel-title class="panel-title">
                                     Basic Info
                                 </mat-panel-title>
                             </mat-expansion-panel-header>
@@ -113,9 +113,9 @@
                             </div>
                             <!-- </div> -->
                         </mat-expansion-panel>
-                        <mat-expansion-panel>
+                        <mat-expansion-panel [expanded]="true">
                             <mat-expansion-panel-header>
-                                <mat-panel-title>
+                                <mat-panel-title class="panel-title">
                                     Location
                                 </mat-panel-title>
                             </mat-expansion-panel-header>
@@ -244,16 +244,24 @@
                             <!-- </div> -->
 
                         </mat-expansion-panel>
-                        <mat-expansion-panel>
+                        <mat-expansion-panel [expanded]="true">
                             <mat-expansion-panel-header>
-                                <mat-panel-title>
+                                <mat-panel-title class="panel-title">
                                     Crash Narrative
                                 </mat-panel-title>
                             </mat-expansion-panel-header>
-                            <mat-form-field class="narrative-full-width">
+                            <!-- <mat-form-field class="narrative-full-width">
                                 <mat-label>comment</mat-label>
                                 <textarea matInput placeholder="" formControlName="crashNarrative"
                                     maxlength="250"></textarea>
+                            </mat-form-field> -->
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label class="fileClaim-label">Browse</mat-label>
+                                <button mat-icon-button matSuffix (click)="fileInput.click()">
+                                    <mat-icon>attach_file</mat-icon>
+                                </button>
+                                <input type="text" readonly matInput formControlName="display" />
+                                <input type="file" multiple hidden #fileInput (change)="onFileSelect($event)" />
                             </mat-form-field>
                         </mat-expansion-panel>
                     </mat-accordion>
@@ -263,13 +271,13 @@
         </mat-step>
         <mat-step >
             <form [formGroup]="policeReportForm_2">
-                <ng-template matStepLabel>Vehicle 1</ng-template>
+                <ng-template matStepLabel>South Coast Customer</ng-template>
                 <div fxLayout="row" fxLayout.md="column" fxLayout.lg="column" class="example-form" style="margin-top:1%"
                     fxFlex>
                     <mat-accordion class="example-headers-align" multi>
-                        <mat-expansion-panel>
+                        <mat-expansion-panel [expanded]="true">
                             <mat-expansion-panel-header>
-                                <mat-panel-title>
+                                <mat-panel-title class="panel-title">
                                     Please Select one of the following
                                 </mat-panel-title>
                             </mat-expansion-panel-header>
@@ -292,9 +300,9 @@
                                 </mat-form-field>
                             </div>
                         </mat-expansion-panel>
-                        <mat-expansion-panel>
+                        <mat-expansion-panel [expanded]="true">
                             <mat-expansion-panel-header>
-                                <mat-panel-title>
+                                <mat-panel-title class="panel-title">
                                     Vehicle 1
                                 </mat-panel-title>
                             </mat-expansion-panel-header>
@@ -576,7 +584,7 @@
                         </mat-expansion-panel>
                         <mat-expansion-panel *ngIf="showVehicle1OperatorDetails">
                             <mat-expansion-panel-header>
-                                <mat-panel-title>
+                                <mat-panel-title class="panel-title">
                                     Operator Details
                                 </mat-panel-title>
                             </mat-expansion-panel-header>
@@ -693,11 +701,11 @@
         </mat-step>
         <mat-step>
             <form [formGroup]="policeReportForm_3">
-                <ng-template matStepLabel>Vehicle 2</ng-template>
+                <ng-template matStepLabel>Other Party</ng-template>
                 <mat-accordion class="example-headers-align" multi>
-                    <mat-expansion-panel>
+                    <mat-expansion-panel [expanded]="true">
                         <mat-expansion-panel-header>
-                            <mat-panel-title name="veh2Header">
+                            <mat-panel-title name="veh2Header" class="panel-title">
                                 Please Select one of the following
                             </mat-panel-title>
                         </mat-expansion-panel-header>
@@ -734,9 +742,9 @@
 
                         </div>
                     </mat-expansion-panel>
-                    <mat-expansion-panel>
+                    <mat-expansion-panel [expanded]="true">
                         <mat-expansion-panel-header>
-                            <mat-panel-title>
+                            <mat-panel-title class="panel-title">
                                 Vehicle 2
                             </mat-panel-title>
                         </mat-expansion-panel-header>
@@ -998,7 +1006,7 @@
                     </mat-expansion-panel>
                     <mat-expansion-panel *ngIf="showVehicle2OperatorDetails">
                         <mat-expansion-panel-header>
-                            <mat-panel-title>
+                            <mat-panel-title class="panel-title">
                                 Operator Details
                             </mat-panel-title>
                         </mat-expansion-panel-header>
@@ -1116,9 +1124,9 @@
             <div fxLayout="row" fxLayout.md="column" fxLayout.lg="column" class="example-form" style="margin-top:1%"
                 fxFlex>
                 <mat-accordion class="example-headers-align" multi>
-                    <mat-expansion-panel>
+                    <mat-expansion-panel [expanded]="true">
                         <mat-expansion-panel-header>
-                            <mat-panel-title>
+                            <mat-panel-title class="panel-title">
                                 Police Report Witness
                             </mat-panel-title>
                         </mat-expansion-panel-header>
@@ -1184,7 +1192,7 @@
 
                     <mat-expansion-panel *ngIf="showPropertyDamage">
                         <mat-expansion-panel-header>
-                            <mat-panel-title>
+                            <mat-panel-title class="panel-title">
                                 Property Damage
                             </mat-panel-title>
                         </mat-expansion-panel-header>
@@ -1257,7 +1265,7 @@
 
                     <mat-expansion-panel *ngIf="showTruckandBusInfo">
                         <mat-expansion-panel-header>
-                            <mat-panel-title>
+                            <mat-panel-title class="panel-title">
                                 Truck And Bus Information
                             </mat-panel-title>
                         </mat-expansion-panel-header>
@@ -1343,7 +1351,7 @@
                                     <input matInput placeholder="" formControlName="trailerLength" maxlength="15">
                                 </mat-form-field>
                             </div>
-                            <mat-panel-title class="operator-title">
+                            <mat-panel-title class="operator-title panel-title">
                                 Hazmat Information :
                             </mat-panel-title>
                             <div fxLayout="row wrap" fxLayoutGap="15px" fxLayoutAlign="start center">
@@ -1370,7 +1378,7 @@
                                         (keypress)="numberOnly($event)" maxlength="4">
                                 </mat-form-field>
                             </div>
-                            <mat-panel-title class="operator-title">
+                            <mat-panel-title class="operator-title panel-title">
                                 Police Officer Information :
                             </mat-panel-title>
                             <div fxLayout="row wrap" fxLayoutGap="15px" fxLayoutAlign="start center">
@@ -1411,9 +1419,9 @@
         <mat-step >
             <ng-template matStepLabel>Operator Information Sheet</ng-template>
             <mat-accordion class="example-headers-align" multi>
-                <mat-expansion-panel>
+                <mat-expansion-panel [expanded]="true">
                     <mat-expansion-panel-header>
-                        <mat-panel-title>
+                        <mat-panel-title class="panel-title">
                             General
                         </mat-panel-title>
                     </mat-expansion-panel-header>
@@ -1462,9 +1470,9 @@
                     <div formArrayName="generalOperatorArray">
                         <!-- <mat-accordion class="example-headers-align" multi> -->
                         <div *ngFor="let item of getgeneralOperatorArrayControls(); let k = index;">
-                            <mat-expansion-panel>
+                            <mat-expansion-panel [expanded]="true">
                                 <mat-expansion-panel-header>
-                                    <mat-panel-title>
+                                    <mat-panel-title class="panel-title">
                                         Operator {{k+1}}
                                     </mat-panel-title>
                                 </mat-expansion-panel-header>
@@ -1581,7 +1589,7 @@
                                                 maxlength="30">
                                         </mat-form-field>
                                     </div>
-                                    <mat-panel-title class="operator-title">
+                                    <mat-panel-title class="operator-title panel-title">
                                         Owner :
                                     </mat-panel-title>
                                     <div fxLayout="row wrap" fxLayoutGap="15px" fxLayoutAlign="start center">
@@ -1660,7 +1668,7 @@
                                                 maxlength="30">
                                         </mat-form-field>
                                     </div>
-                                    <mat-panel-title class="operator-title">
+                                    <mat-panel-title class="operator-title panel-title">
                                         Vehicle :
                                     </mat-panel-title>
                                     <div fxLayout="row wrap" fxLayoutGap="15px" fxLayoutAlign="start center">
