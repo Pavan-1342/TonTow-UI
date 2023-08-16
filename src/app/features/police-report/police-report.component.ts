@@ -2250,21 +2250,21 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       this.policeReportForm_1.controls['direction_3'].updateValueAndValidity();
       this.policeReportForm_1.controls['roadway_3'].clearValidators();
       this.policeReportForm_1.controls['roadway_3'].updateValueAndValidity();
-      this.policeReportForm_1.controls['naiRoute'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
-      this.policeReportForm_1.controls['naiDirection'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
+      this.policeReportForm_1.controls['naiRoute'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
+      this.policeReportForm_1.controls['naiDirection'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
       this.policeReportForm_1.controls['naiAddress'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
-      this.policeReportForm_1.controls['feet1'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
+      this.policeReportForm_1.controls['feet1'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
       this.policeReportForm_1.controls['naiRoadwayStreet'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
-      this.policeReportForm_1.controls['naiDirection1'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
-      this.policeReportForm_1.controls['milemarker'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
-      this.policeReportForm_1.controls['exitnumber'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
-      this.policeReportForm_1.controls['feet2'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
-      this.policeReportForm_1.controls['naiDirection2'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
-      this.policeReportForm_1.controls['naiRoute1'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
-      this.policeReportForm_1.controls['naiRoadwaySt1'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
-      this.policeReportForm_1.controls['feet3'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
-      this.policeReportForm_1.controls['naiDirection3'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
-      this.policeReportForm_1.controls['naiLandmark'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
+      this.policeReportForm_1.controls['naiDirection1'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
+      this.policeReportForm_1.controls['milemarker'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
+      this.policeReportForm_1.controls['exitnumber'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
+      this.policeReportForm_1.controls['feet2'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
+      this.policeReportForm_1.controls['naiDirection2'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
+      this.policeReportForm_1.controls['naiRoute1'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
+      this.policeReportForm_1.controls['naiRoadwaySt1'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
+      this.policeReportForm_1.controls['feet3'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
+      this.policeReportForm_1.controls['naiDirection3'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
+      this.policeReportForm_1.controls['naiLandmark'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
       this.policeReportForm_1.updateValueAndValidity();
     }
   }
