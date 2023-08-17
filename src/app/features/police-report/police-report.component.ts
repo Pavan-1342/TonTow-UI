@@ -115,6 +115,8 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
   today = new Date(); 
   fileInfo: File;
   localUrl: string;
+  format: string;
+  url: string | ArrayBuffer | null;
 
   constructor(
     private fb: FormBuilder,
@@ -2723,6 +2725,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   onFileSelect(event: any) {
+    debugger
     const fileExt = this.isFileAllowed(event.target.files[0].name);
     const fileSize = this.isFileSizeAllowed(event.target.files[0].size);
     if (fileExt && fileSize) {
@@ -2731,10 +2734,15 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       this.policeReportForm_1.patchValue({
         display: file.name,
       });
-      if (event.target.files && event.target.files[0]) {
+      if (event.target.files && event.target.files[0] && file) {
         var reader = new FileReader();
+        reader.readAsDataURL(file);
+        if(file.type.indexOf('image')> -1){
+          this.format = 'image';
+        }
         reader.onload = (event: any) => {
           this.localUrl = file.webkitRelativePath;
+          this.url = (<FileReader>event.target).result;
         };
         reader.readAsText(file);
       }
