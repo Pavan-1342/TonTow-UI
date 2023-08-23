@@ -83,7 +83,7 @@ export class ViewReportsComponent implements OnInit {
   }
 
   getUserFiles() {
-    this.userFileDetails = [];
+        this.userFileDetails = [];
     this.httpService.getUserFiles(this.loginUserDetails?.role === 'A'? this.viewReportsForm.value.tonTowReport.tonTowRptId: this.loginUserDetails.tonTowRptId).subscribe((res) => {
       let data:any =[];
       res.forEach((Object:any)=>{
@@ -94,7 +94,7 @@ export class ViewReportsComponent implements OnInit {
           "tonTowFileUpload":Object.tonTowFileUpload
         })
       })
-        this.dataSource = new MatTableDataSource(data);
+              this.dataSource = new MatTableDataSource(data);
         this.dataSource.paginator = this.paginator;
       });
   }
@@ -138,8 +138,13 @@ export class ViewReportsComponent implements OnInit {
           requestBody
         )
         .subscribe((response: Blob) => {
-          const blobUrl = window.URL.createObjectURL(response);
-          window.open(blobUrl, '_blank');
+          // const blobUrl = URL.createObjectURL(response);
+         // window.open(blobUrl, '_blank');
+         const downloadLink = document.createElement('a');
+        downloadLink.href = URL.createObjectURL(response);
+        downloadLink.download = report.fileType;
+        downloadLink.click();
+         
         });
     } else {
       this.downloadTonTowFiles(report.jobNum, report.tonTowFileUpload.fileName);

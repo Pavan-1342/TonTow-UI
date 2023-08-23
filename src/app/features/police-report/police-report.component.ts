@@ -34,6 +34,7 @@ import { fromEvent } from 'rxjs';
 import { filter, debounceTime, distinctUntilChanged, tap } from 'rxjs';
 import { formatDate } from '@angular/common';
 import { MatStepper } from '@angular/material/stepper';
+import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-police-report',
@@ -117,12 +118,16 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
   localUrl: string;
   format: string;
   url: string | ArrayBuffer | null;
+  data: any;
+  crashNarrative:any;
+  crashNarrativeImage: any;
 
   constructor(
     private fb: FormBuilder,
     private httpService: HttpService,
     private snackBar: MatSnackBar,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit(): void {
@@ -168,7 +173,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       localPolice: [''],
       mbtaPolice: [''],
       campusPolice: [''],
-      display: [''],
+      crashNarrativeDisplay: [''],
       others: [''],
       speedLimit: [''],
       latitude: [''],
@@ -364,100 +369,14 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
 
     this.generalInfoForm = this.fb.group({
       id: [''],
-      accidentDate: ['', [Validators.required]],
-      accidentTime: ['', [Validators.required]],
+      accidentDate: [null],
+      accidentTime: [null],
       reportingOfficer: [''],
       location: [''],
       city: ['',Validators.pattern('^.*\\S.*[a-zA-Z ]')],
       state: ['',Validators.pattern('^.*\\S.*[a-zA-Z ]')],
       zip: [''],
     });
-    // this.policeReportForm_5 = this.fb.group({
-    //   OprOwnVehOpDtl1OprLastName: [''],
-    //   OprOwnVehDtl1OprFirstName: [''],
-    //   OprOwnVehDtl1OprMiddleName: [''],
-    //   OprOwnVehDtl1OprSuffixName: [''],
-    //   OprOwnVehDtl1OprVehUnit: ['', [Validators.required]],
-    //   OprOwnVehDtl1OprInjured: [''],
-    //   OprOwnVehDtl1OprFatality: [''],
-    //   OprOwnVehDtl1OprNumber: [''],
-    //   OprOwnVehDtl1OprStreet: [''],
-    //   OprOwnVehDtl1OprSuffix: [''],
-    //   OprOwnVehDtl1OprApt: [''],
-    //   OprOwnVehDtl1OprCity: [''],
-    //   OprOwnVehDtl1OprState: [''],
-    //   OprOwnVehDtl1OprZip: [''],
-    //   OprOwnVehDtl1OprDOB: [''],
-    //   OprOwnVehDtl1OprHomePhone: [''],
-    //   OprOwnVehDtl1OprWorkPhone: [''],
-    //   OprOwnVehDtl1OprLicStateNum: [''],
-    //   OprOwnVehDtl1OprInsuranceComp: [''],
-    //   OprOwnVehDtl1OprPolicyNum: [''],
-    //   OprOwnVehDtl1OwnLastName: [''],
-    //   OprOwnVehDtl1OwnFirstName: [''],
-    //   OprOwnVehDtl1OwnMiddleName: [''],
-    //   OprOwnVehDtl1OwnSuffixName: [''],
-    //   OprOwnVehDtl1OwnHomePhone: [''],
-    //   OprOwnVehDtl1OwnWorkPhone: [''],
-    //   OprOwnVehDtl1OwnNumber: [''],
-    //   OprOwnVehDtl1OwnStreet: [''],
-    //   OprOwnVehDtl1OwnSuffix: [''],
-    //   OprOwnVehDtl1OwnApt: [''],
-    //   OprOwnVehDtl1OwnCity: [''],
-    //   OprOwnVehDtl1OwnState: [''],
-    //   OprOwnVehDtl1OwnZip: [''],
-    //   OprOwnVehDtl1OwnInsuranceComp: [''],
-    //   OprOwnVehDtl1OwnPolicyNumber: [''],
-    //   OprOwnVehDtl1VehicleYear: [''],
-    //   OprOwnVehDtl1VehicleMake: [''],
-    //   OprOwnVehDtl1VehicleModel: [''],
-    //   OprOwnVehDtl1VehicleVIN: [''],
-    //   OprOwnVehDtl1VehicleRegStateNum: [''],
-    //   OprOwnVehDtl1VehicleTowedBy: [''],
-    //   OprOwnVehDtl1VehicleTowedTo: [''],
-    //   OprOwnVehOpDtl2OprLastName: [''],
-    //   OprOwnVehDtl2OprFirstName: [''],
-    //   OprOwnVehDtl2OprMiddleName: [''],
-    //   OprOwnVehDtl2OprSuffixName: [''],
-    //   OprOwnVehDtl2OprVehUnit: [''],
-    //   OprOwnVehDtl2OprInjured: [''],
-    //   OprOwnVehDtl2OprFatality: [''],
-    //   OprOwnVehDtl2OprNumber: [''],
-    //   OprOwnVehDtl2OprStreet: [''],
-    //   OprOwnVehDtl2OprSuffix: [''],
-    //   OprOwnVehDtl2OprApt: [''],
-    //   OprOwnVehDtl2OprCity: [''],
-    //   OprOwnVehDtl2OprState: [''],
-    //   OprOwnVehDtl2OprZip: [''],
-    //   OprOwnVehDtl2OprDOB: [''],
-    //   OprOwnVehDtl2OprHomePhone: [''],
-    //   OprOwnVehDtl2OprWorkPhone: [''],
-    //   OprOwnVehDtl2OprLicStateNum: [''],
-    //   OprOwnVehDtl2OprInsuranceComp: [''],
-    //   OprOwnVehDtl2OprPolicyNum: [''],
-    //   OprOwnVehDtl2OwnLastName: [''],
-    //   OprOwnVehDtl2OwnFirstName: [''],
-    //   OprOwnVehDtl2OwnMiddleName: [''],
-    //   OprOwnVehDtl2OwnSuffixName: [''],
-    //   OprOwnVehDtl2OwnHomePhone: [''],
-    //   OprOwnVehDtl2OwnWorkPhone: [''],
-    //   OprOwnVehDtl2OwnNumber: [''],
-    //   OprOwnVehDtl2OwnStreet: [''],
-    //   OprOwnVehDtl2OwnSuffix: [''],
-    //   OprOwnVehDtl2OwnApt: [''],
-    //   OprOwnVehDtl2OwnCity: [''],
-    //   OprOwnVehDtl2OwnState: [''],
-    //   OprOwnVehDtl2OwnZip: [''],
-    //   OprOwnVehDtl2OwnInsuranceComp: [''],
-    //   OprOwnVehDtl2OwnPolicyNumber: [''],
-    //   OprOwnVehDtl2VehicleYear: [''],
-    //   OprOwnVehDtl2VehicleMake: [''],
-    //   OprOwnVehDtl2VehicleModel: [''],
-    //   OprOwnVehDtl2VehicleVIN: [''],
-    //   OprOwnVehDtl2VehicleRegStateNum: [''],
-    //   OprOwnVehDtl2VehicleTowedBy: [''],
-    //   OprOwnVehDtl2VehicleTowedTo: [''],
-    // });
     this.witnessForm = this.fb.group({
       witnessFormArray: this.fb.array([]),
     });
@@ -616,17 +535,17 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       operatorFirstName: ['',Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')],
       operatorMiddleName: ['',Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')],
       operatorSuffixName: '',
-      operatorVeh: ['', [Validators.required]],
+      operatorVeh: [null],
       operatorInjured: false,
       operatorFatality: false,
-      operatorNumber: ['',[Validators.required]],
+      operatorNumber: [null],
       operatorStreet: ['',Validators.pattern('^.*\\S.*[a-zA-Z ]')],
       operatorStreetSuffix: ['',Validators.pattern('^.*\\S.*[a-zA-Z ]')],
       operatorStreetApt: '',
       operatorCity: ['',Validators.pattern('^.*\\S.*[a-zA-Z ]')],
       operatorState: ['',Validators.pattern('^.*\\S.*[a-zA-Z ]')],
       operatorZip: '',
-      operatorDOB: ['',[Validators.required]],
+      operatorDOB: [null],
       operatorHomePhone: '',
       operatorWorkPhone: '',
       operatorLic: '',
@@ -639,7 +558,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       ownerSuffixName: ['',Validators.pattern('^.*\\S.*[a-zA-Z ]')],
       ownerHomePhone: '',
       ownerWorkPhone: '',
-      ownerNumber: ['',[Validators.required]],
+      ownerNumber: [null],
       ownerStreet: ['',Validators.pattern('^.*\\S.*[a-zA-Z ]')],
       ownerStreetSuffix: ['',Validators.pattern('^.*\\S.*[a-zA-Z ]')],
       ownerStreetApt: '',
@@ -783,7 +702,6 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
     this.policeReportForm_1.markAllAsTouched();
     this.policeReportForm_2.markAllAsTouched();
     this.policeReportForm_3.markAllAsTouched();
-    this.generalInfoForm.markAllAsTouched();
     this.generalOperatorForm.markAllAsTouched();
     //this.inputformControl.markAsUntouched();
     let policeReportForm1Errors = this.getFormValidationErrors(
@@ -795,16 +713,16 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
     let policeReportForm3Errors = this.getFormValidationErrors(
       this.policeReportForm_3
     );
-    let witnessformArray: any = this.witnessForm.get(
-      'witnessFormArray'
-    ) as FormArray;
-    let witnessFormErrors: any = [];
-    witnessformArray.controls.forEach((element: any) => {
-      witnessFormErrors.push(this.getFormValidationErrors(element));
-    });
-    let generalInfoFormErrors = this.getFormValidationErrors(
-      this.generalInfoForm
-    );
+    // let witnessformArray: any = this.witnessForm.get(
+    //   'witnessFormArray'
+    // ) as FormArray;
+    // let witnessFormErrors: any = [];
+    // witnessformArray.controls.forEach((element: any) => {
+    //   witnessFormErrors.push(this.getFormValidationErrors(element));
+    // });
+    // let generalInfoFormErrors = this.getFormValidationErrors(
+    //   this.generalInfoForm
+    // );
     let generalOperatorformArray: any = this.generalOperatorForm.get(
       'generalOperatorArray'
     ) as FormArray;
@@ -830,18 +748,18 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
         '<b><br>Vehicle 2: </b><br>' +
         policeReportForm3Errors.join(',\n');
     }
-    if (witnessFormErrors.length !== 0) {
-      errorsString =
-        errorsString +
-        '<b><br>Witness/Property Damage</b><br>' +
-        witnessFormErrors.join(',\n');
-    }
-    if (generalInfoFormErrors.length !== 0) {
-      errorsString =
-        errorsString +
-        '<b><br>Operator Information Sheet</b><br>' +
-        generalInfoFormErrors.join(',\n');
-    }
+    // if (witnessFormErrors.length !== 0) {
+    //   errorsString =
+    //     errorsString +
+    //     '<b><br>Witness/Property Damage</b><br>' +
+    //     witnessFormErrors.join(',\n');
+    // }
+    // if (generalInfoFormErrors.length !== 0) {
+    //   errorsString =
+    //     errorsString +
+    //     '<b><br>Operator Information Sheet</b><br>' +
+    //     generalInfoFormErrors.join(',\n');
+    // }
     if (generalOperatorFormErrors.length !== 0) {
       errorsString =
         errorsString +
@@ -855,7 +773,6 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       this.policeReportForm_1.valid &&
       this.policeReportForm_2.valid &&
       this.policeReportForm_3.valid &&
-      this.generalInfoForm.valid &&
       this.generalOperatorForm.valid
     ) {
       let request: any = {
@@ -1019,12 +936,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
           )
             ? []
             : [this.truckAndBusInfoForm.value],
-        addPoliceReportGeneralRequest: this.checkAllParamtersEmptyInObject(
-          this.generalInfoForm.value,
-          'vehicleNo'
-        )
-          ? []
-          : this.generalInfoForm.value,
+        addPoliceReportGeneralRequest: this.generalInfoForm.value,
 
         addPoliceReportOperatorOwnerVehicleDtlsRequest:
           this.generalOperatorForm.value.generalOperatorArray,
@@ -1213,6 +1125,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
               icon: 'success',
               text: 'Police Report details added  succcessfully!',
             });
+            this.uploadTonTowReports(res.data.tonTowRptId);
             setTimeout(() => {
               this.onClickOfAddAndUpdateClearFields();
               window.location.reload();
@@ -1264,7 +1177,6 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
     this.policeReportForm_1.markAllAsTouched();
     this.policeReportForm_2.markAllAsTouched();
     this.policeReportForm_3.markAllAsTouched();
-    this.witnessForm.markAllAsTouched();
     this.generalOperatorForm.markAllAsTouched();
      if (
       this.tonTowReport.valid &&
@@ -1328,6 +1240,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       } else {
         this.phone.setErrors(null);
         this.addPoliceReport();
+       
       }
     });
   }
@@ -1392,6 +1305,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
             localPolice: this.viewReportDetails.localPolice,
             mbtaPolice: this.viewReportDetails.mbtaPolice,
             campusPolice: this.viewReportDetails.campusPolice,
+            crashNarrativeDisplay : this.viewReportDetails.tonTowFileUploads[2]?.fileName,
           });
           this.viewReportDetails.policeReportVehicleDtl.forEach(
             (object: any) => {
@@ -1566,10 +1480,15 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
             }
           );
           this.tonTowReport.disable();
-          // policeReportOperatorOwnerVehicleDtls
+          let fileObject = this.viewReportDetails?.tonTowFileUploads.find((element:any) => { return element.fileType === "TonTowReport-CrashNarrative" })
+          if(fileObject) this.crashNarrativeImage = 'data:image/jpeg;base64, ' + fileObject?.fileBytes
         });
+
     }
   }
+  
+
+ 
 
   patchOperatorDetails(from: number, operatorObject: any) {
     let formArray;
@@ -1659,13 +1578,13 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
     let policeReportForm3Errors = this.getFormValidationErrors(
       this.policeReportForm_3
     );
-    let witnessformArray: any = this.witnessForm.get(
-      'witnessFormArray'
-    ) as FormArray;
-    let witnessFormErrors: any = [];
-    witnessformArray.controls.forEach((element: any) => {
-      witnessFormErrors.push(this.getFormValidationErrors(element));
-    });
+    // let witnessformArray: any = this.witnessForm.get(
+    //   'witnessFormArray'
+    // ) as FormArray;
+    // let witnessFormErrors: any = [];
+    // witnessformArray.controls.forEach((element: any) => {
+    //   witnessFormErrors.push(this.getFormValidationErrors(element));
+    // });
     let generalOperatorformArray: any = this.generalOperatorForm.get(
       'generalOperatorArray'
     ) as FormArray;
@@ -1691,12 +1610,12 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
         '<b><br>Vehicle 2: </b>' +
         policeReportForm3Errors.join(',\n');
     }
-    if (witnessFormErrors.length !== 0) {
-      errorsString =
-        errorsString +
-        '<b><br>Witness/Property Damage</b>' +
-        witnessFormErrors.join(',\n');
-    }
+    // if (witnessFormErrors.length !== 0) {
+    //   errorsString =
+    //     errorsString +
+    //     '<b><br>Witness/Property Damage</b>' +
+    //     witnessFormErrors.join(',\n');
+    // }
     if (generalOperatorFormErrors.length !== 0) {
       errorsString =
         errorsString +
@@ -1709,7 +1628,6 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       this.policeReportForm_1.valid &&
       this.policeReportForm_2.valid &&
       this.policeReportForm_3.valid &&
-      this.generalInfoForm.valid &&
       this.generalOperatorForm.valid
     ) {
     let request: any = {
@@ -1952,15 +1870,16 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
     });
     this.httpService.updatePoliceReport(request).subscribe(
       (res) => {
-        if (res.result === 'Success') {
+                if (res.result === 'Success') {
           Swal.fire({
             icon: 'success',
             text: 'Police Report details updated  succcessfully!',
           });
+          this.uploadTonTowReports(res.data.tonTowRptId);
           setTimeout(() => {
           this.onClickOfAddAndUpdateClearFields();
           window.location.reload();
-            }, 3000);
+          }, 3000);
         } else if (res.result === 'Failed') {
           Swal.fire({
             icon: 'error',
@@ -2732,7 +2651,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       const file: File = event.target.files[0];
       this.fileInfo = file;
       this.policeReportForm_1.patchValue({
-        display: file.name,
+        crashNarrativeDisplay: file.name,
       });
       if (event.target.files && event.target.files[0] && file) {
         var reader = new FileReader();
@@ -2761,5 +2680,21 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
         });
     }
   }
+
+  uploadTonTowReports(tonTowRptId:number) {
+    debugger
+    this.httpService
+      .uploadTonTowReports(
+        tonTowRptId,
+        this.tonTowReport.value,
+        this.loginUserDetails.username,
+        "TonTowReport-CrashNarrative",
+        this.fileInfo
+      )
+      .subscribe((res) => {
+        res
+      });
+    }
+    
 }
 

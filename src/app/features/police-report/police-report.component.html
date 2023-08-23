@@ -262,11 +262,15 @@
                                 <button mat-icon-button matSuffix (click)="fileInput.click()">
                                     <mat-icon>attach_file</mat-icon>
                                 </button>
-                                <input type="text" readonly matInput formControlName="display" />
+                                <input type="text" readonly matInput formControlName="crashNarrativeDisplay" />
                                 <input type="file" multiple hidden #fileInput (change)="onFileSelect($event)" />
                             </mat-form-field>
-                            <div style="margin-top: 2%;" fxLayoutAlign="center center">
-                                    <img [src]="url" *ngIf="format==='image' && url" height="500" width="800">
+                            <div style="margin-top: 2%;" fxLayoutAlign="center center" >
+                                <img [src]="url" *ngIf="format==='image' && url" height="500" width="800">
+                            </div>
+                            <div style="margin-top: 2%;" fxLayoutAlign="center center" >
+                                <img [src]="crashNarrativeImage" *ngIf="crashNarrativeImage"  alt="Image Not Found" height="500"
+                                    width="800">
                             </div>
 
                         </mat-expansion-panel>
