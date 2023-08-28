@@ -1870,12 +1870,12 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
     });
     this.httpService.updatePoliceReport(request).subscribe(
       (res) => {
-                if (res.result === 'Success') {
+          if (res.result === 'Success') {
           Swal.fire({
             icon: 'success',
             text: 'Police Report details updated  succcessfully!',
           });
-          this.uploadTonTowReports(res.data.tonTowRptId);
+          if(this.fileInfo) this.uploadTonTowReports(res.data.tonTowRptId);
           setTimeout(() => {
           this.onClickOfAddAndUpdateClearFields();
           window.location.reload();
@@ -2644,7 +2644,6 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   onFileSelect(event: any) {
-    debugger
     const fileExt = this.isFileAllowed(event.target.files[0].name);
     const fileSize = this.isFileSizeAllowed(event.target.files[0].size);
     if (fileExt && fileSize) {
@@ -2682,7 +2681,6 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   uploadTonTowReports(tonTowRptId:number) {
-    debugger
     this.httpService
       .uploadTonTowReports(
         tonTowRptId,
