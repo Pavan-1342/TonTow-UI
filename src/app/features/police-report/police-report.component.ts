@@ -1261,8 +1261,9 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       this.httpService
         .getUserPoliceReportByID(this.viewReportID)
         .subscribe((res: any) => {
-          this.viewReportDetails = res;
+                    this.viewReportDetails = res;
           this.tonTowReport.patchValue(this.viewReportDetails.jobNum);
+          let fileObject = this.viewReportDetails?.tonTowFileUploads.find((element:any) => { return element.fileType === "TonTowReport-CrashNarrative" && element.deleted === false })
           this.policeReportForm_1.patchValue({
             dateOfCrash: this.viewReportDetails.dateOfCrash,
             timeOfCrash: this.viewReportDetails.timeOfCrash,
@@ -1305,7 +1306,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
             localPolice: this.viewReportDetails.localPolice,
             mbtaPolice: this.viewReportDetails.mbtaPolice,
             campusPolice: this.viewReportDetails.campusPolice,
-            crashNarrativeDisplay : this.viewReportDetails.tonTowFileUploads[2]?.fileName,
+            crashNarrativeDisplay : fileObject?.fileName,
           });
           this.viewReportDetails.policeReportVehicleDtl.forEach(
             (object: any) => {
@@ -1480,7 +1481,6 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
             }
           );
           this.tonTowReport.disable();
-          let fileObject = this.viewReportDetails?.tonTowFileUploads.find((element:any) => { return element.fileType === "TonTowReport-CrashNarrative" })
           if(fileObject) this.crashNarrativeImage = 'data:image/jpeg;base64, ' + fileObject?.fileBytes
         });
 
