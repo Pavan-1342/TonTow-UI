@@ -739,13 +739,13 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
     if (policeReportForm2Errors.length !== 0) {
       errorsString =
         errorsString +
-        '<br><b>Vehicle 1: </b><br>' +
+        '<br><b>South Coast Customer: </b><br>' +
         policeReportForm2Errors.join(',\n');
     }
     if (policeReportForm3Errors.length !== 0) {
       errorsString =
         errorsString +
-        '<b><br>Vehicle 2: </b><br>' +
+        '<b><br>Other Party: </b><br>' +
         policeReportForm3Errors.join(',\n');
     }
     // if (witnessFormErrors.length !== 0) {
