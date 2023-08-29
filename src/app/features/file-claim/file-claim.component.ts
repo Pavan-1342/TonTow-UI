@@ -173,7 +173,7 @@ export class FileClaimComponent implements OnInit, AfterViewInit {
           if (res) {
             Swal.fire({
               icon: 'success',
-              text: 'FIle Claim details added  succcessfully!',
+              text: 'File Claim details added  succcessfully!',
             });
             this.getAllFileClaims();
             this.myNgForm.resetForm();

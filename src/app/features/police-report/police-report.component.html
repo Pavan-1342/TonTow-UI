@@ -11,7 +11,8 @@
         </mat-form-field>
         <mat-form-field class="example-full-width" appearance="outline">
             <mat-label class="fileClaim-label">Phone</mat-label>
-            <input matInput placeholder="Please enter phone number" [formControl]="phone" (keypress)="numberOnly($event)">
+            <input matInput placeholder="Please enter phone number" [formControl]="phone"
+                (keypress)="numberOnly($event)">
         </mat-form-field>
         <button mat-raised-button color="primary" style="margin-top: 0.7%;" (click)="checkDuplicatePoliceReport()"
             *ngIf="!showUpdateRecordButton">Submit</button>
@@ -38,16 +39,17 @@
                 <div fxLayout="row" fxLayout.md="column" fxLayout.lg="column" class="example-form" style="margin-top:1%"
                     fxFlex>
                     <mat-accordion class="example-headers-align" multi>
-                        <mat-expansion-panel>
+                        <mat-expansion-panel [expanded]="true">
                             <mat-expansion-panel-header>
-                                <mat-panel-title>
+                                <mat-panel-title class="panel-title">
                                     Basic Info
                                 </mat-panel-title>
                             </mat-expansion-panel-header>
                             <div fxLayout="row wrap" fxLayoutGap="15px" fxLayoutAlign="start center">
                                 <mat-form-field class="example-full-width" appearance="outline">
                                     <mat-label>Date of Crash</mat-label>
-                                    <input matInput [matDatepicker]="picker" [max]="today" (paste)="preventPaste($event)" (keydown.space)="$event.preventDefault()"
+                                    <input matInput [matDatepicker]="picker" [max]="today"
+                                        (paste)="preventPaste($event)" (keydown.space)="$event.preventDefault()"
                                         formControlName="dateOfCrash" (dateChange)="formatDate($event)">
                                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                     <mat-datepicker-toggle matSuffix (click)="clearStartDate()">
@@ -62,8 +64,8 @@
                                 </mat-form-field>
                                 <mat-form-field class="example-full-width" appearance="outline">
                                     <mat-label>City/Town</mat-label>
-                                    <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="cityTown"
-                                        maxlength="20">
+                                    <input matInput placeholder="" (paste)="preventPaste($event)"
+                                        formControlName="cityTown" maxlength="20">
                                 </mat-form-field>
                                 <mat-form-field class="example-full-width" appearance="outline">
                                     <mat-label>Vehicles Numbers</mat-label>
@@ -80,8 +82,8 @@
                                 <mat-form-field class="example-full-width" appearance="outline"
                                     *ngIf="showNonMandetoryFields || (viewReportDetails&&viewReportDetails.speedLimit)">
                                     <mat-label>Speed Limit</mat-label>
-                                    <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="speedLimit"
-                                        (keypress)="numberOnly($event)" maxlength="4">
+                                    <input matInput placeholder="" (paste)="preventPaste($event)"
+                                        formControlName="speedLimit" (keypress)="numberOnly($event)" maxlength="4">
                                 </mat-form-field>
                                 <mat-form-field class="example-full-width" appearance="outline"
                                     *ngIf="showNonMandetoryFields || (viewReportDetails&&viewReportDetails.latitude)">
@@ -113,9 +115,9 @@
                             </div>
                             <!-- </div> -->
                         </mat-expansion-panel>
-                        <mat-expansion-panel>
+                        <mat-expansion-panel [expanded]="true">
                             <mat-expansion-panel-header>
-                                <mat-panel-title>
+                                <mat-panel-title class="panel-title">
                                     Location
                                 </mat-panel-title>
                             </mat-expansion-panel-header>
@@ -142,7 +144,7 @@
                                 </mat-form-field>
                                 <mat-form-field class="roadway-full-width" appearance="outline">
                                     <mat-label>Name of Roadway/Street</mat-label>
-                                    <input matInput placeholder=""  formControlName="roadway_1" maxlength="50">
+                                    <input matInput placeholder="" formControlName="roadway_1" maxlength="50">
                                 </mat-form-field>
                                 <mat-form-field class="route-full-width" appearance="outline">
                                     <mat-label>Route</mat-label>
@@ -244,17 +246,33 @@
                             <!-- </div> -->
 
                         </mat-expansion-panel>
-                        <mat-expansion-panel>
+                        <mat-expansion-panel [expanded]="true">
                             <mat-expansion-panel-header>
-                                <mat-panel-title>
+                                <mat-panel-title class="panel-title">
                                     Crash Narrative
                                 </mat-panel-title>
                             </mat-expansion-panel-header>
-                            <mat-form-field class="narrative-full-width">
+                            <!-- <mat-form-field class="narrative-full-width">
                                 <mat-label>comment</mat-label>
                                 <textarea matInput placeholder="" formControlName="crashNarrative"
                                     maxlength="250"></textarea>
+                            </mat-form-field> -->
+                            <mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label class="fileClaim-label">Browse</mat-label>
+                                <button mat-icon-button matSuffix (click)="fileInput.click()">
+                                    <mat-icon>attach_file</mat-icon>
+                                </button>
+                                <input type="text" readonly matInput formControlName="crashNarrativeDisplay" />
+                                <input type="file" multiple hidden #fileInput (change)="onFileSelect($event)" />
                             </mat-form-field>
+                            <div style="margin-top: 2%;" fxLayoutAlign="center center" >
+                                <img [src]="url" *ngIf="format==='image' && url" height="500" width="800">
+                            </div>
+                            <div style="margin-top: 2%;" fxLayoutAlign="center center" >
+                                <img [src]="crashNarrativeImage" *ngIf="crashNarrativeImage"  alt="Image Not Found" height="500"
+                                    width="800">
+                            </div>
+
                         </mat-expansion-panel>
                     </mat-accordion>
                 </div>
@@ -263,13 +281,13 @@
         </mat-step>
         <mat-step>
             <form [formGroup]="policeReportForm_2">
-                <ng-template matStepLabel>Vehicle 1</ng-template>
+                <ng-template matStepLabel>South Coast Customer</ng-template>
                 <div fxLayout="row" fxLayout.md="column" fxLayout.lg="column" class="example-form" style="margin-top:1%"
                     fxFlex>
                     <mat-accordion class="example-headers-align" multi>
-                        <mat-expansion-panel>
+                        <mat-expansion-panel [expanded]="true">
                             <mat-expansion-panel-header>
-                                <mat-panel-title>
+                                <mat-panel-title class="panel-title">
                                     Please Select one of the following
                                 </mat-panel-title>
                             </mat-expansion-panel-header>
@@ -283,35 +301,38 @@
                                     class="checkbox-vehicle">Moped</mat-checkbox>
                                 <mat-form-field class="example-full-width" appearance="outline">
                                     <mat-label>Occupants </mat-label>
-                                    <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="veh1Occupants"
-                                        (keypress)="numberOnly($event)" maxlength="4">
+                                    <input matInput placeholder="" (paste)="preventPaste($event)"
+                                        formControlName="veh1Occupants" (keypress)="numberOnly($event)" maxlength="4">
                                 </mat-form-field>
                                 <mat-form-field class="example-full-width" appearance="outline">
                                     <mat-label>Crash Report ID</mat-label>
-                                    <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="crashreportId" maxlength="15">
+                                    <input matInput placeholder="" (paste)="preventPaste($event)"
+                                        formControlName="crashreportId" maxlength="15">
                                 </mat-form-field>
                             </div>
                         </mat-expansion-panel>
-                        <mat-expansion-panel>
+                        <mat-expansion-panel [expanded]="true">
                             <mat-expansion-panel-header>
-                                <mat-panel-title>
+                                <mat-panel-title class="panel-title">
                                     Vehicle 1
                                 </mat-panel-title>
                             </mat-expansion-panel-header>
                             <div fxLayout="row wrap" fxLayoutGap="15px" fxLayoutAlign="start center">
                                 <mat-form-field class="vehicle-full-width" appearance="outline">
                                     <mat-label>Licence</mat-label>
-                                    <input matInput placeholder="" (paste)="preventPaste($event)" (keypress)="omit_special_char($event)" (keydown.space)="$event.preventDefault()" appearance="outline" formControlName="veh1License"
-                                        maxlength="20">
+                                    <input matInput placeholder="" (paste)="preventPaste($event)"
+                                        (keypress)="omit_special_char($event)" (keydown.space)="$event.preventDefault()"
+                                        appearance="outline" formControlName="veh1License" maxlength="20">
                                 </mat-form-field>
                                 <mat-form-field class="vehicle-full-width" appearance="outline">
-                                    <mat-label>Street</mat-label>
-                                    <input matInput placeholder="" formControlName="veh1Street" maxlength="20">
+                                    <mat-label>State</mat-label>
+                                    <input matInput placeholder="" formControlName="veh1State" maxlength="20">
                                 </mat-form-field>
                                 <mat-form-field class="vehicle-full-width" appearance="outline">
                                     <mat-label>DOB/Age</mat-label>
-                                    <input matInput [matDatepicker]="picker1" [max]="today" (keydown.space)="$event.preventDefault()"
-                                        formControlName="veh1DOB" (paste)="preventPaste($event)" (dateChange)="formatDateInVehicle1($event)">
+                                    <input matInput [matDatepicker]="picker1" [max]="today"
+                                        (keydown.space)="$event.preventDefault()" formControlName="veh1DOB"
+                                        (paste)="preventPaste($event)" (dateChange)="formatDateInVehicle1($event)">
                                     <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                                     <mat-datepicker-toggle matSuffix (click)="clearVehicle_1Date()">
                                         <mat-icon matDatepickerToggleIcon>clear</mat-icon>
@@ -320,11 +341,14 @@
                                 </mat-form-field>
                                 <mat-form-field class="vehicle-full-width" appearance="outline">
                                     <mat-label>Sex</mat-label>
-                                    <input matInput placeholder=""  appAlphabetOnly (paste)="preventPaste($event)" formControlName="veh1Sex" maxlength="2">
+                                    <input matInput placeholder="" appAlphabetOnly (paste)="preventPaste($event)"
+                                        formControlName="veh1Sex" maxlength="2">
                                 </mat-form-field>
                                 <mat-form-field class="vehicle-full-width" appearance="outline">
                                     <mat-label>Lic Class</mat-label>
-                                    <input matInput placeholder="" (keypress)="omit_special_char($event)" (paste)="preventPaste($event)" value="" formControlName="veh1LicClass" maxlength="10">
+                                    <input matInput placeholder="" (keypress)="omit_special_char($event)"
+                                        (paste)="preventPaste($event)" value="" formControlName="veh1LicClass"
+                                        maxlength="10">
                                 </mat-form-field>
                                 <mat-form-field class="vehicle-full-width" appearance="outline">
                                     <mat-label>Lic Restrictions</mat-label>
@@ -359,13 +383,12 @@
                                 </mat-form-field>
                                 <mat-form-field class="vehicle-full-width" appearance="outline">
                                     <mat-label>City</mat-label>
-                                    <input  matInput (paste)="preventPaste($event)" placeholder="" formControlName="veh1OperatorCity"
-                                        maxlength="20">
+                                    <input matInput (paste)="preventPaste($event)" placeholder=""
+                                        formControlName="veh1OperatorCity" maxlength="20">
                                 </mat-form-field>
                                 <mat-form-field class="vehicle-full-width" appearance="outline">
                                     <mat-label>State</mat-label>
-                                    <input matInput  placeholder="" formControlName="veh1OperatorState"
-                                        maxlength="20">
+                                    <input matInput placeholder="" formControlName="veh1OperatorState" maxlength="20">
                                 </mat-form-field>
                                 <mat-form-field class="vehicle-full-width" appearance="outline">
                                     <mat-label>Zip</mat-label>
@@ -391,8 +414,9 @@
                                 </mat-radio-group>
                                 <mat-form-field class="vehicle-full-width" appearance="outline">
                                     <mat-label>Responding to Emergency</mat-label>
-                                    <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="veh1RespondingToEmergency"
-                                        (keypress)="numberOnly($event)" maxlength="10">
+                                    <input matInput placeholder="" (paste)="preventPaste($event)"
+                                        formControlName="veh1RespondingToEmergency" (keypress)="numberOnly($event)"
+                                        maxlength="10">
                                 </mat-form-field>
                                 <mat-checkbox color="primary" formControlName="veh1CitationIssued"
                                     class="checkbox-vehicle">Citation Issued</mat-checkbox>
@@ -429,7 +453,8 @@
                                 </mat-form-field>
                                 <mat-form-field class="vehicle-full-width" appearance="outline">
                                     <mat-label>Vehicle Year</mat-label>
-                                    <input matInput placeholder=""  (keypress)="numberOnly($event)" (paste)="preventPaste($event)" formControlName="veh1VehicleYear" maxlength="10">
+                                    <input matInput placeholder="" (keypress)="numberOnly($event)"
+                                        (paste)="preventPaste($event)" formControlName="veh1VehicleYear" maxlength="10">
                                 </mat-form-field>
                                 <mat-form-field class="vehicle-full-width" appearance="outline">
                                     <mat-label>Vehicle Make</mat-label>
@@ -437,8 +462,9 @@
                                 </mat-form-field>
                                 <mat-form-field class="vehicle-full-width" appearance="outline">
                                     <mat-label>Vehicle Config</mat-label>
-                                    <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="veh1VehicleConfig"
-                                        (keypress)="numberOnly($event)" maxlength="10">
+                                    <input matInput placeholder="" (paste)="preventPaste($event)"
+                                        formControlName="veh1VehicleConfig" (keypress)="numberOnly($event)"
+                                        maxlength="10">
                                 </mat-form-field>
                                 <mat-form-field class="vehicle-full-width" appearance="outline">
                                     <mat-label>Owner Last Name</mat-label>
@@ -460,23 +486,23 @@
                                 </mat-form-field>
                                 <mat-form-field class="vehicle-full-width" appearance="outline">
                                     <mat-label>City</mat-label>
-                                    <input matInput  (paste)="preventPaste($event)" placeholder="" formControlName="veh1OwnerCity"
-                                        maxlength="20">
+                                    <input matInput (paste)="preventPaste($event)" placeholder=""
+                                        formControlName="veh1OwnerCity" maxlength="20">
                                 </mat-form-field>
                                 <mat-form-field class="vehicle-full-width" appearance="outline">
                                     <mat-label>State</mat-label>
-                                    <input matInput placeholder="" formControlName="veh1OwnerState"
-                                        maxlength="20">
+                                    <input matInput placeholder="" formControlName="veh1OwnerState" maxlength="20">
                                 </mat-form-field>
                                 <mat-form-field class="vehicle-full-width" appearance="outline">
                                     <mat-label>Zip</mat-label>
-                                    <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="veh1OwnerZip"
-                                        (keypress)="numberOnly($event)" maxlength="15">
+                                    <input matInput placeholder="" (paste)="preventPaste($event)"
+                                        formControlName="veh1OwnerZip" (keypress)="numberOnly($event)" maxlength="15">
                                 </mat-form-field>
                                 <mat-form-field class="vehicle-full-width" appearance="outline">
                                     <mat-label>Vehicle Action Prior to Crash</mat-label>
-                                    <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="veh1VehActionPriorToCrash"
-                                        (keypress)="numberOnly($event)" maxlength="10">
+                                    <input matInput placeholder="" (paste)="preventPaste($event)"
+                                        formControlName="veh1VehActionPriorToCrash" (keypress)="numberOnly($event)"
+                                        maxlength="10">
                                 </mat-form-field>
                                 <mat-form-field class="event-full-width" appearance="outline">
                                     <mat-label>EventSequence</mat-label>
@@ -502,23 +528,27 @@
                                 <!-- <div fxLayout="row wrap" fxLayoutGap="15px" fxLayoutAlign="start center"> -->
                                 <mat-form-field class="vehicle-full-width" appearance="outline">
                                     <mat-label>Most Harmful Event</mat-label>
-                                    <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="veh1MostHarmfulEvent"
-                                        (keypress)="numberOnly($event)" maxlength="10">
+                                    <input matInput placeholder="" (paste)="preventPaste($event)"
+                                        formControlName="veh1MostHarmfulEvent" (keypress)="numberOnly($event)"
+                                        maxlength="10">
                                 </mat-form-field>
                                 <mat-form-field class="vehicle-full-width" appearance="outline">
                                     <mat-label>Driver Contributing Code</mat-label>
-                                    <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="veh1DriverContributingCode1"
-                                        (keypress)="numberOnly($event)" maxlength="4">
+                                    <input matInput placeholder="" (paste)="preventPaste($event)"
+                                        formControlName="veh1DriverContributingCode1" (keypress)="numberOnly($event)"
+                                        maxlength="4">
                                 </mat-form-field>
                                 <mat-form-field class="vehicle-full-width" appearance="outline">
                                     <mat-label>Driver Contributing Code</mat-label>
-                                    <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="veh1DriverContributingCode2"
-                                        (keypress)="numberOnly($event)" maxlength="4">
+                                    <input matInput placeholder="" (paste)="preventPaste($event)"
+                                        formControlName="veh1DriverContributingCode2" (keypress)="numberOnly($event)"
+                                        maxlength="4">
                                 </mat-form-field>
                                 <mat-form-field class="vehicle-full-width" appearance="outline">
                                     <mat-label>Drive Distracted By</mat-label>
-                                    <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="veh1DriverDistractedBy"
-                                        (keypress)="numberOnly($event)" maxlength="15">
+                                    <input matInput placeholder="" (paste)="preventPaste($event)"
+                                        formControlName="veh1DriverDistractedBy" (keypress)="numberOnly($event)"
+                                        maxlength="15">
                                 </mat-form-field>
                                 <mat-form-field class="vehicle-full-width" appearance="outline">
                                     <mat-label>Damaged Area Code</mat-label>
@@ -551,7 +581,8 @@
                                             </mat-form-field> -->
                                 <mat-form-field class="vehicle-full-width" appearance="outline">
                                     <mat-label>Type of Test</mat-label>
-                                    <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="veh1TypeOfTest" maxlength="10">
+                                    <input matInput placeholder="" (paste)="preventPaste($event)"
+                                        formControlName="veh1TypeOfTest" maxlength="10">
                                 </mat-form-field>
                                 <mat-form-field class="vehicle-full-width" appearance="outline">
                                     <mat-label>BAC Test Result</mat-label>
@@ -576,7 +607,7 @@
                         </mat-expansion-panel>
                         <mat-expansion-panel *ngIf="showVehicle1OperatorDetails">
                             <mat-expansion-panel-header>
-                                <mat-panel-title>
+                                <mat-panel-title class="panel-title">
                                     Operator Details
                                 </mat-panel-title>
                             </mat-expansion-panel-header>
@@ -612,8 +643,8 @@
                                         </mat-form-field>
                                         <mat-form-field class="vehicle-full-width" appearance="outline">
                                             <mat-label>City</mat-label>
-                                            <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="city"
-                                                maxlength="20">
+                                            <input matInput placeholder="" (paste)="preventPaste($event)"
+                                                formControlName="city" maxlength="20">
                                         </mat-form-field>
                                         <mat-form-field class="vehicle-full-width" appearance="outline">
                                             <mat-label>State</mat-label>
@@ -622,12 +653,13 @@
                                         </mat-form-field>
                                         <mat-form-field class="vehicle-full-width" appearance="outline">
                                             <mat-label>Zip</mat-label>
-                                            <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="zip"
-                                                (keypress)="numberOnly($event)" maxlength="15">
+                                            <input matInput placeholder="" (paste)="preventPaste($event)"
+                                                formControlName="zip" (keypress)="numberOnly($event)" maxlength="15">
                                         </mat-form-field>
                                         <mat-form-field class="operator-full-width" appearance="outline">
                                             <mat-label>DOB/Age</mat-label>
-                                            <input matInput formControlName="dob" (paste)="preventPaste($event)" [matDatepicker]="picker2" [max]="today"
+                                            <input matInput formControlName="dob" (paste)="preventPaste($event)"
+                                                [matDatepicker]="picker2" [max]="today"
                                                 (keydown.space)="$event.preventDefault()"
                                                 (dateChange)="formatDateInVehicle1Operator($event,i)">
                                             <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
@@ -638,42 +670,50 @@
                                         </mat-form-field>
                                         <mat-form-field class="operator-full-width" appearance="outline">
                                             <mat-label>Sex</mat-label>
-                                            <input matInput appAlphabetOnly (paste)="preventPaste($event)" placeholder="" formControlName="sex" maxlength="2">
+                                            <input matInput appAlphabetOnly (paste)="preventPaste($event)"
+                                                placeholder="" formControlName="sex" maxlength="2">
                                         </mat-form-field>
                                         <mat-form-field class="operator-full-width" appearance="outline">
                                             <mat-label>Seat Position</mat-label>
-                                            <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="seatPosition"
-                                                (keypress)="numberOnly($event)" maxlength="4">
+                                            <input matInput placeholder="" (paste)="preventPaste($event)"
+                                                formControlName="seatPosition" (keypress)="numberOnly($event)"
+                                                maxlength="4">
                                         </mat-form-field>
                                         <mat-form-field class="operator-full-width" appearance="outline">
                                             <mat-label>Safety System</mat-label>
-                                            <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="safetySystem"
-                                                (keypress)="numberOnly($event)" maxlength="4">
+                                            <input matInput placeholder="" (paste)="preventPaste($event)"
+                                                formControlName="safetySystem" (keypress)="numberOnly($event)"
+                                                maxlength="4">
                                         </mat-form-field>
                                         <mat-form-field class="operator-full-width" appearance="outline">
                                             <mat-label>Air bag Status</mat-label>
-                                            <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="airbagStatus"
-                                                (keypress)="numberOnly($event)" maxlength="4">
+                                            <input matInput placeholder="" (paste)="preventPaste($event)"
+                                                formControlName="airbagStatus" (keypress)="numberOnly($event)"
+                                                maxlength="4">
                                         </mat-form-field>
                                         <mat-form-field class="operator-full-width" appearance="outline">
                                             <mat-label>Eject Code</mat-label>
-                                            <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="ejectCode"
-                                                (keypress)="numberOnly($event)" maxlength="4">
+                                            <input matInput placeholder="" (paste)="preventPaste($event)"
+                                                formControlName="ejectCode" (keypress)="numberOnly($event)"
+                                                maxlength="4">
                                         </mat-form-field>
                                         <mat-form-field class="operator-full-width" appearance="outline">
                                             <mat-label>Trap Code</mat-label>
-                                            <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="trapCode"
-                                                (keypress)="numberOnly($event)" maxlength="4">
+                                            <input matInput placeholder="" (paste)="preventPaste($event)"
+                                                formControlName="trapCode" (keypress)="numberOnly($event)"
+                                                maxlength="4">
                                         </mat-form-field>
                                         <mat-form-field class="operator-full-width" appearance="outline">
                                             <mat-label>Injury Status</mat-label>
-                                            <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="injuryStatus"
-                                                (keypress)="numberOnly($event)" maxlength="4">
+                                            <input matInput placeholder="" (paste)="preventPaste($event)"
+                                                formControlName="injuryStatus" (keypress)="numberOnly($event)"
+                                                maxlength="4">
                                         </mat-form-field>
                                         <mat-form-field class="operator-full-width" appearance="outline">
                                             <mat-label>Transp Code</mat-label>
-                                            <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="transpCode"
-                                                (keypress)="numberOnly($event)" maxlength="4">
+                                            <input matInput placeholder="" (paste)="preventPaste($event)"
+                                                formControlName="transpCode" (keypress)="numberOnly($event)"
+                                                maxlength="4">
                                         </mat-form-field>
                                         <mat-form-field class="operator-full-width" appearance="outline">
                                             <mat-label>Medical Facility</mat-label>
@@ -693,11 +733,11 @@
         </mat-step>
         <mat-step>
             <form [formGroup]="policeReportForm_3">
-                <ng-template matStepLabel>Vehicle 2</ng-template>
+                <ng-template matStepLabel>Other Party</ng-template>
                 <mat-accordion class="example-headers-align" multi>
-                    <mat-expansion-panel>
+                    <mat-expansion-panel [expanded]="true">
                         <mat-expansion-panel-header>
-                            <mat-panel-title name="veh2Header">
+                            <mat-panel-title name="veh2Header" class="panel-title">
                                 Please Select one of the following
                             </mat-panel-title>
                         </mat-expansion-panel-header>
@@ -708,8 +748,8 @@
                             <mat-checkbox color="primary" class="checkbox-vehicle">Non-Motorist</mat-checkbox>
                             <mat-form-field class="vehicle-full-width" appearance="outline">
                                 <mat-label>Occupants </mat-label>
-                                <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="veh2Occupants"
-                                    (keypress)="numberOnly($event)" maxlength="4">
+                                <input matInput placeholder="" (paste)="preventPaste($event)"
+                                    formControlName="veh2Occupants" (keypress)="numberOnly($event)" maxlength="4">
                             </mat-form-field>
                             <mat-form-field class="vehicle-full-width" appearance="outline">
                                 <mat-label>Type</mat-label>
@@ -734,9 +774,9 @@
 
                         </div>
                     </mat-expansion-panel>
-                    <mat-expansion-panel>
+                    <mat-expansion-panel [expanded]="true">
                         <mat-expansion-panel-header>
-                            <mat-panel-title>
+                            <mat-panel-title class="panel-title">
                                 Vehicle 2
                             </mat-panel-title>
                         </mat-expansion-panel-header>
@@ -746,13 +786,14 @@
                                 <input matInput placeholder="" formControlName="veh2License" maxlength="20">
                             </mat-form-field>
                             <mat-form-field class="vehicle-full-width" appearance="outline">
-                                <mat-label>Street</mat-label>
-                                <input matInput placeholder="" formControlName="veh2Street" maxlength="20">
+                                <mat-label>State</mat-label>
+                                <input matInput placeholder="" formControlName="veh2State" maxlength="20">
                             </mat-form-field>
                             <mat-form-field class="vehicle-full-width" appearance="outline">
                                 <mat-label>DOB/Age</mat-label>
-                                <input matInput [matDatepicker]="picker3" (paste)="preventPaste($event)" [max]="today" (keydown.space)="$event.preventDefault()"
-                                    formControlName="veh2DOB" (dateChange)="formatDateInVehicle2($event)">
+                                <input matInput [matDatepicker]="picker3" (paste)="preventPaste($event)" [max]="today"
+                                    (keydown.space)="$event.preventDefault()" formControlName="veh2DOB"
+                                    (dateChange)="formatDateInVehicle2($event)">
                                 <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
                                 <mat-datepicker-toggle matSuffix (click)="clearVehicle_2Date()">
                                     <mat-icon matDatepickerToggleIcon>clear</mat-icon>
@@ -761,12 +802,13 @@
                             </mat-form-field>
                             <mat-form-field class="vehicle-full-width" appearance="outline">
                                 <mat-label>Sex</mat-label>
-                                <input matInput appAlphabetOnly (paste)="preventPaste($event)" placeholder="" formControlName="veh2Sex" maxlength="2">
+                                <input matInput appAlphabetOnly (paste)="preventPaste($event)" placeholder=""
+                                    formControlName="veh2Sex" maxlength="2">
                             </mat-form-field>
                             <mat-form-field class="vehicle-full-width" appearance="outline">
                                 <mat-label>Lic Class</mat-label>
-                                <input matInput placeholder="" (keypress)="omit_special_char($event)" (paste)="preventPaste($event)" formControlName="veh2LicClass" maxlength="10"
-                                >
+                                <input matInput placeholder="" (keypress)="omit_special_char($event)"
+                                    (paste)="preventPaste($event)" formControlName="veh2LicClass" maxlength="10">
                             </mat-form-field>
                             <mat-form-field class="vehicle-full-width" appearance="outline">
                                 <mat-label>Lic Restrictions</mat-label>
@@ -795,18 +837,18 @@
                             </mat-form-field>
                             <mat-form-field class="vehicle-full-width" appearance="outline">
                                 <mat-label>City</mat-label>
-                                <input matInput placeholder=""  (paste)="preventPaste($event)" formControlName="veh2OperatorCity"
-                                    maxlength="20">
+                                <input matInput placeholder="" (paste)="preventPaste($event)"
+                                    formControlName="veh2OperatorCity" maxlength="20">
                             </mat-form-field>
                             <mat-form-field class="vehicle-full-width" appearance="outline">
                                 <mat-label>State</mat-label>
-                                <input matInput  placeholder="" (paste)="preventPaste($event)" formControlName="veh2OperatorState2"
-                                    maxlength="20">
+                                <input matInput placeholder="" (paste)="preventPaste($event)"
+                                    formControlName="veh2OperatorState2" maxlength="20">
                             </mat-form-field>
                             <mat-form-field class="vehicle-full-width" appearance="outline">
                                 <mat-label>Zip</mat-label>
-                                <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="veh2OperatorZip"
-                                    (keypress)="numberOnly($event)" maxlength="15">
+                                <input matInput placeholder="" (paste)="preventPaste($event)"
+                                    formControlName="veh2OperatorZip" (keypress)="numberOnly($event)" maxlength="15">
                             </mat-form-field>
                             <mat-form-field class="company-full-width" appearance="outline">
                                 <mat-label>Insurance Company</mat-label>
@@ -826,11 +868,12 @@
 
                             <mat-form-field class="vehicle-full-width" appearance="outline">
                                 <mat-label>Responding to Emergency</mat-label>
-                                <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="veh2RespondingToEmergency"
-                                    (keypress)="numberOnly($event)" maxlength="10">
+                                <input matInput placeholder="" (paste)="preventPaste($event)"
+                                    formControlName="veh2RespondingToEmergency" (keypress)="numberOnly($event)"
+                                    maxlength="10">
                             </mat-form-field>
                             <mat-checkbox color="primary" formControlName="veh2CitationIssued"
-                                    class="checkbox-vehicle">Citation Issued</mat-checkbox>
+                                class="checkbox-vehicle">Citation Issued</mat-checkbox>
                             <mat-form-field class="vehicle-full-width" appearance="outline">
                                 <mat-label>Viol.1</mat-label>
                                 <input matInput placeholder="" formControlName="veh2Viol1" maxlength="20">
@@ -857,12 +900,12 @@
                             </mat-form-field>
                             <mat-form-field class="vehicle-full-width" appearance="outline">
                                 <mat-label>Reg State</mat-label>
-                                <input matInput placeholder=""  formControlName="veh2RegState"
-                                    maxlength="20">
+                                <input matInput placeholder="" formControlName="veh2RegState" maxlength="20">
                             </mat-form-field>
                             <mat-form-field class="vehicle-full-width" appearance="outline">
                                 <mat-label>Vehicle Year</mat-label>
-                                <input matInput placeholder=""  (keypress)="numberOnly($event)" (paste)="preventPaste($event)" formControlName="veh2VehicleYear" maxlength="10">
+                                <input matInput placeholder="" (keypress)="numberOnly($event)"
+                                    (paste)="preventPaste($event)" formControlName="veh2VehicleYear" maxlength="10">
                             </mat-form-field>
                             <mat-form-field class="vehicle-full-width" appearance="outline">
                                 <mat-label>Vehicle Make</mat-label>
@@ -870,8 +913,8 @@
                             </mat-form-field>
                             <mat-form-field class="vehicle-full-width" appearance="outline">
                                 <mat-label>Vehicle Config</mat-label>
-                                <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="veh2VehicleConfig"
-                                    (keypress)="numberOnly($event)" maxlength="10">
+                                <input matInput placeholder="" (paste)="preventPaste($event)"
+                                    formControlName="veh2VehicleConfig" (keypress)="numberOnly($event)" maxlength="10">
                             </mat-form-field>
                             <mat-form-field class="vehicle-full-width" appearance="outline">
                                 <mat-label>Owner Last Name</mat-label>
@@ -891,23 +934,24 @@
                             </mat-form-field>
                             <mat-form-field class="vehicle-full-width" appearance="outline">
                                 <mat-label>City</mat-label>
-                                <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="veh2OwnerCity"
-                                    maxlength="20">
+                                <input matInput placeholder="" (paste)="preventPaste($event)"
+                                    formControlName="veh2OwnerCity" maxlength="20">
                             </mat-form-field>
                             <mat-form-field class="vehicle-full-width" appearance="outline">
                                 <mat-label>State</mat-label>
-                                <input matInput placeholder=""  (paste)="preventPaste($event)" formControlName="veh2OwnerState"
-                                    maxlength="20">
+                                <input matInput placeholder="" (paste)="preventPaste($event)"
+                                    formControlName="veh2OwnerState" maxlength="20">
                             </mat-form-field>
                             <mat-form-field class="vehicle-full-width" appearance="outline">
                                 <mat-label>Zip</mat-label>
-                                <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="veh2OwnerZip"
-                                    (keypress)="numberOnly($event)" maxlength="15">
+                                <input matInput placeholder="" (paste)="preventPaste($event)"
+                                    formControlName="veh2OwnerZip" (keypress)="numberOnly($event)" maxlength="15">
                             </mat-form-field>
                             <mat-form-field class="vehicle-full-width" appearance="outline">
                                 <mat-label>Vehicle Action Prior to Crash</mat-label>
-                                <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="veh2VehActionPriorToCrash"
-                                    (keypress)="numberOnly($event)" maxlength="10">
+                                <input matInput placeholder="" (paste)="preventPaste($event)"
+                                    formControlName="veh2VehActionPriorToCrash" (keypress)="numberOnly($event)"
+                                    maxlength="10">
                             </mat-form-field>
                             <mat-form-field class="event-full-width" appearance="outline">
                                 <mat-label>EventSequence</mat-label>
@@ -927,38 +971,45 @@
                             </mat-form-field>
                             <mat-form-field class="vehicle-full-width" appearance="outline">
                                 <mat-label>Most Harmful Event</mat-label>
-                                <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="veh2MostHarmfulEvent"
-                                    (keypress)="numberOnly($event)" maxlength="10">
+                                <input matInput placeholder="" (paste)="preventPaste($event)"
+                                    formControlName="veh2MostHarmfulEvent" (keypress)="numberOnly($event)"
+                                    maxlength="10">
                             </mat-form-field>
                             <mat-form-field class="vehicle-full-width" appearance="outline">
                                 <mat-label>Driver Contributing Code</mat-label>
-                                <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="veh2DriverContributingCode1"
-                                    (keypress)="numberOnly($event)" maxlength="4">
+                                <input matInput placeholder="" (paste)="preventPaste($event)"
+                                    formControlName="veh2DriverContributingCode1" (keypress)="numberOnly($event)"
+                                    maxlength="4">
                             </mat-form-field>
                             <mat-form-field class="vehicle-full-width" appearance="outline">
                                 <mat-label>Driver Contributing Code</mat-label>
-                                <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="veh2DriverContributingCode2"
-                                    (keypress)="numberOnly($event)" maxlength="4">
+                                <input matInput placeholder="" (paste)="preventPaste($event)"
+                                    formControlName="veh2DriverContributingCode2" (keypress)="numberOnly($event)"
+                                    maxlength="4">
                             </mat-form-field>
                             <mat-form-field class="vehicle-full-width" appearance="outline">
                                 <mat-label>Drive Distracted By</mat-label>
-                                <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="veh2DriverDistractedBy"
-                                    (keypress)="numberOnly($event)" maxlength="4">
+                                <input matInput placeholder="" (paste)="preventPaste($event)"
+                                    formControlName="veh2DriverDistractedBy" (keypress)="numberOnly($event)"
+                                    maxlength="4">
                             </mat-form-field>
                             <mat-form-field class="vehicle-full-width" appearance="outline">
                                 <mat-label>Damaged Area Code</mat-label>
-                                <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="veh2DamagedAreaCode1"
-                                    (keypress)="numberOnly($event)" maxlength="4">
+                                <input matInput placeholder="" (paste)="preventPaste($event)"
+                                    formControlName="veh2DamagedAreaCode1" (keypress)="numberOnly($event)"
+                                    maxlength="4">
                             </mat-form-field>
                             <mat-form-field class="vehicle-full-width" appearance="outline">
                                 <mat-label>Damaged Area Code</mat-label>
-                                <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="veh2DamagedAreaCode2"
-                                    (keypress)="numberOnly($event)" maxlength="4">
+                                <input matInput placeholder="" (paste)="preventPaste($event)"
+                                    formControlName="veh2DamagedAreaCode2" (keypress)="numberOnly($event)"
+                                    maxlength="4">
                             </mat-form-field>
                             <mat-form-field class="vehicle-full-width" appearance="outline">
                                 <mat-label>Damaged Area Code</mat-label>
-                                <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="veh2DamagedAreaCode3"
-                                    (keypress)="numberOnly($event)" maxlength="4">
+                                <input matInput placeholder="" (paste)="preventPaste($event)"
+                                    formControlName="veh2DamagedAreaCode3" (keypress)="numberOnly($event)"
+                                    maxlength="4">
                             </mat-form-field>
                             <!-- <mat-form-field class="vehicle-full-width" appearance="outline">
                                 <mat-label>Address</mat-label>
@@ -974,31 +1025,35 @@
                             </mat-form-field> -->
                             <mat-form-field class="vehicle-full-width" appearance="outline">
                                 <mat-label>Type of Test</mat-label>
-                                <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="veh2TypeOfTest" maxlength="10">
+                                <input matInput placeholder="" (paste)="preventPaste($event)"
+                                    formControlName="veh2TypeOfTest" maxlength="10">
                             </mat-form-field>
                             <mat-form-field class="vehicle-full-width" appearance="outline">
                                 <mat-label>BAC Test Result</mat-label>
-                                <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="veh2BACTestResult" maxlength="10">
+                                <input matInput placeholder="" (paste)="preventPaste($event)"
+                                    formControlName="veh2BACTestResult" maxlength="10">
                             </mat-form-field>
                             <mat-form-field class="vehicle-full-width" appearance="outline">
                                 <mat-label>Suspected Alcohol</mat-label>
-                                <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="veh2SuspectedAlcohol" maxlength="10">
+                                <input matInput placeholder="" (paste)="preventPaste($event)"
+                                    formControlName="veh2SuspectedAlcohol" maxlength="10">
                             </mat-form-field>
                             <mat-form-field class="vehicle-full-width" appearance="outline">
                                 <mat-label>Suspected Drug</mat-label>
-                                <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="veh2SuspectedDrug" maxlength="10">
+                                <input matInput placeholder="" (paste)="preventPaste($event)"
+                                    formControlName="veh2SuspectedDrug" maxlength="10">
                             </mat-form-field>
                             <mat-form-field class="vehicle-full-width" appearance="outline">
                                 <mat-label>Towed From Scene</mat-label>
-                                <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="veh2TowedFromScene"
-                                    (keypress)="numberOnly($event)" maxlength="10">
+                                <input matInput placeholder="" (paste)="preventPaste($event)"
+                                    formControlName="veh2TowedFromScene" (keypress)="numberOnly($event)" maxlength="10">
                             </mat-form-field>
 
                         </div>
                     </mat-expansion-panel>
                     <mat-expansion-panel *ngIf="showVehicle2OperatorDetails">
                         <mat-expansion-panel-header>
-                            <mat-panel-title>
+                            <mat-panel-title class="panel-title">
                                 Operator Details
                             </mat-panel-title>
                         </mat-expansion-panel-header>
@@ -1033,13 +1088,13 @@
                                     </mat-form-field>
                                     <mat-form-field class="operator-full-width" appearance="outline">
                                         <mat-label>City</mat-label>
-                                        <input matInput (paste)="preventPaste($event)" placeholder="" formControlName="city"
-                                            maxlength="20">
+                                        <input matInput (paste)="preventPaste($event)" placeholder=""
+                                            formControlName="city" maxlength="20">
                                     </mat-form-field>
                                     <mat-form-field class="operator-full-width" appearance="outline">
                                         <mat-label>State</mat-label>
-                                        <input matInput  placeholder="" (paste)="preventPaste($event)" formControlName="state"
-                                            maxlength="20">
+                                        <input matInput placeholder="" (paste)="preventPaste($event)"
+                                            formControlName="state" maxlength="20">
                                     </mat-form-field>
                                     <mat-form-field class="operator-full-width" appearance="outline">
                                         <mat-label>Zip</mat-label>
@@ -1048,7 +1103,8 @@
                                     </mat-form-field>
                                     <mat-form-field class="operator-full-width" appearance="outline">
                                         <mat-label>DOB/Age</mat-label>
-                                        <input matInput formControlName="dob" [matDatepicker]="picker4" (paste)="preventPaste($event)" [max]="today"
+                                        <input matInput formControlName="dob" [matDatepicker]="picker4"
+                                            (paste)="preventPaste($event)" [max]="today"
                                             (keydown.space)="$event.preventDefault()" (paste)="preventPaste($event)"
                                             (dateChange)="formatDateInVehicle2Operator($event,i)">
                                         <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
@@ -1059,42 +1115,46 @@
                                     </mat-form-field>
                                     <mat-form-field class="operator-full-width" appearance="outline">
                                         <mat-label>Sex</mat-label>
-                                        <input matInput  appAlphabetOnly (paste)="preventPaste($event)" placeholder="" formControlName="sex" maxlength="2">
+                                        <input matInput appAlphabetOnly (paste)="preventPaste($event)" placeholder=""
+                                            formControlName="sex" maxlength="2">
                                     </mat-form-field>
                                     <mat-form-field class="operator-full-width" appearance="outline">
                                         <mat-label>Seat Position</mat-label>
-                                        <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="seatPosition"
-                                            (keypress)="numberOnly($event)" maxlength="4">
+                                        <input matInput placeholder="" (paste)="preventPaste($event)"
+                                            formControlName="seatPosition" (keypress)="numberOnly($event)"
+                                            maxlength="4">
                                     </mat-form-field>
                                     <mat-form-field class="operator-full-width" appearance="outline">
                                         <mat-label>Safety System</mat-label>
-                                        <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="safetySystem"
-                                            (keypress)="numberOnly($event)" maxlength="4">
+                                        <input matInput placeholder="" (paste)="preventPaste($event)"
+                                            formControlName="safetySystem" (keypress)="numberOnly($event)"
+                                            maxlength="4">
                                     </mat-form-field>
                                     <mat-form-field class="operator-full-width" appearance="outline">
                                         <mat-label>Air bag Status</mat-label>
-                                        <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="airbagStatus"
-                                            (keypress)="numberOnly($event)" maxlength="4">
+                                        <input matInput placeholder="" (paste)="preventPaste($event)"
+                                            formControlName="airbagStatus" (keypress)="numberOnly($event)"
+                                            maxlength="4">
                                     </mat-form-field>
                                     <mat-form-field class="operator-full-width" appearance="outline">
                                         <mat-label>Eject Code</mat-label>
-                                        <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="ejectCode"
-                                            (keypress)="numberOnly($event)" maxlength="4">
+                                        <input matInput placeholder="" (paste)="preventPaste($event)"
+                                            formControlName="ejectCode" (keypress)="numberOnly($event)" maxlength="4">
                                     </mat-form-field>
                                     <mat-form-field class="operator-full-width" appearance="outline">
                                         <mat-label>Trap Code</mat-label>
-                                        <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="trapCode"
-                                            (keypress)="numberOnly($event)" maxlength="4">
+                                        <input matInput placeholder="" (paste)="preventPaste($event)"
+                                            formControlName="trapCode" (keypress)="numberOnly($event)" maxlength="4">
                                     </mat-form-field>
                                     <mat-form-field class="operator-full-width" appearance="outline">
                                         <mat-label>Injury Status</mat-label>
-                                        <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="injuryStatus"
-                                            (keypress)="numberOnly($event)">
+                                        <input matInput placeholder="" (paste)="preventPaste($event)"
+                                            formControlName="injuryStatus" (keypress)="numberOnly($event)">
                                     </mat-form-field>
                                     <mat-form-field class="operator-full-width" appearance="outline">
                                         <mat-label>Transp Code</mat-label>
-                                        <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="transpCode"
-                                            (keypress)="numberOnly($event)" maxlength="4">
+                                        <input matInput placeholder="" (paste)="preventPaste($event)"
+                                            formControlName="transpCode" (keypress)="numberOnly($event)" maxlength="4">
                                     </mat-form-field>
                                     <mat-form-field class="operator-full-width" appearance="outline">
                                         <mat-label>Medical Facility</mat-label>
@@ -1116,13 +1176,13 @@
             <div fxLayout="row" fxLayout.md="column" fxLayout.lg="column" class="example-form" style="margin-top:1%"
                 fxFlex>
                 <mat-accordion class="example-headers-align" multi>
-                    <mat-expansion-panel>
+                    <mat-expansion-panel [expanded]="true">
                         <mat-expansion-panel-header>
-                            <mat-panel-title>
+                            <mat-panel-title class="panel-title">
                                 Police Report Witness
                             </mat-panel-title>
                         </mat-expansion-panel-header>
-                        <form [formGroup]="witnessForm" >
+                        <form [formGroup]="witnessForm">
                             <div fxLayout="column" formArrayName="witnessFormArray">
                                 <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="end end"
                                     style="margin-bottom:1%;margin-right:2.5%">
@@ -1151,18 +1211,18 @@
                                         </mat-form-field>
                                         <mat-form-field class="property-full-width" appearance="outline">
                                             <mat-label>City</mat-label>
-                                            <input matInput placeholder=""  (paste)="preventPaste($event)" formControlName="city"
-                                                maxlength="20">
+                                            <input matInput placeholder="" (paste)="preventPaste($event)"
+                                                formControlName="city" maxlength="20">
                                         </mat-form-field>
                                         <mat-form-field class="property-full-width" appearance="outline">
                                             <mat-label>State</mat-label>
-                                            <input matInput placeholder=""  (paste)="preventPaste($event)" formControlName="state"
-                                                maxlength="20">
+                                            <input matInput placeholder="" (paste)="preventPaste($event)"
+                                                formControlName="state" maxlength="20">
                                         </mat-form-field>
                                         <mat-form-field class="property-full-width" appearance="outline">
                                             <mat-label>Zip</mat-label>
-                                            <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="zip"
-                                                (keypress)="numberOnly($event)" maxlength="20">
+                                            <input matInput placeholder="" (paste)="preventPaste($event)"
+                                                formControlName="zip" (keypress)="numberOnly($event)" maxlength="20">
                                         </mat-form-field>
                                         <mat-form-field class="property-full-width" appearance="outline">
                                             <mat-label>Phone</mat-label>
@@ -1184,11 +1244,11 @@
 
                     <mat-expansion-panel *ngIf="showPropertyDamage">
                         <mat-expansion-panel-header>
-                            <mat-panel-title>
+                            <mat-panel-title class="panel-title">
                                 Property Damage
                             </mat-panel-title>
                         </mat-expansion-panel-header>
-                        <form [formGroup]="propertyDamageForm" >
+                        <form [formGroup]="propertyDamageForm">
                             <div fxLayout="column" formArrayName="propertyDamageFormArray">
                                 <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="end end"
                                     style="margin-bottom:1%;margin-right:2.5%">
@@ -1221,18 +1281,18 @@
                                         </mat-form-field>
                                         <mat-form-field class="property-full-width" appearance="outline">
                                             <mat-label>City</mat-label>
-                                            <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="city"
-                                                maxlength="20">
+                                            <input matInput placeholder="" (paste)="preventPaste($event)"
+                                                formControlName="city" maxlength="20">
                                         </mat-form-field>
                                         <mat-form-field class="property-full-width" appearance="outline">
                                             <mat-label>State</mat-label>
-                                            <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="state"
-                                                maxlength="20">
+                                            <input matInput placeholder="" (paste)="preventPaste($event)"
+                                                formControlName="state" maxlength="20">
                                         </mat-form-field>
                                         <mat-form-field class="property-full-width" appearance="outline">
                                             <mat-label>Zip</mat-label>
-                                            <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="zip"
-                                                (keypress)="numberOnly($event)" maxlength="20">
+                                            <input matInput placeholder="" (paste)="preventPaste($event)"
+                                                formControlName="zip" (keypress)="numberOnly($event)" maxlength="20">
                                         </mat-form-field>
                                         <mat-form-field class="property-full-width" appearance="outline">
                                             <mat-label>Phone</mat-label>
@@ -1257,11 +1317,11 @@
 
                     <mat-expansion-panel *ngIf="showTruckandBusInfo">
                         <mat-expansion-panel-header>
-                            <mat-panel-title>
+                            <mat-panel-title class="panel-title">
                                 Truck And Bus Information
                             </mat-panel-title>
                         </mat-expansion-panel-header>
-                        <form [formGroup]="truckAndBusInfoForm" >
+                        <form [formGroup]="truckAndBusInfoForm">
                             <div fxLayout="row wrap" fxLayoutGap="15px" fxLayoutAlign="start center">
                                 <mat-form-field class="property-full-width" appearance="outline">
                                     <mat-label>Registration</mat-label>
@@ -1286,12 +1346,13 @@
                                 </mat-form-field>
                                 <mat-form-field class="property-full-width" appearance="outline">
                                     <mat-label>State</mat-label>
-                                    <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="st" maxlength="20">
+                                    <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="st"
+                                        maxlength="20">
                                 </mat-form-field>
                                 <mat-form-field class="property-full-width" appearance="outline">
                                     <mat-label>Zip</mat-label>
-                                    <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="zip" (keypress)="numberOnly($event)"
-                                        maxlength="15">
+                                    <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="zip"
+                                        (keypress)="numberOnly($event)" maxlength="15">
                                 </mat-form-field>
                                 <mat-form-field class="property-full-width" appearance="outline">
                                     <mat-label>US DOT</mat-label>
@@ -1299,7 +1360,8 @@
                                 </mat-form-field>
                                 <mat-form-field class="property-full-width" appearance="outline">
                                     <mat-label>State Number</mat-label>
-                                    <input matInput placeholder="" (keypress)="numberOnly($event)" formControlName="stateNumber" maxlength="20">
+                                    <input matInput placeholder="" (keypress)="numberOnly($event)"
+                                        formControlName="stateNumber" maxlength="20">
                                 </mat-form-field>
                                 <mat-form-field class="property-full-width" appearance="outline">
                                     <mat-label>Issuing State</mat-label>
@@ -1331,19 +1393,19 @@
                                 </mat-form-field>
                                 <mat-form-field class="property-full-width" appearance="outline">
                                     <mat-label>Reg State</mat-label>
-                                    <input matInput placeholder=""  formControlName="regState"
-                                        maxlength="30">
+                                    <input matInput placeholder="" formControlName="regState" maxlength="30">
                                 </mat-form-field>
                                 <mat-form-field class="property-full-width" appearance="outline">
                                     <mat-label>Reg Year</mat-label>
-                                    <input matInput placeholder="" (keypress)="numberOnly($event)" formControlName="regYear" maxlength="30">
+                                    <input matInput placeholder="" (keypress)="numberOnly($event)"
+                                        formControlName="regYear" maxlength="30">
                                 </mat-form-field>
                                 <mat-form-field class="property-full-width" appearance="outline">
                                     <mat-label>Trailer Length</mat-label>
                                     <input matInput placeholder="" formControlName="trailerLength" maxlength="15">
                                 </mat-form-field>
                             </div>
-                            <mat-panel-title class="operator-title">
+                            <mat-panel-title class="operator-title panel-title">
                                 Hazmat Information :
                             </mat-panel-title>
                             <div fxLayout="row wrap" fxLayoutGap="15px" fxLayoutAlign="start center">
@@ -1370,7 +1432,7 @@
                                         (keypress)="numberOnly($event)" maxlength="4">
                                 </mat-form-field>
                             </div>
-                            <mat-panel-title class="operator-title">
+                            <mat-panel-title class="operator-title panel-title">
                                 Police Officer Information :
                             </mat-panel-title>
                             <div fxLayout="row wrap" fxLayoutGap="15px" fxLayoutAlign="start center">
@@ -1380,8 +1442,8 @@
                                 </mat-form-field>
                                 <mat-form-field class="property-full-width" appearance="outline">
                                     <mat-label>ID/Badge</mat-label>
-                                    <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="idBadge"
-                                        (keypress)="numberOnly($event)" maxlength="10">
+                                    <input matInput placeholder="" (paste)="preventPaste($event)"
+                                        formControlName="idBadge" (keypress)="numberOnly($event)" maxlength="10">
                                 </mat-form-field>
                                 <mat-form-field class="property-full-width" appearance="outline">
                                     <mat-label>Department</mat-label>
@@ -1393,8 +1455,9 @@
                                 </mat-form-field>
                                 <mat-form-field class="property-full-width" appearance="outline">
                                     <mat-label>Date</mat-label>
-                                    <input matInput [matDatepicker]="picker7" [max]="today" (keydown.space)="$event.preventDefault()"
-                                        formControlName="date" (paste)="preventPaste($event)" (dateChange)="formatDateInTruckAndBus($event)">
+                                    <input matInput [matDatepicker]="picker7" [max]="today"
+                                        (keydown.space)="$event.preventDefault()" formControlName="date"
+                                        (paste)="preventPaste($event)" (dateChange)="formatDateInTruckAndBus($event)">
                                     <mat-datepicker-toggle matSuffix [for]="picker7"></mat-datepicker-toggle>
                                     <mat-datepicker-toggle matSuffix (click)="clearTruckAndBusDate()">
                                         <mat-icon matDatepickerToggleIcon>clear</mat-icon>
@@ -1411,18 +1474,19 @@
         <mat-step>
             <ng-template matStepLabel>Operator Information Sheet</ng-template>
             <mat-accordion class="example-headers-align" multi>
-                <mat-expansion-panel>
+                <mat-expansion-panel [expanded]="true">
                     <mat-expansion-panel-header>
-                        <mat-panel-title>
+                        <mat-panel-title class="panel-title">
                             General
                         </mat-panel-title>
                     </mat-expansion-panel-header>
-                    <form [formGroup]="generalInfoForm" >
+                    <form [formGroup]="generalInfoForm">
                         <div fxLayout="row wrap" fxLayoutGap="15px" fxLayoutAlign="start center">
                             <mat-form-field class="property-full-width" appearance="outline">
                                 <mat-label>Accident Date</mat-label>
-                                <input matInput [matDatepicker]="picker_1" [max]="today" (paste)="preventPaste($event)" (keydown.space)="$event.preventDefault()"
-                                    formControlName="accidentDate" (dateChange)="formatDateInGeneral($event)">
+                                <input matInput [matDatepicker]="picker_1" [max]="today" (paste)="preventPaste($event)"
+                                    (keydown.space)="$event.preventDefault()" formControlName="accidentDate"
+                                    (dateChange)="formatDateInGeneral($event)">
                                 <mat-datepicker-toggle matSuffix [for]="picker_1"></mat-datepicker-toggle>
                                 <mat-datepicker-toggle matSuffix (click)="clearGeneralInfoDate()">
                                     <mat-icon matDatepickerToggleIcon>clear</mat-icon>
@@ -1443,28 +1507,30 @@
                             </mat-form-field>
                             <mat-form-field class="property-full-width" appearance="outline">
                                 <mat-label>City</mat-label>
-                                <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="city" maxlength="20">
+                                <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="city"
+                                    maxlength="20">
                             </mat-form-field>
                             <mat-form-field class="property-full-width" appearance="outline">
                                 <mat-label>State</mat-label>
-                                <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="state" maxlength="20">
+                                <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="state"
+                                    maxlength="20">
                             </mat-form-field>
                             <mat-form-field class="property-full-width" appearance="outline">
                                 <mat-label>Zip</mat-label>
-                                <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="zip" (keypress)="numberOnly($event)"
-                                    maxlength="15">
+                                <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="zip"
+                                    (keypress)="numberOnly($event)" maxlength="15">
                             </mat-form-field>
                         </div>
                     </form>
                 </mat-expansion-panel>
 
-                <form [formGroup]="generalOperatorForm" >
+                <form [formGroup]="generalOperatorForm">
                     <div formArrayName="generalOperatorArray">
                         <!-- <mat-accordion class="example-headers-align" multi> -->
                         <div *ngFor="let item of getgeneralOperatorArrayControls(); let k = index;">
-                            <mat-expansion-panel>
+                            <mat-expansion-panel [expanded]="true">
                                 <mat-expansion-panel-header>
-                                    <mat-panel-title>
+                                    <mat-panel-title class="panel-title">
                                         Operator {{k+1}}
                                     </mat-panel-title>
                                 </mat-expansion-panel-header>
@@ -1492,21 +1558,25 @@
                                         </mat-form-field>
                                         <mat-form-field class="property-full-width" appearance="outline">
                                             <mat-label>Veh/Unit</mat-label>
-                                            <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="operatorVeh"
-                                                (keypress)="numberOnly($event)" maxlength="15">
+                                            <input matInput placeholder="" (paste)="preventPaste($event)"
+                                                formControlName="operatorVeh" (keypress)="numberOnly($event)"
+                                                maxlength="15">
                                         </mat-form-field>
                                         <!-- <mat-radio-group aria-label="Select an option">
                                             <mat-radio-button value="1">Option 1</mat-radio-button>
                                             <mat-radio-button value="2">Option 2</mat-radio-button>
                                           </mat-radio-group> -->
                                         <mat-checkbox class="event-full-width" color="primary"
-                                            formControlName="operatorInjured" (change)="onChangeInjured($event,k)">Injured</mat-checkbox>
+                                            formControlName="operatorInjured"
+                                            (change)="onChangeInjured($event,k)">Injured</mat-checkbox>
                                         <mat-checkbox class="event-full-width" color="primary"
-                                            formControlName="operatorFatality" (change)="onChangeFatality($event,k)">Fatality</mat-checkbox>
+                                            formControlName="operatorFatality"
+                                            (change)="onChangeFatality($event,k)">Fatality</mat-checkbox>
                                         <mat-form-field class="property-full-width" appearance="outline">
                                             <mat-label>Number</mat-label>
-                                            <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="operatorNumber"
-                                                (keypress)="numberOnly($event)" maxlength="15">
+                                            <input matInput placeholder="" (paste)="preventPaste($event)"
+                                                formControlName="operatorNumber" (keypress)="numberOnly($event)"
+                                                maxlength="15">
                                         </mat-form-field>
                                         <mat-form-field class="property-full-width" appearance="outline">
                                             <mat-label>Street</mat-label>
@@ -1535,8 +1605,9 @@
                                         </mat-form-field>
                                         <mat-form-field class="property-full-width" appearance="outline">
                                             <mat-label>Zip</mat-label>
-                                            <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="operatorZip"
-                                                (keypress)="numberOnly($event)" maxlength="15">
+                                            <input matInput placeholder="" (paste)="preventPaste($event)"
+                                                formControlName="operatorZip" (keypress)="numberOnly($event)"
+                                                maxlength="15">
                                         </mat-form-field>
                                         <!-- <mat-form-field class="property-full-width" appearance="outline">
                                 <mat-label>DOB</mat-label>
@@ -1545,7 +1616,8 @@
                                         <mat-form-field class="property-full-width" appearance="outline">
                                             <mat-label>DOB/Age</mat-label>
                                             <input matInput formControlName="operatorDOB"
-                                                (keydown.space)="$event.preventDefault()" [matDatepicker]="picker5" (paste)="preventPaste($event)" [max]="today"
+                                                (keydown.space)="$event.preventDefault()" [matDatepicker]="picker5"
+                                                (paste)="preventPaste($event)" [max]="today"
                                                 (dateChange)="formatDateInGeneralOperator($event,k)">
                                             <mat-datepicker-toggle matSuffix [for]="picker5"></mat-datepicker-toggle>
                                             <mat-datepicker-toggle matSuffix (click)="cleargeneralOperatorDate(k)">
@@ -1559,13 +1631,15 @@
                                 </mat-form-field> -->
                                         <mat-form-field class="property-full-width" appearance="outline">
                                             <mat-label>Home Phone</mat-label>
-                                            <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="operatorHomePhone"
-                                                (keypress)="numberOnly($event)" maxlength="15">
+                                            <input matInput placeholder="" (paste)="preventPaste($event)"
+                                                formControlName="operatorHomePhone" (keypress)="numberOnly($event)"
+                                                maxlength="15">
                                         </mat-form-field>
                                         <mat-form-field class="property-full-width" appearance="outline">
                                             <mat-label>Work Phone</mat-label>
-                                            <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="operatorWorkPhone"
-                                                (keypress)="numberOnly($event)" maxlength="15">
+                                            <input matInput placeholder="" (paste)="preventPaste($event)"
+                                                formControlName="operatorWorkPhone" (keypress)="numberOnly($event)"
+                                                maxlength="15">
                                         </mat-form-field>
                                         <mat-form-field class="property-full-width" appearance="outline">
                                             <mat-label>License State/Number</mat-label>
@@ -1573,7 +1647,8 @@
                                         </mat-form-field>
                                         <mat-form-field class="property-full-width" appearance="outline">
                                             <mat-label>Insurance Company</mat-label>
-                                            <input matInput placeholder="" formControlName="operatorInsuranceComp" maxlength="50">
+                                            <input matInput placeholder="" formControlName="operatorInsuranceComp"
+                                                maxlength="50">
                                         </mat-form-field>
                                         <mat-form-field class="property-full-width" appearance="outline">
                                             <mat-label>Policy Number</mat-label>
@@ -1581,7 +1656,7 @@
                                                 maxlength="30">
                                         </mat-form-field>
                                     </div>
-                                    <mat-panel-title class="operator-title">
+                                    <mat-panel-title class="operator-title panel-title">
                                         Owner :
                                     </mat-panel-title>
                                     <div fxLayout="row wrap" fxLayoutGap="15px" fxLayoutAlign="start center">
@@ -1607,18 +1682,21 @@
                                         </mat-form-field>
                                         <mat-form-field class="property-full-width" appearance="outline">
                                             <mat-label>Home Phone</mat-label>
-                                            <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="ownerHomePhone"
-                                                (keypress)="numberOnly($event)" maxlength="15">
+                                            <input matInput placeholder="" (paste)="preventPaste($event)"
+                                                formControlName="ownerHomePhone" (keypress)="numberOnly($event)"
+                                                maxlength="15">
                                         </mat-form-field>
                                         <mat-form-field class="property-full-width" appearance="outline">
                                             <mat-label>Work Phone</mat-label>
-                                            <input matInput placeholder="" (paste)="preventPaste($event)"  formControlName="ownerWorkPhone"
-                                                (keypress)="numberOnly($event)" maxlength="15">
+                                            <input matInput placeholder="" (paste)="preventPaste($event)"
+                                                formControlName="ownerWorkPhone" (keypress)="numberOnly($event)"
+                                                maxlength="15">
                                         </mat-form-field>
                                         <mat-form-field class="property-full-width" appearance="outline">
                                             <mat-label>Number</mat-label>
-                                            <input matInput placeholder="" (paste)="preventPaste($event)"  formControlName="ownerNumber"
-                                                (keypress)="numberOnly($event)" maxlength="15">
+                                            <input matInput placeholder="" (paste)="preventPaste($event)"
+                                                formControlName="ownerNumber" (keypress)="numberOnly($event)"
+                                                maxlength="15">
                                         </mat-form-field>
                                         <mat-form-field class="property-full-width" appearance="outline">
                                             <mat-label>Street</mat-label>
@@ -1636,18 +1714,19 @@
                                         </mat-form-field>
                                         <mat-form-field class="property-full-width" appearance="outline">
                                             <mat-label>City</mat-label>
-                                            <input matInput placeholder="" (paste)="preventPaste($event)"  formControlName="ownerCity"
-                                                maxlength="15">
+                                            <input matInput placeholder="" (paste)="preventPaste($event)"
+                                                formControlName="ownerCity" maxlength="15">
                                         </mat-form-field>
                                         <mat-form-field class="property-full-width" appearance="outline">
                                             <mat-label>State</mat-label>
-                                            <input matInput placeholder="" (paste)="preventPaste($event)"  formControlName="ownerState"
-                                                maxlength="15">
+                                            <input matInput placeholder="" (paste)="preventPaste($event)"
+                                                formControlName="ownerState" maxlength="15">
                                         </mat-form-field>
                                         <mat-form-field class="property-full-width" appearance="outline">
                                             <mat-label>Zip</mat-label>
-                                            <input matInput placeholder="" (paste)="preventPaste($event)" formControlName="ownerZip"
-                                                (keypress)="numberOnly($event)" maxlength="15">
+                                            <input matInput placeholder="" (paste)="preventPaste($event)"
+                                                formControlName="ownerZip" (keypress)="numberOnly($event)"
+                                                maxlength="15">
                                         </mat-form-field>
                                         <mat-form-field class="property-full-width" appearance="outline">
                                             <mat-label>Insurance Company</mat-label>
@@ -1660,13 +1739,14 @@
                                                 maxlength="30">
                                         </mat-form-field>
                                     </div>
-                                    <mat-panel-title class="operator-title">
+                                    <mat-panel-title class="operator-title panel-title">
                                         Vehicle :
                                     </mat-panel-title>
                                     <div fxLayout="row wrap" fxLayoutGap="15px" fxLayoutAlign="start center">
                                         <mat-form-field class="property-full-width" appearance="outline">
                                             <mat-label>Year</mat-label>
-                                            <input matInput placeholder="" (keypress)="numberOnly($event)" formControlName="vehYear" maxlength="15">
+                                            <input matInput placeholder="" (keypress)="numberOnly($event)"
+                                                formControlName="vehYear" maxlength="15">
                                         </mat-form-field>
                                         <mat-form-field class="property-full-width" appearance="outline">
                                             <mat-label>Make</mat-label>

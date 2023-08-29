@@ -34,6 +34,7 @@ import { fromEvent } from 'rxjs';
 import { filter, debounceTime, distinctUntilChanged, tap } from 'rxjs';
 import { formatDate } from '@angular/common';
 import { MatStepper } from '@angular/material/stepper';
+import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-police-report',
@@ -113,12 +114,20 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
   submitted: boolean;
   showTravelDirectionError: boolean;
   today = new Date(); 
+  fileInfo: File;
+  localUrl: string;
+  format: string;
+  url: string | ArrayBuffer | null;
+  data: any;
+  crashNarrative:any;
+  crashNarrativeImage: any;
 
   constructor(
     private fb: FormBuilder,
     private httpService: HttpService,
     private snackBar: MatSnackBar,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit(): void {
@@ -164,7 +173,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       localPolice: [''],
       mbtaPolice: [''],
       campusPolice: [''],
-      //policeType: [''],
+      crashNarrativeDisplay: [''],
       others: [''],
       speedLimit: [''],
       latitude: [''],
@@ -204,14 +213,14 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       moped: [false],
       crashreportId: ['', [Validators.required]],
       veh1License: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
-      veh1Street: ['',Validators.pattern('^.*\\S.*[a-zA-Z ]')],
+      veh1State: ['',Validators.pattern('^.*\\S.*[a-zA-Z ]')],
       veh1DOB: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
       veh1Sex: ['', [Validators.required]],
       veh1LicClass: [''],
       veh1LicRestriction: [''],
       veh1CDLEndorsement: [''],
       veh1OperatorAddress: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
-      veh1OperatorLastName: ['', [Validators.required,Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')]],
+      veh1OperatorLastName: ['', [Validators.required,Validators.pattern('^[^-\\s][a-zA-Z_\\s-]+$')]],
       veh1OperatorFirstName: ['', [Validators.required,Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')]],
       veh1OperatorMiddleName: ['',Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')],
       veh1OperatorCity: ['', [Validators.required,Validators.pattern('^.*\\S.*[a-zA-Z ]')]],
@@ -231,7 +240,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       veh1VehicleYear: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
       veh1VehicleMake: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
       veh1VehicleConfig: [''],
-      veh1OwnerLastName: ['', [Validators.required,Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')]],
+      veh1OwnerLastName: ['', [Validators.required,Validators.pattern('^[^-\\s][a-zA-Z_\\s-]+$')]],
       veh1OwnerFirstName: ['', [Validators.required,Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')]],
       veh1OwnerMiddleName: ['',Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')],
       veh1OwnerAddress: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
@@ -270,14 +279,14 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       hitAndRun2: [''],
       moped2: [''],
       veh2License: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
-      veh2Street: ['',Validators.pattern('^.*\\S.*[a-zA-Z ]')],
+      veh2State: ['',Validators.pattern('^.*\\S.*[a-zA-Z ]')],
       veh2DOB: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
       veh2Sex: ['', [Validators.required]],
       veh2LicClass: [''],
       veh2LicRestriction: [''],
       veh2CDLEndorsement: [''],
       veh2OperatorAddress: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
-      veh2OperatorLastName: ['', [Validators.required,Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')]],
+      veh2OperatorLastName: ['', [Validators.required,Validators.pattern('^[^-\\s][a-zA-Z_\\s-]+$')]],
       veh2OperatorFirstName: ['', [Validators.required,Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')]],
       veh2OperatorMiddleName: ['',Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')],
       veh2OperatorCity: ['', [Validators.required,Validators.pattern('^.*\\S.*[a-zA-Z ]')]],
@@ -297,7 +306,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       veh2VehicleYear: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
       veh2VehicleMake: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
       veh2VehicleConfig: [''],
-      veh2OwnerLastName: ['', [Validators.required,Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')]],
+      veh2OwnerLastName: ['', [Validators.required,Validators.pattern('^[^-\\s][a-zA-Z_\\s-]+$')]],
       veh2OwnerFirstName: ['', [Validators.required,Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')]],
       veh2OwnerMiddleName: ['',Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')],
       veh2OwnerAddress: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
@@ -360,100 +369,14 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
 
     this.generalInfoForm = this.fb.group({
       id: [''],
-      accidentDate: ['', [Validators.required]],
-      accidentTime: ['', [Validators.required]],
+      accidentDate: [null],
+      accidentTime: [null],
       reportingOfficer: [''],
       location: [''],
       city: ['',Validators.pattern('^.*\\S.*[a-zA-Z ]')],
       state: ['',Validators.pattern('^.*\\S.*[a-zA-Z ]')],
       zip: [''],
     });
-    // this.policeReportForm_5 = this.fb.group({
-    //   OprOwnVehOpDtl1OprLastName: [''],
-    //   OprOwnVehDtl1OprFirstName: [''],
-    //   OprOwnVehDtl1OprMiddleName: [''],
-    //   OprOwnVehDtl1OprSuffixName: [''],
-    //   OprOwnVehDtl1OprVehUnit: ['', [Validators.required]],
-    //   OprOwnVehDtl1OprInjured: [''],
-    //   OprOwnVehDtl1OprFatality: [''],
-    //   OprOwnVehDtl1OprNumber: [''],
-    //   OprOwnVehDtl1OprStreet: [''],
-    //   OprOwnVehDtl1OprSuffix: [''],
-    //   OprOwnVehDtl1OprApt: [''],
-    //   OprOwnVehDtl1OprCity: [''],
-    //   OprOwnVehDtl1OprState: [''],
-    //   OprOwnVehDtl1OprZip: [''],
-    //   OprOwnVehDtl1OprDOB: [''],
-    //   OprOwnVehDtl1OprHomePhone: [''],
-    //   OprOwnVehDtl1OprWorkPhone: [''],
-    //   OprOwnVehDtl1OprLicStateNum: [''],
-    //   OprOwnVehDtl1OprInsuranceComp: [''],
-    //   OprOwnVehDtl1OprPolicyNum: [''],
-    //   OprOwnVehDtl1OwnLastName: [''],
-    //   OprOwnVehDtl1OwnFirstName: [''],
-    //   OprOwnVehDtl1OwnMiddleName: [''],
-    //   OprOwnVehDtl1OwnSuffixName: [''],
-    //   OprOwnVehDtl1OwnHomePhone: [''],
-    //   OprOwnVehDtl1OwnWorkPhone: [''],
-    //   OprOwnVehDtl1OwnNumber: [''],
-    //   OprOwnVehDtl1OwnStreet: [''],
-    //   OprOwnVehDtl1OwnSuffix: [''],
-    //   OprOwnVehDtl1OwnApt: [''],
-    //   OprOwnVehDtl1OwnCity: [''],
-    //   OprOwnVehDtl1OwnState: [''],
-    //   OprOwnVehDtl1OwnZip: [''],
-    //   OprOwnVehDtl1OwnInsuranceComp: [''],
-    //   OprOwnVehDtl1OwnPolicyNumber: [''],
-    //   OprOwnVehDtl1VehicleYear: [''],
-    //   OprOwnVehDtl1VehicleMake: [''],
-    //   OprOwnVehDtl1VehicleModel: [''],
-    //   OprOwnVehDtl1VehicleVIN: [''],
-    //   OprOwnVehDtl1VehicleRegStateNum: [''],
-    //   OprOwnVehDtl1VehicleTowedBy: [''],
-    //   OprOwnVehDtl1VehicleTowedTo: [''],
-    //   OprOwnVehOpDtl2OprLastName: [''],
-    //   OprOwnVehDtl2OprFirstName: [''],
-    //   OprOwnVehDtl2OprMiddleName: [''],
-    //   OprOwnVehDtl2OprSuffixName: [''],
-    //   OprOwnVehDtl2OprVehUnit: [''],
-    //   OprOwnVehDtl2OprInjured: [''],
-    //   OprOwnVehDtl2OprFatality: [''],
-    //   OprOwnVehDtl2OprNumber: [''],
-    //   OprOwnVehDtl2OprStreet: [''],
-    //   OprOwnVehDtl2OprSuffix: [''],
-    //   OprOwnVehDtl2OprApt: [''],
-    //   OprOwnVehDtl2OprCity: [''],
-    //   OprOwnVehDtl2OprState: [''],
-    //   OprOwnVehDtl2OprZip: [''],
-    //   OprOwnVehDtl2OprDOB: [''],
-    //   OprOwnVehDtl2OprHomePhone: [''],
-    //   OprOwnVehDtl2OprWorkPhone: [''],
-    //   OprOwnVehDtl2OprLicStateNum: [''],
-    //   OprOwnVehDtl2OprInsuranceComp: [''],
-    //   OprOwnVehDtl2OprPolicyNum: [''],
-    //   OprOwnVehDtl2OwnLastName: [''],
-    //   OprOwnVehDtl2OwnFirstName: [''],
-    //   OprOwnVehDtl2OwnMiddleName: [''],
-    //   OprOwnVehDtl2OwnSuffixName: [''],
-    //   OprOwnVehDtl2OwnHomePhone: [''],
-    //   OprOwnVehDtl2OwnWorkPhone: [''],
-    //   OprOwnVehDtl2OwnNumber: [''],
-    //   OprOwnVehDtl2OwnStreet: [''],
-    //   OprOwnVehDtl2OwnSuffix: [''],
-    //   OprOwnVehDtl2OwnApt: [''],
-    //   OprOwnVehDtl2OwnCity: [''],
-    //   OprOwnVehDtl2OwnState: [''],
-    //   OprOwnVehDtl2OwnZip: [''],
-    //   OprOwnVehDtl2OwnInsuranceComp: [''],
-    //   OprOwnVehDtl2OwnPolicyNumber: [''],
-    //   OprOwnVehDtl2VehicleYear: [''],
-    //   OprOwnVehDtl2VehicleMake: [''],
-    //   OprOwnVehDtl2VehicleModel: [''],
-    //   OprOwnVehDtl2VehicleVIN: [''],
-    //   OprOwnVehDtl2VehicleRegStateNum: [''],
-    //   OprOwnVehDtl2VehicleTowedBy: [''],
-    //   OprOwnVehDtl2VehicleTowedTo: [''],
-    // });
     this.witnessForm = this.fb.group({
       witnessFormArray: this.fb.array([]),
     });
@@ -556,7 +479,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
     } else {
       let formGroup = this.fb.group({
         vehicleNo: from,
-        operatorLastName: ['',Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')],
+        operatorLastName: ['',Validators.pattern('^[^-\\s][a-zA-Z_\\s-]+$')],
         operatorFirstName: ['',Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')],
         operatorMiddleName:  ['',Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')],
         address: '',
@@ -580,7 +503,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
   addWitness(checkValidation: boolean = false) {
     let formArray = this.witnessForm.get('witnessFormArray') as FormArray;
     if (
-      checkValidation &&
+      checkValidation && formArray.value.length !== 0 &&
       Object.values(formArray.value[formArray.value.length - 1]).every(
         (x) => x === null || x === ''
       )
@@ -592,12 +515,12 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       });
     } else {
       let formGroup = this.fb.group({
-        lastName: ['', [Validators.required,Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')]],
-        firstName: ['', [Validators.required,Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')]],
+        lastName: ['', [Validators.pattern('^[^-\\s][a-zA-Z_\\s-]+$')]],
+        firstName: ['', [Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')]],
         middleName: ['',Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')],
-        address: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
-        phone: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
-        statement: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
+        address: ['', [Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
+        phone: ['', [Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
+        statement: ['', [Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
         city: ['',Validators.pattern('^.*\\S.*[a-zA-Z ]')],
         state: ['',Validators.pattern('^.*\\S.*[a-zA-Z ]')],
         zip: [''],
@@ -608,34 +531,34 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
   addGeneralOperator(count: number) {
     let formArray = this.generalOperatorForm.get('generalOperatorArray') as FormArray;
     let formGroup = this.fb.group({
-      operatorLastName: ['',Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')],
+      operatorLastName: ['',Validators.pattern('^[^-\\s][a-zA-Z_\\s-]+$')],
       operatorFirstName: ['',Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')],
       operatorMiddleName: ['',Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')],
       operatorSuffixName: '',
-      operatorVeh: ['', [Validators.required]],
+      operatorVeh: [null],
       operatorInjured: false,
       operatorFatality: false,
-      operatorNumber: ['',[Validators.required]],
+      operatorNumber: [null],
       operatorStreet: ['',Validators.pattern('^.*\\S.*[a-zA-Z ]')],
       operatorStreetSuffix: ['',Validators.pattern('^.*\\S.*[a-zA-Z ]')],
       operatorStreetApt: '',
       operatorCity: ['',Validators.pattern('^.*\\S.*[a-zA-Z ]')],
       operatorState: ['',Validators.pattern('^.*\\S.*[a-zA-Z ]')],
       operatorZip: '',
-      operatorDOB: ['',[Validators.required]],
+      operatorDOB: [null],
       operatorHomePhone: '',
       operatorWorkPhone: '',
       operatorLic: '',
       operatorStateNumber: '',
       operatorInsuranceComp: '',
       operatorPolicyNumber: '',
-      ownerLastName: ['',Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')],
+      ownerLastName: ['',Validators.pattern('^[^-\\s][a-zA-Z_\\s-]+$')],
       ownerFirstName: ['',Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')],
       ownerMiddleName: ['',Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')],
       ownerSuffixName: ['',Validators.pattern('^.*\\S.*[a-zA-Z ]')],
       ownerHomePhone: '',
       ownerWorkPhone: '',
-      ownerNumber: ['',[Validators.required]],
+      ownerNumber: [null],
       ownerStreet: ['',Validators.pattern('^.*\\S.*[a-zA-Z ]')],
       ownerStreetSuffix: ['',Validators.pattern('^.*\\S.*[a-zA-Z ]')],
       ownerStreetApt: '',
@@ -647,7 +570,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       vehYear: '',
       vehMake: '',
       vehModel: '',
-      vehVin: '',
+      vehVin: ['',[Validators.required]],
       vehReg: '',
       vehStateNumber: '',
       vehTowedBy: '',
@@ -673,7 +596,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       });
     } else {
       let formGroup = this.fb.group({
-        ownerLastName: ['',Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')],
+        ownerLastName: ['',Validators.pattern('^[^-\\s][a-zA-Z_\\s-]+$')],
         ownerFirstName: ['',Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')],
         ownerMiddleName: ['',Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')],
         address: [''],
@@ -779,8 +702,6 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
     this.policeReportForm_1.markAllAsTouched();
     this.policeReportForm_2.markAllAsTouched();
     this.policeReportForm_3.markAllAsTouched();
-    this.witnessForm.markAllAsTouched();
-    this.generalInfoForm.markAllAsTouched();
     this.generalOperatorForm.markAllAsTouched();
     //this.inputformControl.markAsUntouched();
     let policeReportForm1Errors = this.getFormValidationErrors(
@@ -792,16 +713,16 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
     let policeReportForm3Errors = this.getFormValidationErrors(
       this.policeReportForm_3
     );
-    let witnessformArray: any = this.witnessForm.get(
-      'witnessFormArray'
-    ) as FormArray;
-    let witnessFormErrors: any = [];
-    witnessformArray.controls.forEach((element: any) => {
-      witnessFormErrors.push(this.getFormValidationErrors(element));
-    });
-    let generalInfoFormErrors = this.getFormValidationErrors(
-      this.generalInfoForm
-    );
+    // let witnessformArray: any = this.witnessForm.get(
+    //   'witnessFormArray'
+    // ) as FormArray;
+    // let witnessFormErrors: any = [];
+    // witnessformArray.controls.forEach((element: any) => {
+    //   witnessFormErrors.push(this.getFormValidationErrors(element));
+    // });
+    // let generalInfoFormErrors = this.getFormValidationErrors(
+    //   this.generalInfoForm
+    // );
     let generalOperatorformArray: any = this.generalOperatorForm.get(
       'generalOperatorArray'
     ) as FormArray;
@@ -818,27 +739,27 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
     if (policeReportForm2Errors.length !== 0) {
       errorsString =
         errorsString +
-        '<br><b>Vehicle 1: </b><br>' +
+        '<br><b>South Coast Customer: </b><br>' +
         policeReportForm2Errors.join(',\n');
     }
     if (policeReportForm3Errors.length !== 0) {
       errorsString =
         errorsString +
-        '<b><br>Vehicle 2: </b><br>' +
+        '<b><br>Other Party: </b><br>' +
         policeReportForm3Errors.join(',\n');
     }
-    if (witnessFormErrors.length !== 0) {
-      errorsString =
-        errorsString +
-        '<b><br>Witness/Property Damage</b><br>' +
-        witnessFormErrors.join(',\n');
-    }
-    if (generalInfoFormErrors.length !== 0) {
-      errorsString =
-        errorsString +
-        '<b><br>Operator Information Sheet</b><br>' +
-        generalInfoFormErrors.join(',\n');
-    }
+    // if (witnessFormErrors.length !== 0) {
+    //   errorsString =
+    //     errorsString +
+    //     '<b><br>Witness/Property Damage</b><br>' +
+    //     witnessFormErrors.join(',\n');
+    // }
+    // if (generalInfoFormErrors.length !== 0) {
+    //   errorsString =
+    //     errorsString +
+    //     '<b><br>Operator Information Sheet</b><br>' +
+    //     generalInfoFormErrors.join(',\n');
+    // }
     if (generalOperatorFormErrors.length !== 0) {
       errorsString =
         errorsString +
@@ -852,7 +773,6 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       this.policeReportForm_1.valid &&
       this.policeReportForm_2.valid &&
       this.policeReportForm_3.valid &&
-      this.witnessForm.valid &&
       this.generalOperatorForm.valid
     ) {
       let request: any = {
@@ -1016,12 +936,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
           )
             ? []
             : [this.truckAndBusInfoForm.value],
-        addPoliceReportGeneralRequest: this.checkAllParamtersEmptyInObject(
-          this.generalInfoForm.value,
-          'vehicleNo'
-        )
-          ? []
-          : this.generalInfoForm.value,
+        addPoliceReportGeneralRequest: this.generalInfoForm.value,
 
         addPoliceReportOperatorOwnerVehicleDtlsRequest:
           this.generalOperatorForm.value.generalOperatorArray,
@@ -1037,7 +952,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
         condition: '',
         occupants: Number(this.policeReportForm_2.value.veh1Occupants),
         license: this.policeReportForm_2.value.veh1License,
-        street: this.policeReportForm_2.value.veh1Street,
+        street: this.policeReportForm_2.value.veh1State,
         dobAge: this.policeReportForm_2.value.veh1DOB,
         sex: this.policeReportForm_2.value.veh1Sex,
         licClass: this.policeReportForm_2.value.veh1LicClass,
@@ -1124,7 +1039,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
         condition: this.policeReportForm_3.value.veh2Condition,
         occupants: Number(this.policeReportForm_3.value.veh2Occupants),
         license: this.policeReportForm_3.value.veh2License,
-        street: this.policeReportForm_3.value.veh2Street,
+        street: this.policeReportForm_3.value.veh2State,
         dobAge: this.policeReportForm_3.value.veh2DOB,
         sex: this.policeReportForm_3.value.veh2Sex,
         licClass: this.policeReportForm_3.value.veh2LicClass,
@@ -1210,6 +1125,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
               icon: 'success',
               text: 'Police Report details added  succcessfully!',
             });
+            this.uploadTonTowReports(res.data.tonTowRptId);
             setTimeout(() => {
               this.onClickOfAddAndUpdateClearFields();
               window.location.reload();
@@ -1261,7 +1177,6 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
     this.policeReportForm_1.markAllAsTouched();
     this.policeReportForm_2.markAllAsTouched();
     this.policeReportForm_3.markAllAsTouched();
-    this.witnessForm.markAllAsTouched();
     this.generalOperatorForm.markAllAsTouched();
      if (
       this.tonTowReport.valid &&
@@ -1325,6 +1240,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       } else {
         this.phone.setErrors(null);
         this.addPoliceReport();
+       
       }
     });
   }
@@ -1345,8 +1261,9 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       this.httpService
         .getUserPoliceReportByID(this.viewReportID)
         .subscribe((res: any) => {
-          this.viewReportDetails = res;
+                    this.viewReportDetails = res;
           this.tonTowReport.patchValue(this.viewReportDetails.jobNum);
+          let fileObject = this.viewReportDetails?.tonTowFileUploads.find((element:any) => { return element.fileType === "TonTowReport-CrashNarrative" && element.deleted === false })
           this.policeReportForm_1.patchValue({
             dateOfCrash: this.viewReportDetails.dateOfCrash,
             timeOfCrash: this.viewReportDetails.timeOfCrash,
@@ -1389,6 +1306,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
             localPolice: this.viewReportDetails.localPolice,
             mbtaPolice: this.viewReportDetails.mbtaPolice,
             campusPolice: this.viewReportDetails.campusPolice,
+            crashNarrativeDisplay : fileObject?.fileName,
           });
           this.viewReportDetails.policeReportVehicleDtl.forEach(
             (object: any) => {
@@ -1401,7 +1319,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
                   hitAndRun: object.type,
                   moped: '',
                   veh1License: object.license,
-                  veh1Street: object.street,
+                  veh1State: object.street,
                   veh1DOB: object.dobAge,
                   veh1Sex: object.sex,
                   veh1LicClass: object.licClass,
@@ -1466,7 +1384,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
                   hitAndRun2: object.condition,
                   moped2: object.condition,
                   veh2License: object.license,
-                  veh2Street: object.street,
+                  veh2State: object.street,
                   veh2DOB: object.dobAge,
                   veh2Sex: object.sex,
                   veh2LicClass: object.licClass,
@@ -1563,10 +1481,14 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
             }
           );
           this.tonTowReport.disable();
-          // policeReportOperatorOwnerVehicleDtls
+          if(fileObject) this.crashNarrativeImage = 'data:image/jpeg;base64, ' + fileObject?.fileBytes
         });
+
     }
   }
+  
+
+ 
 
   patchOperatorDetails(from: number, operatorObject: any) {
     let formArray;
@@ -1645,7 +1567,6 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
     this.policeReportForm_1.markAllAsTouched();
     this.policeReportForm_2.markAllAsTouched();
     this.policeReportForm_3.markAllAsTouched();
-    this.witnessForm.markAllAsTouched();
     this.generalOperatorForm.markAllAsTouched();
     //this.inputformControl.markAsUntouched();
     let policeReportForm1Errors = this.getFormValidationErrors(
@@ -1657,13 +1578,13 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
     let policeReportForm3Errors = this.getFormValidationErrors(
       this.policeReportForm_3
     );
-    let witnessformArray: any = this.witnessForm.get(
-      'witnessFormArray'
-    ) as FormArray;
-    let witnessFormErrors: any = [];
-    witnessformArray.controls.forEach((element: any) => {
-      witnessFormErrors.push(this.getFormValidationErrors(element));
-    });
+    // let witnessformArray: any = this.witnessForm.get(
+    //   'witnessFormArray'
+    // ) as FormArray;
+    // let witnessFormErrors: any = [];
+    // witnessformArray.controls.forEach((element: any) => {
+    //   witnessFormErrors.push(this.getFormValidationErrors(element));
+    // });
     let generalOperatorformArray: any = this.generalOperatorForm.get(
       'generalOperatorArray'
     ) as FormArray;
@@ -1689,12 +1610,12 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
         '<b><br>Vehicle 2: </b>' +
         policeReportForm3Errors.join(',\n');
     }
-    if (witnessFormErrors.length !== 0) {
-      errorsString =
-        errorsString +
-        '<b><br>Witness/Property Damage</b>' +
-        witnessFormErrors.join(',\n');
-    }
+    // if (witnessFormErrors.length !== 0) {
+    //   errorsString =
+    //     errorsString +
+    //     '<b><br>Witness/Property Damage</b>' +
+    //     witnessFormErrors.join(',\n');
+    // }
     if (generalOperatorFormErrors.length !== 0) {
       errorsString =
         errorsString +
@@ -1707,7 +1628,6 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       this.policeReportForm_1.valid &&
       this.policeReportForm_2.valid &&
       this.policeReportForm_3.valid &&
-      this.witnessForm.valid &&
       this.generalOperatorForm.valid
     ) {
     let request: any = {
@@ -1793,7 +1713,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       condition: '',
       occupants: Number(this.policeReportForm_2.value.veh1Occupants),
       license: this.policeReportForm_2.value.veh1License,
-      street: this.policeReportForm_2.value.veh1Street,
+      street: this.policeReportForm_2.value.veh1State,
       dobAge: this.policeReportForm_2.value.veh1DOB,
       sex: this.policeReportForm_2.value.veh1Sex,
       licClass: this.policeReportForm_2.value.veh1LicClass,
@@ -1876,7 +1796,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       condition: this.policeReportForm_3.value.veh2Condition,
       occupants: Number(this.policeReportForm_3.value.veh2Occupants),
       license: this.policeReportForm_3.value.veh2License,
-      street: this.policeReportForm_3.value.veh2Street,
+      street: this.policeReportForm_3.value.veh2State,
       dobAge: this.policeReportForm_3.value.veh2DOB,
       sex: this.policeReportForm_3.value.veh2Sex,
       licClass: this.policeReportForm_3.value.veh2LicClass,
@@ -1950,12 +1870,16 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
     });
     this.httpService.updatePoliceReport(request).subscribe(
       (res) => {
-        if (res.result === 'Success') {
+          if (res.result === 'Success') {
           Swal.fire({
             icon: 'success',
             text: 'Police Report details updated  succcessfully!',
           });
+          if(this.fileInfo) this.uploadTonTowReports(res.data.tonTowRptId);
+          setTimeout(() => {
           this.onClickOfAddAndUpdateClearFields();
+          window.location.reload();
+          }, 3000);
         } else if (res.result === 'Failed') {
           Swal.fire({
             icon: 'error',
@@ -2055,7 +1979,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, delete it!',
+      confirmButtonText: 'Yes, cancel it!',
     }).then((result) => {
       if (result.isConfirmed) {
         this.tonTowReport.enable();
@@ -2189,14 +2113,14 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
   onIntersectionChange(event: any) {
     if (event.value) {
       this.policeReportForm_1.controls['route_1'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
-      this.policeReportForm_1.controls['direction_1'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
-      this.policeReportForm_1.controls['roadway_1'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
+      this.policeReportForm_1.controls['direction_1'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
+      this.policeReportForm_1.controls['roadway_1'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
       this.policeReportForm_1.controls['route_2'].setValidators([ Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
-      this.policeReportForm_1.controls['direction_2'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
-      this.policeReportForm_1.controls['roadway_2'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
+      this.policeReportForm_1.controls['direction_2'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
+      this.policeReportForm_1.controls['roadway_2'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
       this.policeReportForm_1.controls['route_3'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
-      this.policeReportForm_1.controls['direction_3'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
-      this.policeReportForm_1.controls['roadway_3'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
+      this.policeReportForm_1.controls['direction_3'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
+      this.policeReportForm_1.controls['roadway_3'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
       this.policeReportForm_1.controls['naiRoute'].clearValidators();
       this.policeReportForm_1.controls['naiRoute'].updateValueAndValidity();
       this.policeReportForm_1.controls['naiDirection'].clearValidators();
@@ -2247,21 +2171,21 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       this.policeReportForm_1.controls['direction_3'].updateValueAndValidity();
       this.policeReportForm_1.controls['roadway_3'].clearValidators();
       this.policeReportForm_1.controls['roadway_3'].updateValueAndValidity();
-      this.policeReportForm_1.controls['naiRoute'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
-      this.policeReportForm_1.controls['naiDirection'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
+      this.policeReportForm_1.controls['naiRoute'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
+      this.policeReportForm_1.controls['naiDirection'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
       this.policeReportForm_1.controls['naiAddress'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
-      this.policeReportForm_1.controls['feet1'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
+      this.policeReportForm_1.controls['feet1'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
       this.policeReportForm_1.controls['naiRoadwayStreet'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
-      this.policeReportForm_1.controls['naiDirection1'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
-      this.policeReportForm_1.controls['milemarker'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
-      this.policeReportForm_1.controls['exitnumber'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
-      this.policeReportForm_1.controls['feet2'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
-      this.policeReportForm_1.controls['naiDirection2'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
-      this.policeReportForm_1.controls['naiRoute1'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
-      this.policeReportForm_1.controls['naiRoadwaySt1'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
-      this.policeReportForm_1.controls['feet3'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
-      this.policeReportForm_1.controls['naiDirection3'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
-      this.policeReportForm_1.controls['naiLandmark'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
+      this.policeReportForm_1.controls['naiDirection1'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
+      this.policeReportForm_1.controls['milemarker'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
+      this.policeReportForm_1.controls['exitnumber'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
+      this.policeReportForm_1.controls['feet2'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
+      this.policeReportForm_1.controls['naiDirection2'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
+      this.policeReportForm_1.controls['naiRoute1'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
+      this.policeReportForm_1.controls['naiRoadwaySt1'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
+      this.policeReportForm_1.controls['feet3'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
+      this.policeReportForm_1.controls['naiDirection3'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
+      this.policeReportForm_1.controls['naiLandmark'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
       this.policeReportForm_1.updateValueAndValidity();
     }
   }
@@ -2696,5 +2620,79 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       control.controls['operatorInjured'].enable()
     }
   }
+  isFileAllowed(fileName: string) {
+    let isFileAllowed = false;
+    const allowedFiles = ['.pdf', '.jpg', '.jpeg', '.png'];
+    const regex = /(?:\.([^.]+))?$/;
+    const extension = regex.exec(fileName);
+    if (undefined !== extension && null !== extension) {
+      for (const ext of allowedFiles) {
+        if (ext === extension[0].toLocaleLowerCase()) {
+          isFileAllowed = true;
+        }
+      }
+    }
+    return isFileAllowed;
+  }
+
+  isFileSizeAllowed(size: any) {
+    let isFileSizeAllowed = false;
+    if (size < 4000000) {
+      isFileSizeAllowed = true;
+    }
+    return isFileSizeAllowed;
+  }
+
+  onFileSelect(event: any) {
+    const fileExt = this.isFileAllowed(event.target.files[0].name);
+    const fileSize = this.isFileSizeAllowed(event.target.files[0].size);
+    if (fileExt && fileSize) {
+      const file: File = event.target.files[0];
+      this.fileInfo = file;
+      this.policeReportForm_1.patchValue({
+        crashNarrativeDisplay: file.name,
+      });
+      if (event.target.files && event.target.files[0] && file) {
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        if(file.type.indexOf('image')> -1){
+          this.format = 'image';
+        }
+        reader.onload = (event: any) => {
+          this.localUrl = file.webkitRelativePath;
+          this.url = (<FileReader>event.target).result;
+        };
+        reader.readAsText(file);
+      }
+    } else {
+      if (fileExt === false)
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Please Upload valid file format PNG, JPEG, JPG, PDF',
+        });
+      if (fileSize === false)
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Please Upload file size less than 4 MB',
+        });
+    }
+  }
+
+  uploadTonTowReports(tonTowRptId:number) {
+    this.httpService
+      .uploadTonTowReports(
+        tonTowRptId,
+        this.tonTowReport.value,
+        this.loginUserDetails.username,
+        "TonTowReport-CrashNarrative",
+        this.fileInfo
+      )
+      .subscribe((res) => {
+        res
+      });
+    }
+    
 }
 

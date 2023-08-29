@@ -36,15 +36,6 @@
   align-items: center;
 }
 
-.profile-pic{
- // border: 1px solid #EFF6FF;
- // background: #FFFFFF;
-border-radius: 0%;
-//padding:2vw;
-/* height:20vh; */
-
-}
-
 .mat-mini-fab.mat-primary {
   background-color: #7e808a;
 }
@@ -55,7 +46,7 @@ border-radius: 0%;
 }
 ::ng-deep .mat-toolbar{
   z-index: 400 !important;
-  position: fixed !important
+  position: fixed !important;
 }
 
 // ::ng-deep .mat-tab-group{
@@ -86,4 +77,8 @@ button.mat-focus-indicator.mat-raised-button.mat-button-base.mat-primary {
 
 div#mat-menu-panel-3 {
   overflow: hidden !important;
+}
+
+.tonTow-img {
+  background-color: #b8b8c6;
 }
