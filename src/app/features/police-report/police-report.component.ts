@@ -1601,13 +1601,13 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
     if (policeReportForm2Errors.length !== 0) {
       errorsString =
         errorsString +
-        '<br><b>Vehicle 1: </b>' +
+        '<br><b>South Coast Customer: </b>' +
         policeReportForm2Errors.join(',\n');
     }
     if (policeReportForm3Errors.length !== 0) {
       errorsString =
         errorsString +
-        '<b><br>Vehicle 2: </b>' +
+        '<b><br>Other Party: </b>' +
         policeReportForm3Errors.join(',\n');
     }
     // if (witnessFormErrors.length !== 0) {
