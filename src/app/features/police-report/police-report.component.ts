@@ -1596,18 +1596,18 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
     let errorsString = '';
     if (policeReportForm1Errors.length !== 0) {
       errorsString =
-        '<b>Police Report: </b>' + policeReportForm1Errors.join(',\n');
+        '<b>Police Report: </b><br>' + policeReportForm1Errors.join(',\n');
     }
     if (policeReportForm2Errors.length !== 0) {
       errorsString =
         errorsString +
-        '<br><b>South Coast Customer: </b>' +
+        '<br><b>South Coast Customer: </b><br>' +
         policeReportForm2Errors.join(',\n');
     }
     if (policeReportForm3Errors.length !== 0) {
       errorsString =
         errorsString +
-        '<b><br>Other Party: </b>' +
+        '<b><br>Other Party: </b><br>' +
         policeReportForm3Errors.join(',\n');
     }
     // if (witnessFormErrors.length !== 0) {
@@ -1619,7 +1619,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
     if (generalOperatorFormErrors.length !== 0) {
       errorsString =
         errorsString +
-        '<b><br>Operator Information Sheet</b>' +
+        '<b><br>Operator Information Sheet</b><br>' +
         generalOperatorFormErrors.join(',\n');
     }
     if (
