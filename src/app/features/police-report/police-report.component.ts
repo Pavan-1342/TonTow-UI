@@ -211,11 +211,11 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       veh1Occupants: ['', [Validators.required]],
       hitAndRun: [false],
       moped: [false],
-      crashreportId: ['', [Validators.required]],
-      veh1License: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
+      crashreportId: [''],
+      veh1License: ['', [Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
       veh1State: ['',Validators.pattern('^.*\\S.*[a-zA-Z ]')],
       veh1DOB: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
-      veh1Sex: ['', [Validators.required]],
+      veh1Sex: [''],
       veh1LicClass: [''],
       veh1LicRestriction: [''],
       veh1CDLEndorsement: [''],
@@ -235,7 +235,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       veh1Viol3: [''],
       veh1Viol4: [''],
       veh1Reg: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
-      veh1RegType: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
+      veh1RegType: ['', [Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
       veh1RegState: ['', [Validators.required,Validators.pattern('^[a-zA-Z][a-zA-Z]*(?:\s+[a-zA-Z][a-zA-Z]+)?$')]],
       veh1VehicleYear: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
       veh1VehicleMake: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
@@ -278,10 +278,10 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       veh2Condition: [''],
       hitAndRun2: [''],
       moped2: [''],
-      veh2License: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
+      veh2License: ['', [Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
       veh2State: ['',Validators.pattern('^.*\\S.*[a-zA-Z ]')],
       veh2DOB: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
-      veh2Sex: ['', [Validators.required]],
+      veh2Sex: [''],
       veh2LicClass: [''],
       veh2LicRestriction: [''],
       veh2CDLEndorsement: [''],
@@ -301,7 +301,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
       veh2Viol3: [''],
       veh2Viol4: [''],
       veh2Reg: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
-      veh2RegType: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
+      veh2RegType: ['', [Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
       veh2RegState: ['', [Validators.required,Validators.pattern('^.*\\S.*[a-zA-Z ]')]],
       veh2VehicleYear: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
       veh2VehicleMake: ['', [Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]],
@@ -1125,7 +1125,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
               icon: 'success',
               text: 'Police Report details added  succcessfully!',
             });
-            this.uploadTonTowReports(res.data.tonTowRptId);
+            if(this.fileInfo) this.uploadTonTowReports(res.data.tonTowRptId);
             setTimeout(() => {
               this.onClickOfAddAndUpdateClearFields();
               window.location.reload();
@@ -2112,13 +2112,13 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
 
   onIntersectionChange(event: any) {
     if (event.value) {
-      this.policeReportForm_1.controls['route_1'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
+      this.policeReportForm_1.controls['route_1'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
       this.policeReportForm_1.controls['direction_1'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
       this.policeReportForm_1.controls['roadway_1'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
-      this.policeReportForm_1.controls['route_2'].setValidators([ Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
+      this.policeReportForm_1.controls['route_2'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
       this.policeReportForm_1.controls['direction_2'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
       this.policeReportForm_1.controls['roadway_2'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
-      this.policeReportForm_1.controls['route_3'].setValidators([Validators.required,Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
+      this.policeReportForm_1.controls['route_3'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
       this.policeReportForm_1.controls['direction_3'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
       this.policeReportForm_1.controls['roadway_3'].setValidators([Validators.pattern(".*\\S.*[a-zA-z0-9 ]")]);
       this.policeReportForm_1.controls['naiRoute'].clearValidators();
