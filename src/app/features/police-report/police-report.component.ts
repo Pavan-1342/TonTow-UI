@@ -2622,7 +2622,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
   }
   isFileAllowed(fileName: string) {
     let isFileAllowed = false;
-    const allowedFiles = ['.pdf', '.jpg', '.jpeg', '.png'];
+    const allowedFiles = ['.jpg', '.jpeg', '.png'];
     const regex = /(?:\.([^.]+))?$/;
     const extension = regex.exec(fileName);
     if (undefined !== extension && null !== extension) {
@@ -2669,7 +2669,7 @@ export class PoliceReportComponent implements OnInit, AfterViewInit, OnChanges {
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
-          text: 'Please Upload valid file format PNG, JPEG, JPG, PDF',
+          text: 'Please Upload valid file format PNG, JPEG, JPG',
         });
       if (fileSize === false)
         Swal.fire({

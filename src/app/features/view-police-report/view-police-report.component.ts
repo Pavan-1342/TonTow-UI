@@ -11,13 +11,13 @@ import { HttpService } from 'src/app/services/http.service';
 export class ViewPoliceReportComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @Output() editButtonClicked: EventEmitter<number> = new EventEmitter<number>();
-  displayedColumns: string[] = ['jobNum','tonTowRptId','email','phone','edit'];
+  displayedColumns: string[] = ['jobNum','tonTowRptId','email', 'createdDate','phone','edit'];
   dataSource = new MatTableDataSource<any>();
   policeReportForm_1: any;
   policeReportForm_2: any;
   loginUserDetails: any;
   allPoliceReportDetails: never[];
-
+  
   constructor(private httpService: HttpService) {}
 
   ngOnInit(): void {
@@ -26,7 +26,7 @@ export class ViewPoliceReportComponent implements OnInit {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
-  }
+      }
 
   getAllPoliceReport() {
     this.httpService.getAllPoliceReport().subscribe((res) => {
@@ -35,15 +35,16 @@ export class ViewPoliceReportComponent implements OnInit {
         data.push({
           "jobNum":Object.policereport.jobNum,
           "tonTowRptId": Object.policereport.tonTowRptId,
+          "createdDate" : Object.policereport.createdDate,
           "email":Object.email,
           "phone" : Object.phone,
           "policereport": Object.policereport,
 
         })
       });
-      this.dataSource = new MatTableDataSource(data);
+      this.dataSource = new MatTableDataSource(data.reverse());
       this.dataSource.paginator = this.paginator;
-    });
+          });
   }
 
   onEdit(record: any) {
